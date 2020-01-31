@@ -23,4 +23,13 @@ This repository holds the source codes for training and fine-tuning a Chinese pr
 
 ## pretraining
 
-## downstream task
+comming soon!
+
+## downstream tasks
+
+comming soon!
+
+## contributors
+
+[michael-wzhu](https://github.com/michael-wzhu)
+[brightmart](https://github.com/brightmart)
