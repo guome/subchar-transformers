@@ -31,5 +31,5 @@ comming soon!
 
 ## contributors
 
-[michael-wzhu](https://github.com/michael-wzhu)
-[brightmart](https://github.com/brightmart)
+ - [michael-wzhu](https://github.com/michael-wzhu)
+ - [brightmart](https://github.com/brightmart)
