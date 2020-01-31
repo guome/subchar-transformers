@@ -53,11 +53,8 @@ def char2comp_single_sent(sent, dict_char2comp):
         else:
             sent_new_ += char_
 
-    print("a: ",  sent_new_)
     # drop redundent blank
-    print("b: ", sent_new_)
     sent_new_ = drop_extra_blank(sent_new_)
-    print("c: ", sent_new_)
 
     return sent_new_
 
@@ -76,8 +73,8 @@ def char2comp_file(txt_file, to_file, dict_char2comp=None):
 
 
 if __name__ == "__main__":
-    # txt_file_ = "datasets/examples/corpus_zh_example_0.txt"
-    txt_file_ = "datasets/examples/a.txt"
+    txt_file_ = "datasets/examples/corpus_zh_example_0.txt"
+    # txt_file_ = "datasets/examples/a.txt"
     to_file_ = "datasets/examples/corpus_zh_example_subchar_0.txt"
 
     dict_char2comp_ = json.load(open("resources/char2comp.json", "r", encoding="utf-8"))
