@@ -9,10 +9,10 @@ from tokenizers import (ByteLevelBPETokenizer,
 if __name__ == "__main__":
     tokenizer_name = "zh_example"
     # tokenizer = ByteLevelBPETokenizer()
-    tokenizer = BertWordPieceTokenizer(
-        handle_chinese_chars=False,
-    )
-    # tokenizer = SentencePieceBPETokenizer()
+    # tokenizer = BertWordPieceTokenizer(
+    #     handle_chinese_chars=False,
+    # )
+    tokenizer = SentencePieceBPETokenizer()
 
     tokenizer.train(
         [
@@ -28,16 +28,17 @@ if __name__ == "__main__":
     # tryout the trained model
     ####################
     # Initialize a tokenizer
-    vocab = "./resources/tokenizer/zh_example-vocab.txt"
-    # vocab = "./resources/tokenizer/zh_example-vocab.json"
+    # vocab = "./resources/tokenizer/zh_example-vocab.txt"
+    vocab = "./resources/tokenizer/zh_example-vocab.json"
     merges = "./resources/tokenizer/zh_example-merges.txt"
     # tokenizer = ByteLevelBPETokenizer(vocab, merges)
     # tokenizer = BPETokenizer(vocab, merges)
-    tokenizer = BertWordPieceTokenizer(vocab, handle_chinese_chars=False)
-    # tokenizer = SentencePieceBPETokenizer(
-    #     vocab,
-    #     merges
-    # )
+    # tokenizer = BertWordPieceTokenizer(vocab, handle_chinese_chars=False)
+    tokenizer = SentencePieceBPETokenizer(
+        vocab,
+        merges,
+
+    )
 
     # And then encode:
     # encoded = tokenizer.encode("南京老城“路在何方”？")
