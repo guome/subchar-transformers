@@ -7,9 +7,9 @@ This repository holds the source codes for training and fine-tuning a Chinese pr
 这里假设预训练预料已经按照bert的格式准备好
 
  - 汉字拆开
-    - [汉字与偏旁部首的映射表](https://github.com/HKUST-KnowComp/JWE/blob/master/subcharacter/char2comp.txt)
+    - [拆字表](https://github.com/kfcd/chaizi/blob/master/chaizi-jt.txt)
     
-    - 将汉字拆为偏旁部首
+    - 将汉字拆为偏旁部首 
         - e.g., "糖" 会变为 "米广肀口";
         - python data_preprocess/char2comp.py
     - 现在每个汉字相当于英文中的一个词，其左右也用空格隔开
