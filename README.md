@@ -21,6 +21,19 @@ This repository holds the source codes for training and fine-tuning a Chinese pr
         - python data_preprocess/build_bpe.py
      
     - 将语料做bpe tokenize
+ 
+ - 多进程版
+    - 将预料文件拆为多份
+        - e.g., "datasets/examples/corpus_zh_example_0.txt" 拆为 "datasets/examples/corpus_zh_example_0_${i}.txt", 拆分时设置每个文件包含 NUM=6 个documents： 
+        - python data_preprocess/split_file_utils.py
+    
+    - 对每个拆分的文件同时进行拆字预处理
+        - data_preprocess/char2comp_mp.sh
+        - 设置脚本中的进程数，文件路径等
+        - e.g., 处理完后的文件路径格式为 ./datasets/examples/corpus_zh_example_0_${i}_subchar.txt
+    
+    - 将预处理完的文件合并(optional)
+        - python data_preprocess/merge_file_utils.py 
 
 ## pretraining
 

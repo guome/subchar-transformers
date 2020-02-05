@@ -18,8 +18,8 @@ if __name__ == "__main__":
         [
             "datasets/examples/corpus_zh_example_subchar_0.txt"
         ],
-        vocab_size=950,
-        min_frequency=1,
+        vocab_size=100000,
+        min_frequency=3,
 
     )
     tokenizer.save("resources/tokenizer", tokenizer_name)
