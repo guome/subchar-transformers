@@ -37,6 +37,26 @@ def drop_extra_blank(sent):
     return sent_new
 
 
+def split_sent(text_, spliter="。？?"):
+    list_sents = []
+    tmp_sent = ""
+    for char_ in text_:
+        if char_ in spliter:
+            if len(tmp_sent) == 0:
+                continue
+            else:
+                tmp_sent += char_
+                list_sents.append(tmp_sent)
+
+        else:
+            tmp_sent += char_
+
+    if len(tmp_sent) > 0:
+        list_sents.append(tmp_sent)
+
+    return list_sents
+
+
 def char2comp_single_sent(sent, dict_char2comp):
     sent_new_ = ""
 
@@ -70,11 +90,13 @@ def char2comp_file(txt_file, to_file, dict_char2comp=None, do_lower_case=1):
                     out_f.write("\n")
                     continue
 
-                sent_new_ = char2comp_single_sent(line, dict_char2comp)
-                if do_lower_case:
-                    sent_new_ = sent_new_.lower()
+                sents_ = split_sent(line, spliter="。？?")
+                for sent in sents_:
+                    sent_new_ = char2comp_single_sent(sent, dict_char2comp)
+                    if do_lower_case:
+                        sent_new_ = sent_new_.lower()
 
-                out_f.write(sent_new_ + "\n")
+                    out_f.write(sent_new_ + "\n")
 
 
 if __name__ == "__main__":
