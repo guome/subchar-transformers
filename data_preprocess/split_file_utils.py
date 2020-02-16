@@ -54,11 +54,11 @@ def text_file2files(from_file, to_file_regex, num_docs_per_file=1e+3):
 if __name__ == "__main__":
 
     from_file = "corpus/zhwiki-latest-pages-articles.txt"
-    to_file_regex = "corpus/zhwiki-latest-pages-articles_%s.txt"
+    to_file_regex = "corpus/splited/zhwiki-latest-pages-articles_%s.txt"
     text_file2files(
         from_file,
         to_file_regex,
-        num_docs_per_file=6
+        num_docs_per_file=5e4
     )
 
 
