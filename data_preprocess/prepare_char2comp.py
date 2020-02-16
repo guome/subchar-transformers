@@ -55,5 +55,8 @@ if __name__ == "__main__":
     json_dir_ = "resources/char2comp.json"
     char2comp_txt2json(txt_dir_, json_dir_)
 
+    import torch
+    torch.nn.ReLU()
+
 
 
