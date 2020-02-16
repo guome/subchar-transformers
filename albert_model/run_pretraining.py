@@ -20,13 +20,17 @@ from __future__ import division
 from __future__ import print_function
 import os
 import time
-import modeling
-import optimization
+
 from six.moves import range
 import tensorflow.compat.v1 as tf
 from tensorflow.contrib import cluster_resolver as contrib_cluster_resolver
 from tensorflow.contrib import data as contrib_data
 from tensorflow.contrib import tpu as contrib_tpu
+
+import sys
+sys.path.append("./")
+from albert_model import modeling
+from albert_model import optimization
 
 flags = tf.flags
 
@@ -41,6 +45,10 @@ flags.DEFINE_string(
 flags.DEFINE_string(
     "input_file", None,
     "Input TF example files (can be a glob or comma separated).")
+
+flags.DEFINE_string(
+    "dev_input_file", None,
+    "Input TF example files for dev (can be a glob or comma separated).")
 
 flags.DEFINE_string(
     "output_dir", None,
@@ -481,6 +489,10 @@ def main(_):
   for input_pattern in FLAGS.input_file.split(","):
     input_files.extend(tf.gfile.Glob(input_pattern))
 
+  dev_input_files = []
+  for input_pattern in FLAGS.dev_input_file.split(","):
+    dev_input_files.extend(tf.gfile.Glob(input_pattern))
+
   tf.logging.info("*** Input Files ***")
   for input_file in input_files:
     tf.logging.info("  %s" % input_file)
@@ -540,7 +552,7 @@ def main(_):
     output_eval_file = os.path.join(FLAGS.output_dir, "eval_results.txt")
     writer = tf.gfile.GFile(output_eval_file, "w")
     eval_input_fn = input_fn_builder(
-        input_files=input_files,
+        input_files=dev_input_files,
         max_seq_length=FLAGS.max_seq_length,
         max_predictions_per_seq=FLAGS.max_predictions_per_seq,
         is_training=False)
