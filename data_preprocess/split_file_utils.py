@@ -53,8 +53,8 @@ def text_file2files(from_file, to_file_regex, num_docs_per_file=1e+3):
 
 if __name__ == "__main__":
 
-    from_file = "datasets/examples/corpus_zh_example_0.txt"
-    to_file_regex = "datasets/examples/corpus_zh_example_0_%s.txt"
+    from_file = "corpus/zhwiki-latest-pages-articles.txt"
+    to_file_regex = "corpus/zhwiki-latest-pages-articles_%s.txt"
     text_file2files(
         from_file,
         to_file_regex,
