@@ -17,14 +17,14 @@ def main():
     dict_char2comp_dir = Path(sys.argv[3])
     do_lower_case = int(sys.argv[4])
 
-    print(f'Pre-processing {file_in} to {file_out}...')
+    print('Pre-processing {} to {}...'.format(file_in, file_out))
     dict_char2comp = json.load(
         # open(dict_char2comp_dir, "r", encoding="utf-8")
         open(dict_char2comp_dir, "r")
     )
     char2comp_file(file_in, file_out, dict_char2comp=dict_char2comp, do_lower_case=do_lower_case)
 
-    print(f'Successfully pre-processed {file_in} to {file_out}...')
+    print('Successfully pre-processed {} to {}...'.format(file_in, file_out))
 
 
 if __name__ == '__main__':
