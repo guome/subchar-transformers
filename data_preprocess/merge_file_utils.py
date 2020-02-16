@@ -28,7 +28,7 @@ def txt_files2file(list_files, to_dir):
 
 if __name__ == "__main__":
     list_files_ = []
-    num_files = 21
+    num_files = 22
     for i in range(num_files):
         file_ = "./corpus/subchar_lower/zhwiki-latest-pages-articles_%d_subchar_lower.txt" % (i + 1)
         list_files_.append(file_)
