@@ -13,8 +13,8 @@ from data_preprocess.char2comp import char2comp_file
 
 def main():
     file_in = str(sys.argv[1])
-    file_out = sys.argv[2]
-    dict_char2comp_dir = sys.argv[3]
+    file_out = str(sys.argv[2])
+    dict_char2comp_dir = str(sys.argv[3])
     do_lower_case = int(sys.argv[4])
 
     print('Pre-processing {} to {}...'.format(file_in, file_out))
