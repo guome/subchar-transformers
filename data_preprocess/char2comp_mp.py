@@ -54,7 +54,7 @@ def split_sent(text_, spliter="。？?"):
             else:
                 tmp_sent += char_
                 list_sents.append(tmp_sent)
-                tmp_sent = []
+                tmp_sent = ""
 
         else:
             tmp_sent += char_
