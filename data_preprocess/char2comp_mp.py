@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
-import sys
-from pathlib import Path
-
-import tqdm
-from blingfire import text_to_sentences
+# import sys
+# from pathlib import Path
+#
+# import tqdm
+# from blingfire import text_to_sentences
 import sys
 
 sys.path.append("./")
