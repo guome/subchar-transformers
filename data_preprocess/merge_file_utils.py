@@ -17,9 +17,11 @@ sys.path.append("./")
 
 
 def txt_files2file(list_files, to_dir):
-    with open(to_dir, "w", encoding="utf-8") as out_f:
+    # with open(to_dir, "w", encoding="utf-8") as out_f:
+    with open(to_dir, "w") as out_f:
         for file_ in list_files:
-            with open(file_, "r", encoding="utf-8") as in_f:
+            # with open(file_, "r", encoding="utf-8") as in_f:
+            with open(file_, "r") as in_f:
                 for line in tqdm.tqdm(in_f):
                     out_f.write(line)
 

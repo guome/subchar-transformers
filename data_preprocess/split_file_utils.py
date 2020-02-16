@@ -17,7 +17,8 @@ sys.path.append("./")
 
 
 def text_file2files(from_file, to_file_regex, num_docs_per_file=1e+3):
-    with open(from_file, 'r', encoding='utf-8') as in_f:
+    # with open(from_file, 'r', encoding='utf-8') as in_f:
+    with open(from_file, 'r') as in_f:
         list_docs = []
         count_docs = 0
         file_idx = 0
@@ -37,7 +38,8 @@ def text_file2files(from_file, to_file_regex, num_docs_per_file=1e+3):
                 print("count_docs: ", count_docs)
                 print("file_idx: ", file_idx)
 
-                with open(to_file, 'w', encoding='utf-8') as out_f:
+                # with open(to_file, 'w', encoding='utf-8') as out_f:
+                with open(to_file, 'w') as out_f:
                     for line in list_docs:
                         out_f.write(line)
 
@@ -46,7 +48,8 @@ def text_file2files(from_file, to_file_regex, num_docs_per_file=1e+3):
         if len(list_docs) > 0:
             file_idx += 1
             to_file = to_file_regex % str(file_idx)
-            with open(to_file, 'w', encoding='utf-8') as out_f:
+            # with open(to_file, 'w', encoding='utf-8') as out_f:
+            with open(to_file, 'w') as out_f:
                 for line in list_docs:
                     out_f.write(line)
 

@@ -60,8 +60,10 @@ def char2comp_single_sent(sent, dict_char2comp):
 
 
 def char2comp_file(txt_file, to_file, dict_char2comp=None, do_lower_case=1):
-    with open(to_file, "w", encoding="utf-8") as out_f:
-        with open(txt_file, "r", encoding="utf-8") as in_f:
+    # with open(to_file, "w", encoding="utf-8") as out_f:
+    with open(to_file, "w") as out_f:
+        # with open(txt_file, "r", encoding="utf-8") as in_f:
+        with open(txt_file, "r") as in_f:
             for i, line in tqdm.tqdm(enumerate(in_f)):
                 line = line.strip()
                 if len(line) == 0:
@@ -80,7 +82,8 @@ if __name__ == "__main__":
     # txt_file_ = "datasets/examples/a.txt"
     to_file_ = "datasets/examples/corpus_zh_example_subchar_0.txt"
 
-    dict_char2comp_ = json.load(open("resources/char2comp.json", "r", encoding="utf-8"))
+    # dict_char2comp_ = json.load(open("resources/char2comp.json", "r", encoding="utf-8"))
+    dict_char2comp_ = json.load(open("resources/char2comp.json", "r"))
     char2comp_file(
         txt_file_,
         to_file_,

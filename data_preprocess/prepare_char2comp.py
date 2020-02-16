@@ -8,7 +8,8 @@ def char2comp_txt2json(txt_dir, json_dir):
 
     comp_set = set()
 
-    with open(txt_dir, "r", encoding="utf-8") as f:
+    # with open(txt_dir, "r", encoding="utf-8") as f:
+    with open(txt_dir, "r") as f:
         for line in f:
             line = line.strip()
 
@@ -46,7 +47,8 @@ def char2comp_txt2json(txt_dir, json_dir):
     print("there are %d comps: " % len(comp_set))
     print("there are %d chars: " % len(dict_char2comp))
 
-    with open(json_dir, "w", encoding="utf-8") as f:
+    # with open(json_dir, "w", encoding="utf-8") as f:
+    with open(json_dir, "w") as f:
         json.dump(dict_char2comp, f)
 
 
