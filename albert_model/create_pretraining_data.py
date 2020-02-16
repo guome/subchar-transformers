@@ -30,7 +30,7 @@ import tensorflow.compat.v1 as tf
 
 import sys
 sys.path.append("./")
-from ALBERT import tokenization
+from albert_model import tokenization
 
 flags = tf.flags
 
