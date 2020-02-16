@@ -59,7 +59,7 @@ def char2comp_single_sent(sent, dict_char2comp):
     return sent_new_
 
 
-def char2comp_file(txt_file, to_file, dict_char2comp=None):
+def char2comp_file(txt_file, to_file, dict_char2comp=None, do_lower_case=1):
     with open(to_file, "w", encoding="utf-8") as out_f:
         with open(txt_file, "r", encoding="utf-8") as in_f:
             for i, line in tqdm.tqdm(enumerate(in_f)):
@@ -69,6 +69,9 @@ def char2comp_file(txt_file, to_file, dict_char2comp=None):
                     continue
 
                 sent_new_ = char2comp_single_sent(line, dict_char2comp)
+                if do_lower_case:
+                    sent_new_ = sent_new_.lower()
+
                 out_f.write(sent_new_ + "\n")
 
 
