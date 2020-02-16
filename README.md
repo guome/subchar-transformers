@@ -1,6 +1,8 @@
 # subchar-transformers
 This repository holds the source codes for training and fine-tuning a Chinese pre-trained transformers with sub-character features.
 
+# Acknowledgement
+Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFRC](https://www.tensorflow.org/tfrc))
 
 ## data preparation
 
