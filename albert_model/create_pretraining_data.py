@@ -24,6 +24,7 @@ import random
 
 import numpy as np
 import six
+import tqdm
 from six.moves import range
 from six.moves import zip
 import tensorflow.compat.v1 as tf
@@ -138,7 +139,7 @@ def write_instance_to_example_files(instances, tokenizer, max_seq_length,
   writer_index = 0
 
   total_written = 0
-  for (inst_index, instance) in enumerate(instances):
+  for (inst_index, instance) in tqdm.tqdm(enumerate(instances)):
     input_ids = tokenizer.convert_tokens_to_ids(instance.tokens)
     input_mask = [1] * len(input_ids)
     segment_ids = list(instance.segment_ids)
@@ -224,6 +225,7 @@ def create_training_instances(input_files, tokenizer, max_seq_length,
                               max_predictions_per_seq, rng):
   """Create `TrainingInstance`s from raw text."""
   all_documents = [[]]
+  count = 0
 
   # Input file format:
   # (1) One sentence per line. These should ideally be actual sentences, not
@@ -244,6 +246,10 @@ def create_training_instances(input_files, tokenizer, max_seq_length,
         else:
           line = line.strip()
 
+        count += 1
+        if count % 10000 == 0:
+          print(count)
+
         # Empty lines are used as document delimiters
         if not line:
           all_documents.append([])
@@ -258,7 +264,10 @@ def create_training_instances(input_files, tokenizer, max_seq_length,
   vocab_words = list(tokenizer.vocab.keys())
   instances = []
   for _ in range(dupe_factor):
-    for document_index in range(len(all_documents)):
+    for document_index in tqdm.tqdm(range(len(all_documents))):
+      if document_index % 10000 == 0:
+        print(document_index)
+
       instances.extend(
           create_instances_from_document(
               all_documents, document_index, max_seq_length, short_seq_prob,
