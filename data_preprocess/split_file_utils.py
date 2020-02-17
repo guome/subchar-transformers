@@ -61,7 +61,7 @@ if __name__ == "__main__":
     text_file2files(
         from_file,
         to_file_regex,
-        num_docs_per_file=5e+4
+        num_docs_per_file=2e+4
     )
 
 
