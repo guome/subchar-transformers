@@ -31,6 +31,7 @@ from tensorflow.contrib import metrics as contrib_metrics
 from tensorflow.contrib import tpu as contrib_tpu
 
 
+
 class InputExample(object):
   """A single training/test example for simple sequence classification."""
 
