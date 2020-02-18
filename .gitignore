@@ -8,6 +8,7 @@ __pycache__/
 
 .idea/*
 *.txt
+*.tfrecord
 
 # Distribution / packaging
 .Python
@@ -36,7 +37,7 @@ MANIFEST
 *.manifest
 *.spec
 
-*.tfrecord
+
 
 # Installer logs
 pip-log.txt
