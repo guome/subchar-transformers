@@ -1,9 +1,6 @@
 {
-  "architectures": [
-    "AlbertForMaskedLM"
-  ],
   "attention_probs_dropout_prob": 0,
-  "hidden_act": "gelu_new",
+  "hidden_act": "gelu",
   "hidden_dropout_prob": 0,
   "embedding_size": 128,
   "hidden_size": 768,
