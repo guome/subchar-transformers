@@ -280,11 +280,12 @@ def create_training_instances(input_files, output_file,
     rng.shuffle(instances)
     tf.logging.info("number of instances: %i", len(instances))
 
-    output_file = output_file % str(i)
-    tf.logging.info("*** Writing to output files %s***" % output_file)
+    print("output_file: ", output_file)
+    output_file_i = output_file % str(i)
+    tf.logging.info("*** Writing to output files %s***" % output_file_i)
 
     write_instance_to_example_files(instances, tokenizer, FLAGS.max_seq_length,
-                                    FLAGS.max_predictions_per_seq, [output_file])
+                                    FLAGS.max_predictions_per_seq, [output_file_i])
 
 
 def create_instances_from_document(
