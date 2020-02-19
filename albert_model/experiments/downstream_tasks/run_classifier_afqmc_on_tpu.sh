@@ -5,13 +5,11 @@
 # @Last Modified time: 2020-02-19 21:08:00
 
 
-CURRENT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+
 CURRENT_TIME=$(date "+%Y%m%d-%H%M%S")
 
 TASK_NAME="afqmc"
 MODEL_NAME="albert_base_zh_subchar"
-CURRENT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
-echo "current dir: $CURRENT_DIR"
 
 export PREV_TRAINED_MODEL_DIR=gs://sbt0/uncased_vocab_5000_time_0216/
 
@@ -25,15 +23,15 @@ export OUTPUT_DIR=gs://sbt0/ experiments/${MODEL_NAME}_${TASK_NAME}_tpu_0
 
 
 # download and unzip dataset
-if [ ! -d $CLUE_DATA_DIR ]; then
-  mkdir -p CLUE_DATA_DIR
-  echo "makedir $CLUE_DATA_DIR"
-fi
+# if [ ! -d $CLUE_DATA_DIR ]; then
+#   mkdir -p CLUE_DATA_DIR
+#   echo "makedir $CLUE_DATA_DIR"
+# fi
 
-if [ ! -d $CLUE_DATA_DIR/$TASK_NAME ]; then
-  mkdir $CLUE_DATA_DIR/$TASK_NAME
-  echo "makedir $CLUE_DATA_DIR/$TASK_NAME"
-fi
+# if [ ! -d $CLUE_DATA_DIR/$TASK_NAME ]; then
+#   mkdir $CLUE_DATA_DIR/$TASK_NAME
+#   echo "makedir $CLUE_DATA_DIR/$TASK_NAME"
+# fi
 
 # cd $CLUE_DATA_DIR/$TASK_NAME
 # if [ ! -f "train.json" ] || [ ! -f "dev.json" ] || [ ! -f "test.json" ]; then
@@ -49,7 +47,6 @@ fi
 # cd ../../../../
 
 # run task
-cd $CURRENT_DIR
 echo "Start running..."
 python3 albert_model/run_classifier.py \
   --task_name=TASK_NAME \
