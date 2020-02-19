@@ -21,7 +21,7 @@ export CLUE_DATA_DIR=./albert_model/experiments/CLUEdataset
 
 export DATA_DIR=$CLUE_DATA_DIR/$TASK_NAME/
 
-export OUTPUT_DIR=gs://sbt0/ experiments/${MODEL_NAME}_${TASK_NAME}_tpu_${CURRENT_TIME}
+export OUTPUT_DIR=gs://sbt0/ experiments/${MODEL_NAME}_${TASK_NAME}_tpu_0
 
 
 # download and unzip dataset
@@ -29,12 +29,13 @@ if [ ! -d $CLUE_DATA_DIR ]; then
   mkdir -p CLUE_DATA_DIR
   echo "makedir $CLUE_DATA_DIR"
 fi
-cd $CLUE_DATA_DIR
-if [ ! -d $TASK_NAME ]; then
-  mkdir $TASK_NAME
+
+if [ ! -d $CLUE_DATA_DIR/$TASK_NAME ]; then
+  mkdir $CLUE_DATA_DIR/$TASK_NAME
   echo "makedir $CLUE_DATA_DIR/$TASK_NAME"
 fi
-cd $TASK_NAME
+
+cd $CLUE_DATA_DIR/$TASK_NAME
 if [ ! -f "train.json" ] || [ ! -f "dev.json" ] || [ ! -f "test.json" ]; then
   rm *
   wget https://storage.googleapis.com/cluebenchmark/tasks/afqmc_public.zip
@@ -45,11 +46,12 @@ else
 fi
 echo "Finish download dataset."
 
+cd ../../../../
 
 # run task
 cd $CURRENT_DIR
 echo "Start running..."
-python3 $CURRENT_DIR/../../run_classifier.py \
+python3 albert_model/run_classifier.py \
   --task_name=TASK_NAME \
   --data_dir=... \
   --output_dir=$OUTPUT_DIR \
