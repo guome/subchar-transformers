@@ -20,13 +20,19 @@ from __future__ import print_function
 
 import os
 import time
-import classifier_utils
-import fine_tuning_utils
-import modeling
-import tokenization
+
 import tensorflow.compat.v1 as tf
 from tensorflow.contrib import cluster_resolver as contrib_cluster_resolver
 from tensorflow.contrib import tpu as contrib_tpu
+
+import sys
+sys.path.append("./")
+
+from albert_model import classifier_utils
+from albert_model import fine_tuning_utils
+from albert_model import modeling
+from albert_model import tokenization
+
 
 flags = tf.flags
 
