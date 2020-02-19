@@ -21,7 +21,7 @@ export CLUE_DATA_DIR=./albert_model/experiments/CLUEdataset
 
 export DATA_DIR=$CLUE_DATA_DIR/$TASK_NAME/
 
-export OUTPUT_DIR=gs://sbt0/ experiments/${MODEL_NAME}_${TASK_NAME}_tpu_${CURRENT_TIME}/
+export OUTPUT_DIR=gs://sbt0/ experiments/${MODEL_NAME}_${TASK_NAME}_tpu_${CURRENT_TIME}
 
 
 # download and unzip dataset
@@ -49,7 +49,7 @@ echo "Finish download dataset."
 # run task
 cd $CURRENT_DIR
 echo "Start running..."
-python3 albert_model/run_classifier.py \
+python3 $CURRENT_DIR/../../run_classifier.py \
   --task_name=TASK_NAME \
   --data_dir=... \
   --output_dir=$OUTPUT_DIR \
