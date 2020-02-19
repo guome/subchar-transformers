@@ -46,7 +46,7 @@ else
 fi
 echo "Finish download dataset."
 
-cd ../../../../
+# cd ../../../../
 
 # run task
 cd $CURRENT_DIR
