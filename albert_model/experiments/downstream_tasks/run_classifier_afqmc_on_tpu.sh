@@ -35,16 +35,16 @@ if [ ! -d $CLUE_DATA_DIR/$TASK_NAME ]; then
   echo "makedir $CLUE_DATA_DIR/$TASK_NAME"
 fi
 
-cd $CLUE_DATA_DIR/$TASK_NAME
-if [ ! -f "train.json" ] || [ ! -f "dev.json" ] || [ ! -f "test.json" ]; then
-  rm *
-  wget https://storage.googleapis.com/cluebenchmark/tasks/afqmc_public.zip
-  unzip afqmc_public.zip
-  rm afqmc_public.zip
-else
-  echo "data exists"
-fi
-echo "Finish download dataset."
+# cd $CLUE_DATA_DIR/$TASK_NAME
+# if [ ! -f "train.json" ] || [ ! -f "dev.json" ] || [ ! -f "test.json" ]; then
+#   rm *
+#   wget https://storage.googleapis.com/cluebenchmark/tasks/afqmc_public.zip
+#   unzip afqmc_public.zip
+#   rm afqmc_public.zip
+# else
+#   echo "data exists"
+# fi
+# echo "Finish download dataset."
 
 # cd ../../../../
 
