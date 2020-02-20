@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
     to_dir_ = os.path.join(
         STORAGE_BUCKET,
-        "data/corpus/subchar_lower/zhwiki-latest-pages-articles_subchar_lower.txt"
+        "data/corpus/subchar_lower/zhwiki-latest-pages-articles_subchar_lower.txt")
     txt_files2file(list_files_, to_dir_)
 
 
