@@ -12,6 +12,8 @@ import sys
 import jieba
 import tqdm
 
+import tensorflow.compat.v1 as tf
+
 sys.path.append("./")
 
 
@@ -89,9 +91,9 @@ def char2comp_single_sent(sent, dict_char2comp):
 
 def char2comp_file(txt_file, to_file, dict_char2comp=None, do_lower_case=1):
     # with open(to_file, "w", encoding="utf-8") as out_f:
-    with open(to_file, "w") as out_f:
+    with tf.gfile.GFile(to_file, "w") as out_f:
         # with open(txt_file, "r", encoding="utf-8") as in_f:
-        with open(txt_file, "r") as in_f:
+        with tf.gfile.GFile(txt_file, "r") as in_f:
             for i, line in tqdm.tqdm(enumerate(in_f)):
                 line = line.strip()
                 if len(line) == 0:
