@@ -8,10 +8,12 @@
 @Date：
 @Desc: 
 """
-
+import os
 import sys
+import tensorflow.compat.v1 as tf
 
 import tqdm
+
 
 sys.path.append("./")
 
@@ -39,7 +41,8 @@ def text_file2files(from_file, to_file_regex, num_docs_per_file=1e+3):
                 print("file_idx: ", file_idx)
 
                 # with open(to_file, 'w', encoding='utf-8') as out_f:
-                with open(to_file, 'w') as out_f:
+                # writer = tf.gfile.GFile(output_eval_file, "w")
+                with tf.gfile.GFile(to_file, 'w') as out_f:
                     for line in list_docs:
                         out_f.write(line)
 
@@ -49,19 +52,23 @@ def text_file2files(from_file, to_file_regex, num_docs_per_file=1e+3):
             file_idx += 1
             to_file = to_file_regex % str(file_idx)
             # with open(to_file, 'w', encoding='utf-8') as out_f:
-            with open(to_file, 'w') as out_f:
+            with tf.gfile.GFile(to_file, 'w') as out_f:
                 for line in list_docs:
                     out_f.write(line)
 
 
 if __name__ == "__main__":
+    STORAGE_BUCKET = "gs://sbt0"
 
     from_file = "corpus/zhwiki-latest-pages-articles.txt"
-    to_file_regex = "corpus/splited/zhwiki-latest-pages-articles_%s.txt"
+    to_file_regex = os.path.join(
+        STORAGE_BUCKET,
+        "data/corpus/splited/zhwiki-latest-pages-articles_%s.txt"
+    )
     text_file2files(
         from_file,
         to_file_regex,
-        num_docs_per_file=2e+4
+        num_docs_per_file=1e+4
     )
 
 
