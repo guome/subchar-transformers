@@ -486,12 +486,14 @@ def main(_):
   tf.gfile.MakeDirs(FLAGS.output_dir)
 
   input_files = []
-  for input_pattern in FLAGS.input_file.split(","):
-    input_files.extend(tf.gfile.Glob(input_pattern))
+  if FLAGS.input_file:
+      for input_pattern in FLAGS.input_file.split(","):
+        input_files.extend(tf.gfile.Glob(input_pattern))
 
   dev_input_files = []
-  for input_pattern in FLAGS.dev_input_file.split(","):
-    dev_input_files.extend(tf.gfile.Glob(input_pattern))
+  if FLAGS.dev_input_file:
+      for input_pattern in FLAGS.dev_input_file.split(","):
+        dev_input_files.extend(tf.gfile.Glob(input_pattern))
 
   tf.logging.info("*** Input Files ***")
   for input_file in input_files:
@@ -533,7 +535,8 @@ def main(_):
       model_fn=model_fn,
       config=run_config,
       train_batch_size=FLAGS.train_batch_size,
-      eval_batch_size=FLAGS.eval_batch_size)
+      eval_batch_size=FLAGS.eval_batch_size
+  )
 
   if FLAGS.do_train:
     tf.logging.info("***** Running training *****")
