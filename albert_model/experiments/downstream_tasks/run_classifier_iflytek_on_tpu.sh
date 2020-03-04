@@ -51,7 +51,7 @@ python3 clue_projects/baselines/models/albert/run_classifier.py \
   --task_name=$TASK_NAME \
   --data_dir=$GLUE_DATA_DIR/$TASK_NAME \
   --output_dir=$OUTPUT_DIR \
-  --init_checkpoint=$ALBERT_PRETRAINED_MODELS_DIR_LEN_128/model.ckpt \
+  --init_checkpoint=$ALBERT_PRETRAINED_MODELS_DIR_LEN_128/model.ckpt-125000 \
   --bert_config_file=$ALBERT_CONFIG_DIR \
   --vocab_file=./resources/tokenizer/5000-clean.vocab \
   --spm_model_file=./resources/tokenizer/5000-clean.model \
