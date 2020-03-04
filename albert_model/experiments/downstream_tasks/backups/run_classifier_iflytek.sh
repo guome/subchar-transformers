@@ -5,7 +5,7 @@
 # @Last Modified time: 2019-12-05 10:33:28
 
 TASK_NAME="iflytek"
-MODEL_NAME="albert_xlarge_zh"
+MODEL_NAME="subchar_transformers_albert_base"
 CURRENT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 export CUDA_VISIBLE_DEVICES="0"
 export ALBERT_CONFIG_DIR=$CURRENT_DIR/albert_config
