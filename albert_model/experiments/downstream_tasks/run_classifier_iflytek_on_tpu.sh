@@ -50,7 +50,7 @@ python3 CLUE/baselines/models/albert/run_classifier.py \
   --task_name=TASK_NAME \
   --data_dir=... \
   --output_dir=$OUTPUT_DIR \
-  --init_checkpoint=$PREV_TRAINED_MODEL_DIR/model.ckpt \
+  --init_checkpoint=$ALBERT_PRETRAINED_MODELS_DIR_LEN_128/model.ckpt \
   --albert_config_file=$ALBERT_CONFIG_DIR \
   --vocab_file=./resources/tokenizer/5000-clean.vocab \
   --spm_model_file=./resources/tokenizer/5000-clean.model \
@@ -64,4 +64,7 @@ python3 CLUE/baselines/models/albert/run_classifier.py \
   --learning_rate=3e-5 \
   --save_checkpoints_steps=100 \
   --train_step=10000 \
+  --use_tpu=True \
+  --tpu_name=${TPU_NAME} \
+  --num_tpu_cores=1
 
