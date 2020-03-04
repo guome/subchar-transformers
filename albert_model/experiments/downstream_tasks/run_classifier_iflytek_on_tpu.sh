@@ -10,7 +10,7 @@ export TPU_NAME=subchar-trans-run-iflytek
 TASK_NAME="iflytek"
 MODEL_NAME="subchar_transformers_albert_base_128"
 
-CURRENT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+# CURRENT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 export CUDA_VISIBLE_DEVICES="0"
 export ALBERT_CONFIG_DIR=./albert_model/experiments/albert_base_v2_config_vocab_5000.json
@@ -22,29 +22,29 @@ export GLUE_DATA_DIR=./datasets/CLUE/
 export OUTPUT_DIR=$STORAGE_BUCKET/experiments/${MODEL_NAME}_${TASK_NAME}_${CURRENT_TIME}
 
 # download and unzip dataset
-if [ ! -d $GLUE_DATA_DIR ]; then
-  mkdir -p $GLUE_DATA_DIR
-  echo "makedir $GLUE_DATA_DIR"
-fi
-cd $GLUE_DATA_DIR
-if [ ! -d $TASK_NAME ]; then
-  mkdir $TASK_NAME
-  echo "makedir $GLUE_DATA_DIR/$TASK_NAME"
-fi
-cd $TASK_NAME
-if [ ! -f "train.json" ] || [ ! -f "dev.json" ] || [ ! -f "test.json" ]; then
-  rm *
-  wget https://storage.googleapis.com/cluebenchmark/tasks/iflytek_public.zip
-  unzip iflytek_public.zip
-  rm iflytek_public.zip
-else
-  echo "data exists"
-fi
-echo "Finish download dataset."
+# if [ ! -d $GLUE_DATA_DIR ]; then
+#   mkdir -p $GLUE_DATA_DIR
+#   echo "makedir $GLUE_DATA_DIR"
+# fi
+# cd $GLUE_DATA_DIR
+# if [ ! -d $TASK_NAME ]; then
+#   mkdir $TASK_NAME
+#   echo "makedir $GLUE_DATA_DIR/$TASK_NAME"
+# fi
+# cd $TASK_NAME
+# if [ ! -f "train.json" ] || [ ! -f "dev.json" ] || [ ! -f "test.json" ]; then
+#   rm *
+#   wget https://storage.googleapis.com/cluebenchmark/tasks/iflytek_public.zip
+#   unzip iflytek_public.zip
+#   rm iflytek_public.zip
+# else
+#   echo "data exists"
+# fi
+# echo "Finish download dataset."
 
 
 # run task
-cd $CURRENT_DIR
+
 echo "Start running..."
 python3 clue_projects/baselines/models/albert/run_classifier.py \
   --task_name=TASK_NAME \
