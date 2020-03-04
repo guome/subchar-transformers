@@ -55,6 +55,9 @@ flags.DEFINE_string("task_name", None, "The name of the task to train.")
 flags.DEFINE_string("vocab_file", None,
                     "The vocabulary file that the BERT model was trained on.")
 
+flags.DEFINE_string("spm_model_file", None,
+                    "The spm model file that the BERT model was trained on.")
+
 flags.DEFINE_string(
     "output_dir", None,
     "The output directory where the model checkpoints will be written.")
