@@ -32,7 +32,8 @@ sys.path.append('./')
 from clue_projects.baselines.models.classifier_utils import *
 from clue_projects.baselines.models.albert import modeling
 from clue_projects.baselines.models.albert import optimization_finetuning as optimization
-from clue_projects.baselines.models.albert import tokenization
+# from clue_projects.baselines.models.albert import tokenization
+from albert_model import tokenization
 
 flags = tf.flags
 
@@ -773,7 +774,8 @@ def main(_):
   label_list = processor.get_labels()
 
   tokenizer = tokenization.FullTokenizer(
-      vocab_file=FLAGS.vocab_file, do_lower_case=FLAGS.do_lower_case)
+      vocab_file=FLAGS.vocab_file, do_lower_case=FLAGS.do_lower_case,
+      spm_model_file=FLAGS.spm_model_file)
 
   tpu_cluster_resolver = None
   if FLAGS.use_tpu and FLAGS.tpu_name:
