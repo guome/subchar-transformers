@@ -25,7 +25,12 @@ from __future__ import print_function
 
 import collections
 
-import tensorflow as tf
+# import tensorflow as tf
+
+import tensorflow.compat.v1 as tf
+from tensorflow.contrib import cluster_resolver as contrib_cluster_resolver
+from tensorflow.contrib import tpu as contrib_tpu
+
 # from loss import bi_tempered_logistic_loss
 import sys
 sys.path.append('./')
