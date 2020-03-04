@@ -47,7 +47,7 @@ export OUTPUT_DIR=$STORAGE_BUCKET/experiments/${MODEL_NAME}_${TASK_NAME}_${CURRE
 
 echo "Start running..."
 python3 clue_projects/baselines/models/albert/run_classifier.py \
-  --task_name=TASK_NAME \
+  --task_name=$TASK_NAME \
   --data_dir=$GLUE_DATA_DIR/$TASK_NAME \
   --output_dir=$OUTPUT_DIR \
   --init_checkpoint=$ALBERT_PRETRAINED_MODELS_DIR_LEN_128/model.ckpt \
