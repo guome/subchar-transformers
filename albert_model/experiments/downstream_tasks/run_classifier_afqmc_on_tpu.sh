@@ -53,7 +53,7 @@ python3 albert_model/run_classifier.py \
   --data_dir=... \
   --output_dir=$OUTPUT_DIR \
   --init_checkpoint=$PREV_TRAINED_MODEL_DIR/model.ckpt \
-  --albert_config_file=$ALBERT_CONFIG_DIR \
+  --bert_config_file=$ALBERT_CONFIG_DIR \
   --vocab_file=./resources/tokenizer/5000-clean.vocab \
   --spm_model_file=./resources/tokenizer/5000-clean.model \
   --do_train=true \
