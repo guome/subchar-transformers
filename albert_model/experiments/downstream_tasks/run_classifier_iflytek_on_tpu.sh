@@ -8,7 +8,7 @@ export STORAGE_BUCKET=gs://sbt0
 export TPU_NAME=subchar-trans-run-iflytek
 
 TASK_NAME="iflytek"
-MODEL_NAME="subchar_transformers_albert_base"
+MODEL_NAME="subchar_transformers_albert_base_128"
 
 CURRENT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
@@ -46,7 +46,7 @@ echo "Finish download dataset."
 # run task
 cd $CURRENT_DIR
 echo "Start running..."
-python3 CLUE/baselines/models/albert/run_classifier.py \
+python3 clue_projects/baselines/models/albert/run_classifier.py \
   --task_name=TASK_NAME \
   --data_dir=... \
   --output_dir=$OUTPUT_DIR \
