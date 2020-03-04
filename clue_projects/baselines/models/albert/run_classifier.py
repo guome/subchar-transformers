@@ -29,10 +29,10 @@ import tensorflow as tf
 # from loss import bi_tempered_logistic_loss
 import sys
 sys.path.append('./')
-from clue_toolkit.baselines.models.classifier_utils import *
-from clue_toolkit.baselines.models.albert import modeling
-from clue_toolkit.baselines.models.albert import optimization_finetuning as optimization
-from clue_toolkit.baselines.models.albert import tokenization
+from clue_projects.baselines.models.classifier_utils import *
+from clue_projects.baselines.models.albert import modeling
+from clue_projects.baselines.models.albert import optimization_finetuning as optimization
+from clue_projects.baselines.models.albert import tokenization
 
 flags = tf.flags
 
