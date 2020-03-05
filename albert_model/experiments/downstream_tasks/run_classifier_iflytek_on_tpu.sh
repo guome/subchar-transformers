@@ -44,6 +44,11 @@ export OUTPUT_DIR=$STORAGE_BUCKET/experiments/${MODEL_NAME}_${TASK_NAME}_${CURRE
 # echo "Finish download dataset."
 
 
+pip3 install tensorflow_hub
+pip3 install sentencepiece
+pip3 install jieba
+
+
 # run task
 
 echo "Start running..."
@@ -52,7 +57,7 @@ python3 albert_model/run_classifier_clue.py \
   --data_dir=$GLUE_DATA_DIR/$TASK_NAME \
   --output_dir=$OUTPUT_DIR \
   --init_checkpoint=$ALBERT_PRETRAINED_MODELS_DIR_LEN_128/model.ckpt-best \
-  --bert_config_file=$ALBERT_CONFIG_DIR \
+  --albert_config_file=$ALBERT_CONFIG_DIR \
   --vocab_file=./resources/tokenizer/5000-clean.vocab \
   --spm_model_file=./resources/tokenizer/5000-clean.model \
   --do_train=true \
