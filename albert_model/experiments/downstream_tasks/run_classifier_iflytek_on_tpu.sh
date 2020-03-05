@@ -68,9 +68,11 @@ python3 albert_model/run_classifier_clue.py \
   --optimizer=adamw \
   --train_batch_size=16 \
   --learning_rate=3e-5 \
+  --warmup_step=800 \
   --save_checkpoints_steps=100 \
   --train_step=10000 \
   --use_tpu=True \
   --tpu_name=${TPU_NAME} \
   --num_tpu_cores=1
+
 
