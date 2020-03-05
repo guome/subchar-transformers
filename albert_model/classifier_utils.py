@@ -653,6 +653,15 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
     tf.logging.info("segment_ids: %s" % " ".join([str(x) for x in segment_ids]))
     tf.logging.info("label: %s (id = %d)" % (example.label, label_id))
 
+    print("*** Example ***")
+    print("guid: %s" % (example.guid))
+    print("tokens: %s" % " ".join(
+      [tokenization.printable_text(x) for x in tokens]))
+    print("input_ids: %s" % " ".join([str(x) for x in input_ids]))
+    print("input_mask: %s" % " ".join([str(x) for x in input_mask]))
+    print("segment_ids: %s" % " ".join([str(x) for x in segment_ids]))
+    print("label: %s (id = %d)" % (example.label, label_id))
+
   feature = InputFeatures(
       input_ids=input_ids,
       input_mask=input_mask,
