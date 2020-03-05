@@ -29,6 +29,7 @@ import sys
 sys.path.append("./")
 
 from albert_model import classifier_utils
+from albert_model import clue_classifier_utils
 from albert_model import fine_tuning_utils
 from albert_model import modeling
 from albert_model import tokenization
@@ -162,6 +163,18 @@ def main(_):
       "qqp": classifier_utils.QqpProcessor,
       "qnli": classifier_utils.QnliProcessor,
       "wnli": classifier_utils.WnliProcessor,
+
+      "xnli": clue_classifier_utils.XnliProcessor,
+      "tnews": clue_classifier_utils.TnewsProcessor,
+      "afqmc": clue_classifier_utils.AFQMCProcessor,
+      "iflytek": clue_classifier_utils.iFLYTEKDataProcessor,
+      "copa": clue_classifier_utils.COPAProcessor,
+      "cmnli": clue_classifier_utils.CMNLIProcessor,
+      "wsc": clue_classifier_utils.WSCProcessor,
+      "csl": clue_classifier_utils.CslProcessor,
+      "copa": clue_classifier_utils.COPAProcessor,
+
+
   }
 
   tokenization.validate_case_matches_checkpoint(FLAGS.do_lower_case,
