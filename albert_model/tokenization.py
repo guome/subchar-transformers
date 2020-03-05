@@ -281,7 +281,7 @@ class FullTokenizer(object):
 
   def convert_tokens_to_ids(self, tokens):
     if self.sp_model:
-      tf.logging.info("using sentence piece tokenzier.")
+      # tf.logging.info("using sentence piece tokenzier.")
       return [self.sp_model.PieceToId(
           printable_text(token)) for token in tokens]
     else:
