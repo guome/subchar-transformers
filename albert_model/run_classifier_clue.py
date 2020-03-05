@@ -172,7 +172,6 @@ def main(_):
       "cmnli": clue_classifier_utils.CMNLIProcessor,
       "wsc": clue_classifier_utils.WSCProcessor,
       "csl": clue_classifier_utils.CslProcessor,
-      "copa": clue_classifier_utils.COPAProcessor,
 
 
   }
@@ -206,9 +205,14 @@ def main(_):
   if task_name not in processors:
     raise ValueError("Task not found: %s" % (task_name))
 
-  processor = processors[task_name](
-      use_spm=True if FLAGS.spm_model_file else False,
-      do_lower_case=FLAGS.do_lower_case)
+
+
+  if task_name in ["xnli", "tnews", "afqmc", "iflytek", "copa", "cmnli", "wsc", "csl"]:
+      processor = processors[task_name]()
+  else:
+      processor = processors[task_name](
+          use_spm=True if FLAGS.spm_model_file else False,
+          do_lower_case=FLAGS.do_lower_case)
 
   label_list = processor.get_labels()
 
