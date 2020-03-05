@@ -330,6 +330,9 @@ class iFLYTEKDataProcessor(DataProcessor):
       text_a = line['sentence'].strip()
       # 将汉字转换为部首
       text_a = char2comp_single_sent(text_a, dict_char2comp)
+
+      # TODO: temperary fix, solve the  do_lower_case  thoroughly
+      text_a = text_a.lower()
       # print(text_a)
 
       text_a = convert_to_unicode(text_a)
