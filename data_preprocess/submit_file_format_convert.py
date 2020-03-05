@@ -26,7 +26,7 @@ def submit_tsv2jsonl(tsv_dir, jsonl_dir):
 
 
 if __name__ == "__main__":
-    tsv_dir = "data_preprocess/tmp/submit_result.tsv"
+    tsv_dir = "data_preprocess/tmp/submit_results.tsv"
     jsonl_dir = "data_preprocess/tmp/iflytek_predict.json"
     submit_tsv2jsonl(tsv_dir, jsonl_dir)
 
