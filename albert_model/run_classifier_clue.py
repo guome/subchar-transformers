@@ -205,8 +205,6 @@ def main(_):
   if task_name not in processors:
     raise ValueError("Task not found: %s" % (task_name))
 
-
-
   if task_name in ["xnli", "tnews", "afqmc", "iflytek", "copa", "cmnli", "wsc", "csl"]:
       processor = processors[task_name]()
   else:
