@@ -14,6 +14,7 @@ def submit_tsv2jsonl(tsv_dir, jsonl_dir):
             continue
 
         idx, pred = line.strip().split("\t")
+        idx = idx.split("-")[-1]
 
         samp = {
             "id": int(idx), "label": str(pred)

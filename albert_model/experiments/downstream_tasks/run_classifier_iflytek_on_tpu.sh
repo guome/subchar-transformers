@@ -10,7 +10,7 @@ export STORAGE_BUCKET=gs://sbt0
 export TPU_NAME=subchar-trans-run-iflytek
 
 TASK_NAME="iflytek"
-MODEL_NAME="subchar_transformers_albert_base_128"
+MODEL_NAME="subchar_transformers_albert_base"
 
 # CURRENT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
@@ -58,7 +58,7 @@ python3 albert_model/run_classifier_clue.py \
   --task_name=$TASK_NAME \
   --data_dir=$GLUE_DATA_DIR/$TASK_NAME \
   --output_dir=$OUTPUT_DIR \
-  --init_checkpoint=$ALBERT_PRETRAINED_MODELS_DIR_LEN_128/model.ckpt-best \
+  --init_checkpoint=$ALBERT_PRETRAINED_MODELS_DIR_LEN_256/model.ckpt-125000 \
   --albert_config_file=$ALBERT_CONFIG_DIR \
   --vocab_file=./resources/tokenizer/5000-clean.vocab \
   --spm_model_file=./resources/tokenizer/5000-clean.model \
@@ -66,13 +66,13 @@ python3 albert_model/run_classifier_clue.py \
   --do_eval=true \
   --do_predict \
   --do_lower_case \
-  --max_seq_length=128 \
+  --max_seq_length=196 \
   --optimizer=adamw \
-  --train_batch_size=16 \
+  --train_batch_size=32 \
   --learning_rate=2e-5 \
-  --warmup_step=800 \
+  --warmup_step=400 \
   --save_checkpoints_steps=100 \
-  --train_step=7000 \
+  --train_step=5000 \
   --use_tpu=True \
   --tpu_name=${TPU_NAME} \
   --num_tpu_cores=1
