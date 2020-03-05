@@ -23,7 +23,7 @@ export ALBERT_PRETRAINED_MODELS_DIR_LEN_256=${STORAGE_BUCKET}/experiments/uncase
 export GLUE_DATA_DIR=./datasets/CLUE/
 
 export OUTPUT_DIR_128=$STORAGE_BUCKET/experiments/${MODEL_NAME}_128_${TASK_NAME}_${CURRENT_TIME}
-export OUTPUT_DIR_256=$STORAGE_BUCKET/experiments/${MODEL_NAME}_128_${TASK_NAME}_${CURRENT_TIME}
+export OUTPUT_DIR_256=$STORAGE_BUCKET/experiments/${MODEL_NAME}_256_${TASK_NAME}_${CURRENT_TIME}
 
 # download and unzip dataset
 # if [ ! -d $GLUE_DATA_DIR ]; then
