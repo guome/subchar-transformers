@@ -58,7 +58,7 @@ python3 albert_model/run_classifier_clue.py \
   --task_name=$TASK_NAME \
   --data_dir=$GLUE_DATA_DIR/$TASK_NAME \
   --output_dir=$OUTPUT_DIR \
-  --init_checkpoint=$ALBERT_PRETRAINED_MODELS_DIR_LEN_256/model.ckpt-125000 \
+  --init_checkpoint=$ALBERT_PRETRAINED_MODELS_DIR_LEN_128/model.ckpt-best \
   --albert_config_file=$ALBERT_CONFIG_DIR \
   --vocab_file=./resources/tokenizer/5000-clean.vocab \
   --spm_model_file=./resources/tokenizer/5000-clean.model \
@@ -66,11 +66,11 @@ python3 albert_model/run_classifier_clue.py \
   --do_eval=true \
   --do_predict \
   --do_lower_case \
-  --max_seq_length=196 \
+  --max_seq_length=128 \
   --optimizer=adamw \
-  --train_batch_size=32 \
+  --train_batch_size=16 \
   --learning_rate=2e-5 \
-  --warmup_step=400 \
+  --warmup_step=800 \
   --save_checkpoints_steps=100 \
   --train_step=5000 \
   --use_tpu=True \
