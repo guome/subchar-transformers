@@ -12,8 +12,8 @@ MODEL_NAME="subchar_transformers_albert_base_128"
 
 # CURRENT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
-# export ALBERT_CONFIG_DIR=./albert_model/experiments/albert_base_v2_config_vocab_5000.json
-export ALBERT_CONFIG_DIR=./albert_model/experiments/albert_base_config_vocab_5000.json
+export ALBERT_CONFIG_DIR=./albert_model/experiments/albert_base_v2_config_vocab_5000.json
+# export ALBERT_CONFIG_DIR=./albert_model/experiments/albert_base_config_vocab_5000.json
 
 export ALBERT_PRETRAINED_MODELS_DIR_LEN_128=${STORAGE_BUCKET}/experiments/uncased_vocab_5000_length_128_steps_125k_time_0220
 export ALBERT_PRETRAINED_MODELS_DIR_LEN_256=${STORAGE_BUCKET}/experiments/uncased_vocab_5000_length_256_steps_125k_time_0221
