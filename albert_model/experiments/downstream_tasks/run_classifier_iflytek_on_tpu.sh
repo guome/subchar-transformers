@@ -71,8 +71,8 @@ python3 albert_model/run_classifier_clue.py \
   --train_batch_size=32 \
   --learning_rate=2e-5 \
   --warmup_step=400 \
-  --save_checkpoints_steps=250 \
-  --train_step=10000 \
+  --save_checkpoints_steps=100 \
+  --train_step=7000 \
   --use_tpu=True \
   --tpu_name=${TPU_NAME} \
   --num_tpu_cores=1
