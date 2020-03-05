@@ -68,9 +68,9 @@ python3 albert_model/run_classifier_clue.py \
   --do_lower_case \
   --max_seq_length=128 \
   --optimizer=adamw \
-  --train_batch_size=32 \
+  --train_batch_size=16 \
   --learning_rate=2e-5 \
-  --warmup_step=400 \
+  --warmup_step=800 \
   --save_checkpoints_steps=100 \
   --train_step=7000 \
   --use_tpu=True \
