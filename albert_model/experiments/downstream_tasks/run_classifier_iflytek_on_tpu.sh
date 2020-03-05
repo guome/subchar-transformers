@@ -4,6 +4,8 @@
 # @Last Modified by:   michael
 # @Last Modified time: 2020-03-04 21:28:30
 
+CURRENT_TIME=$(date "+%Y%m%d-%H%M%S")
+
 export STORAGE_BUCKET=gs://sbt0
 export TPU_NAME=subchar-trans-run-iflytek
 
