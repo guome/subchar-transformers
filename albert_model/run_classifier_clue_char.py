@@ -29,7 +29,7 @@ import sys
 sys.path.append("./")
 
 from albert_model import classifier_utils
-from albert_model import clue_classifier_utils
+from albert_model import clue_classifier_utils_char
 from albert_model import fine_tuning_utils
 from albert_model import modeling
 from albert_model import tokenization
@@ -164,15 +164,14 @@ def main(_):
       "qnli": classifier_utils.QnliProcessor,
       "wnli": classifier_utils.WnliProcessor,
 
-      "xnli": clue_classifier_utils.XnliProcessor,
-      "tnews": clue_classifier_utils.TnewsProcessor,
-      "afqmc": clue_classifier_utils.AFQMCProcessor,
-      "iflytek": clue_classifier_utils.iFLYTEKDataProcessor,
-      "copa": clue_classifier_utils.COPAProcessor,
-      "cmnli": clue_classifier_utils.CMNLIProcessor,
-      "wsc": clue_classifier_utils.WSCProcessor,
-      "csl": clue_classifier_utils.CslProcessor,
-
+      "xnli": clue_classifier_utils_char.XnliProcessor,
+      "tnews": clue_classifier_utils_char.TnewsProcessor,
+      "afqmc": clue_classifier_utils_char.AFQMCProcessor,
+      "iflytek": clue_classifier_utils_char.iFLYTEKDataProcessor,
+      "copa": clue_classifier_utils_char.COPAProcessor,
+      "cmnli": clue_classifier_utils_char.CMNLIProcessor,
+      "wsc": clue_classifier_utils_char.WSCProcessor,
+      "csl": clue_classifier_utils_char.CslProcessor,
 
   }
 
