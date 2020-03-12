@@ -171,48 +171,6 @@ class XnliProcessor(DataProcessor):
     return ["contradiction", "entailment", "neutral"]
 
 
-# class TnewsProcessor(DataProcessor):
-#     """Processor for the MRPC data set (GLUE version)."""
-#
-#     def get_train_examples(self, data_dir):
-#         """See base class."""
-#         return self._create_examples(
-#             self._read_txt(os.path.join(data_dir, "toutiao_category_train.txt")), "train")
-#
-#     def get_dev_examples(self, data_dir):
-#         """See base class."""
-#         return self._create_examples(
-#             self._read_txt(os.path.join(data_dir, "toutiao_category_dev.txt")), "dev")
-#
-#     def get_test_examples(self, data_dir):
-#         """See base class."""
-#         return self._create_examples(
-#             self._read_txt(os.path.join(data_dir, "toutiao_category_test.txt")), "test")
-#
-#     def get_labels(self):
-#         """See base class."""
-#         labels = []
-#         for i in range(17):
-#             if i == 5 or i == 11:
-#                 continue
-#             labels.append(str(100 + i))
-#         return labels
-#
-#     def _create_examples(self, lines, set_type):
-#         """Creates examples for the training and dev sets."""
-#         examples = []
-#         for (i, line) in enumerate(lines):
-#             if i == 0:
-#                 continue
-#             guid = "%s-%s" % (set_type, i)
-#             text_a = convert_to_unicode(line[3])
-#             text_b = None
-#             label = convert_to_unicode(line[1])
-#             examples.append(
-#                 InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-#         return examples
-
-
 class TnewsProcessor(DataProcessor):
   """Processor for the MRPC data set (GLUE version)."""
 
