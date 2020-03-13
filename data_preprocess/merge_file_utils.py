@@ -33,17 +33,30 @@ if __name__ == "__main__":
     STORAGE_BUCKET = "gs://sbt0"
 
     list_files_ = []
-    num_files = 22
+    # num_files = 22
+    # for i in range(num_files):
+    #     file_ = os.path.join(
+    #         STORAGE_BUCKET,
+    #         "data/corpus/subchar_lower/zhwiki-latest-pages-articles_%d_subchar_lower.txt" % (i + 1)
+    #     )
+    #     list_files_.append(file_)
+    #
+    # to_dir_ = os.path.join(
+    #     STORAGE_BUCKET,
+    #     "data/corpus/subchar_lower/zhwiki-latest-pages-articles_subchar_lower.txt")
+    # txt_files2file(list_files_, to_dir_)
+
+    num_files = 110
     for i in range(num_files):
         file_ = os.path.join(
             STORAGE_BUCKET,
-            "data/corpus/subchar_lower/zhwiki-latest-pages-articles_%d_subchar_lower.txt" % (i + 1)
+            "data/corpus/char_lower/zhwiki-latest-pages-articles_%d_char_lower.txt" % (i + 1)
         )
         list_files_.append(file_)
 
     to_dir_ = os.path.join(
         STORAGE_BUCKET,
-        "data/corpus/subchar_lower/zhwiki-latest-pages-articles_subchar_lower.txt")
+        "data/corpus/char_lower/zhwiki-latest-pages-articles_char_lower.txt")
     txt_files2file(list_files_, to_dir_)
 
 
