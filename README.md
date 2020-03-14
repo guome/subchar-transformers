@@ -48,10 +48,11 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
 ## downstream tasks
 
   - on Iflytek:
-    | 模型 | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
-    | :----:| :----: | :----: | :----: |:----: |:----: | :----: | 
-    | char-albert-base	| 15000 | 128| 2e-5 | 16 | 800 | 55.50 |  54.15  |
-    | subchar-albert-base | 5000 | 128| 2e-5 | 16 | 800 | 56.13 |  55.19  |
+  
+| 模型 | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
+| :----:| :----: | :----: | :----: |:----: |:----: | :----: | 
+| char-albert-base	| 15000 | 128| 2e-5 | 16 | 800 | 55.50 |  54.15  |
+| subchar-albert-base | 5000 | 128| 2e-5 | 16 | 800 | 56.13 |  55.19  |
 
 
 ## contributors
