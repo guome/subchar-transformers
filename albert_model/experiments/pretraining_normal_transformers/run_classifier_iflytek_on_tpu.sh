@@ -22,7 +22,9 @@ export ALBERT_PRETRAINED_MODELS_DIR_LEN_128=${STORAGE_BUCKET}/experiments/char_u
 
 export GLUE_DATA_DIR=./datasets/CLUE/
 
-export OUTPUT_DIR_128=$STORAGE_BUCKET/experiments/${MODEL_NAME}_128_${TASK_NAME}_${CURRENT_TIME}
+BATCH_SIZE=16
+
+export OUTPUT_DIR_128=$STORAGE_BUCKET/experiments/${MODEL_NAME}_${BATCH_SIZE}_${TASK_NAME}_${CURRENT_TIME}
 
 
 pip3 install tensorflow_hub
@@ -47,10 +49,10 @@ python3 albert_model/run_classifier_clue_char.py \
   --do_lower_case \
   --max_seq_length=128 \
   --optimizer=adamw \
-  --train_batch_size=32 \
+  --train_batch_size=$BATCH_SIZE \
   --learning_rate=2e-5 \
   --warmup_step=800 \
-  --save_checkpoints_steps=300 \
+  --save_checkpoints_steps=600 \
   --train_step=10000 \
   --use_tpu=True \
   --tpu_name=${TPU_NAME} \
