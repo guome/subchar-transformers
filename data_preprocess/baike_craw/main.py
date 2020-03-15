@@ -57,8 +57,8 @@ def main():
             continue
 
         urls = re.findall(u'target=.*? href="(/item/.*?)"', web)  # 查找所有站内链接
-        print(urls)
-        print(len(urls))
+        # print(urls)
+        # print(len(urls))
         for u in urls:
             try:
                 u = unquote(str(u)).decode('utf-8')
@@ -67,7 +67,7 @@ def main():
 
             u = 'https://baike.baidu.com' + u
             u = clean_url(u)
-            print(u)
+            # print(u)
             if not items.find_one({'url': u}):  # 把还没有队列过的链接加入队列
                 tasks.update({'url': u}, {'$set': {'url': u}}, upsert=True)
 
@@ -76,7 +76,7 @@ def main():
             if "/" in u_0:
                 item_name = u_0.split("/")[0]
                 u1 = 'https://baike.baidu.com/item/%s?force=1' % item_name
-                print("u1: ", u1)
+                # print("u1: ", u1)
                 if not items.find_one({'url': u1}):  # 把还没有队列过的链接加入队列
                     tasks.update({'url': u1}, {'$set': {'url': u1}}, upsert=True)
 
@@ -92,10 +92,10 @@ def main():
             print('%s, 爬取《%s》，URL: %s, 已经爬取%s' % (datetime.datetime.now(), title, url, count))
 
 
-pool = Pool(4, main)  # 多线程爬取，4是线程数
-time.sleep(60)
+pool = Pool(16, main)  # 多线程爬取，4是线程数
+time.sleep(30)
 while tasks.count() > 0:
-    time.sleep(60)
+    time.sleep(30)
 
 pool.terminate()
 
