@@ -3,7 +3,7 @@
 ### multi-processing version
 
 pip3 install tensorflow_hub
-pip3 install sentencepiece\
+pip3 install sentencepiece
 
 
 export STORAGE_BUCKET=gs://sbt0
