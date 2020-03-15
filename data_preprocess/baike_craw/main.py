@@ -93,9 +93,9 @@ def main():
 
 
 pool = Pool(16, main)  # 多线程爬取，4是线程数
-time.sleep(30)
+time.sleep(60)
 while tasks.count() > 0:
-    time.sleep(30)
+    time.sleep(60)
 
 pool.terminate()
 
