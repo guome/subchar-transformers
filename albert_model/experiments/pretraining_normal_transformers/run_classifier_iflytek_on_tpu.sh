@@ -8,7 +8,7 @@ CURRENT_TIME=$(date "+%Y%m%d-%H%M%S")
 
 export STORAGE_BUCKET=gs://sbt0
 # export TPU_NAME=subchar-trans-run-iflytek
-export TPU_NAME=char-trans-128
+export TPU_NAME=subchar-trans-10000-128
 
 TASK_NAME="iflytek"
 MODEL_NAME="char_transformers_albert_base"
