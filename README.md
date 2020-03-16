@@ -11,18 +11,18 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
  - 汉字拆开
     - [拆字表](https://github.com/kfcd/chaizi/blob/master/chaizi-jt.txt)
     
-    - 将汉字拆为偏旁部首 
+    - split chinese characters into their components (将汉字拆为偏旁部首) 
         - e.g., "糖" 会变为 "米广肀口";
         - python data_preprocess/char2comp.py
-    - 现在每个汉字相当于英文中的一个词，其左右也用空格隔开
-       - e.g., "新型冠状病毒(2019-nCoV)" 拆为 " 立木斤  开刂土  冖二儿寸  丬犬  疒丙  母 (2019-nCoV)"
-    - 将non-chinese部分，用tokenizer拆分处理(e.g., jieba, blingfire), 且去除多余空格
+    - now every chinese characters are similar to a word in English, and are seperated by blank spaces (现在每个汉字相当于英文中的一个词，其左右也用空格隔开)
+       - e.g., "新型冠状病毒(2019-nCoV)" are splitted into " 立木斤  开刂土  冖二儿寸  丬犬  疒丙  母 (2019-nCoV)"
+    - non-chinese parts are tokenized by, for example, jieba, etc; (将non-chinese部分，用tokenizer拆分处理(e.g., jieba, blingfire), 且去除多余空格)
        - e.g. "立木斤 开刂土 冖二儿寸 丬犬 疒丙 母 ( 2019 - nCoV )"
 
-    - 训练byte-level BPE tokenizer, 作为预训练模型的tokenizer
+    - train a bpe tokenizer, which will be the tokenizer for pretrained models(训练byte-level BPE tokenizer, 作为预训练模型的tokenizer)
         - python data_preprocess/build_bpe.py
      
-    - 将语料做bpe tokenize
+    - tokenize the corpus
  
  - 多进程版
     - 将预料文件拆为多份
@@ -39,11 +39,21 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
 
 ## pretraining
 
-comming soon!
+  - Phase 1. Train on ZH-WIKI corpus (1.2G)
+    - preprocess of zh-wiki: (a) extract; (b) split sentence based punctuations; (c) split char into compositions;
+    - vocab size for subchar-transformers: 5000;
+    - pretrained model: albert-base
+    - comparison: for strict and fair comparison, we also train a normal model based on chinese chars, whose vocab size is 15000.
 
 ## downstream tasks
 
-comming soon!
+  - on Iflytek:
+  
+| model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
+| :----:| :----: | :----: | :----: |:----: |:----: | :----: | :----: | 
+| char-albert-base	| 15000 | 128| 2e-5 | 16 | 800 | 55.50 |  54.15  |
+| subchar-albert-base | 5000 | 128| 2e-5 | 16 | 800 | 56.13 |  55.19  |
+
 
 ## contributors
 
