@@ -37,7 +37,7 @@ python3 albert_model/run_classifier_clue_subchar.py \
   --task_name=$TASK_NAME \
   --data_dir=$GLUE_DATA_DIR/$TASK_NAME \
   --output_dir=$OUTPUT_DIR_128 \
-  --init_checkpoint=$ALBERT_PRETRAINED_MODELS_DIR_LEN_128/model.ckpt-12500 \
+  --init_checkpoint=$ALBERT_PRETRAINED_MODELS_DIR_LEN_128/model.ckpt-125000 \
   --albert_config_file=$ALBERT_CONFIG_DIR \
   --vocab_file=./resources/tokenizer/subchar-10000-clean.vocab \
   --spm_model_file=./resources/tokenizer/subchar-10000-clean.model \
@@ -50,7 +50,7 @@ python3 albert_model/run_classifier_clue_subchar.py \
   --train_batch_size=32 \
   --learning_rate=2e-5 \
   --warmup_step=800 \
-  --save_checkpoints_steps=300 \
+  --save_checkpoints_steps=150 \
   --train_step=10000 \
   --use_tpu=True \
   --tpu_name=${TPU_NAME} \
