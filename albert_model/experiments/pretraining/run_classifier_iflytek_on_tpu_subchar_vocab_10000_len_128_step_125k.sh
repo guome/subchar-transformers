@@ -19,6 +19,7 @@ export ALBERT_CONFIG_DIR=./albert_model/experiments/albert_base_v2_config_vocab_
 # export ALBERT_CONFIG_DIR=./albert_model/experiments/albert_base_config_vocab_5000.json
 
 export ALBERT_PRETRAINED_MODELS_DIR_LEN_128=${STORAGE_BUCKET}/experiments/uncased_vocab_10000_length_128_steps_125k_time_0315
+export ALBERT_PRETRAINED_MODELS_DIR_LEN_128=${STORAGE_BUCKET}/experiments/uncased_vocab_10000_length_256_steps_125k_time_0315
 
 export GLUE_DATA_DIR=./datasets/CLUE/
 
@@ -45,7 +46,8 @@ python3 albert_model/run_classifier_clue_subchar.py \
   --do_eval=true \
   --do_predict \
   --do_lower_case \
-  --max_seq_length=128 \
+  --max_sent_length=128 \
+  --max_seq_length=196 \
   --optimizer=adamw \
   --train_batch_size=32 \
   --learning_rate=2e-5 \

@@ -83,6 +83,12 @@ flags.DEFINE_bool(
     "models and False for cased models.")
 
 flags.DEFINE_integer(
+    "max_sent_length", 128,
+    "The maximum input sequence length before subchar tokenization. "
+    "Sequences longer than this will be truncated, and sequences shorter "
+    "than this will be padded.")
+
+flags.DEFINE_integer(
     "max_seq_length", 512,
     "The maximum total input sequence length after WordPiece tokenization. "
     "Sequences longer than this will be truncated, and sequences shorter "
@@ -206,7 +212,7 @@ def main(_):
     raise ValueError("Task not found: %s" % (task_name))
 
   if task_name in ["xnli", "tnews", "afqmc", "iflytek", "copa", "cmnli", "wsc", "csl"]:
-      processor = processors[task_name]()
+      processor = processors[task_name](FLAGS)
   else:
       processor = processors[task_name](
           use_spm=True if FLAGS.spm_model_file else False,

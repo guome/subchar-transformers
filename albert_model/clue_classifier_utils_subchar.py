@@ -89,6 +89,9 @@ class PaddingInputExample(object):
 class DataProcessor(object):
   """Base class for data converters for sequence classification data sets."""
 
+  def __int__(self, args):
+    self.args = args
+
   def get_train_examples(self, data_dir):
     """Gets a collection of `InputExample`s for the train set."""
     raise NotImplementedError()
@@ -328,6 +331,10 @@ class iFLYTEKDataProcessor(DataProcessor):
       guid = "%s-%s" % (set_type, i)
 
       text_a = line['sentence'].strip()
+
+      if hasattr(self.args, "max_sent_length"):
+        text_a = text_a[: self.args.max_sent_length]
+
       # 将汉字转换为部首
       text_a = char2comp_single_sent(text_a, dict_char2comp)
 
