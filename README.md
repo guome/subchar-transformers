@@ -58,4 +58,3 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
 ## contributors
 
  - [michael-wzhu](https://github.com/michael-wzhu)
- - [brightmart](https://github.com/brightmart)

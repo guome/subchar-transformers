@@ -9,6 +9,7 @@ from multiprocessing.dummy import Pool
 import pymongo  # 使用数据库负责存取
 from html.parser import HTMLParser
 import html
+from bs4 import BeautifulSoup
 
 unescape = html.unescape  # 用来实现对HTML字符的转移
 
@@ -32,6 +33,8 @@ print(tasks.count_documents(filter={}))
 
 DEFAULT_REQUEST_HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
 				   'Accept': 'text / html, application / xhtml + xml, application / xml;q = 0.9,image/webp, * / *;q = 0.8'}
+
+
 
 
 
@@ -80,16 +83,34 @@ def main():
                 if not items.find_one({'url': u1}):  # 把还没有队列过的链接加入队列
                     tasks.update({'url': u1}, {'$set': {'url': u1}}, upsert=True)
 
-        # text = re.findall('<div class="content">([\s\S]*?)<div class="content">', web)
-        # 爬取我们所需要的信息，需要正则表达式知识来根据网页源代码而写
+        if not re.search("这是一个.*?多义词.*?，请在下列.*?义项.*?上选择浏览", web):
 
-        if web:
-            # text = ' '.join([re.sub(u'[ \n\r\t\u3000]+', ' ', re.sub(u'<.*?>|\xa0', ' ', unescape(t))).strip() for t in
-            #                  text])    # 对爬取的结果做一些简单的处理
-            title = re.findall(u'<title>(.*?)_百度百科</title>', web)[0]
-            items.update({'url': url}, {'$set': {'url': url, 'title': title, 'web_source_code': web}}, upsert=True)
-            count += 1
-            print('%s, 爬取《%s》，URL: %s, 已经爬取%s' % (datetime.datetime.now(), title, url, count))
+            # 类名为xxx而且文本内容为hahaha的div
+            soup = BeautifulSoup(web, "html.parser")
+            text = []
+            for k in soup.find_all("div", class_="main-content"):
+                # print("k: ", k)
+                text.append(k)
+
+            for k in soup.find_all("div", class_="lemma-summary"):
+                # print("k: ", k)
+                text.append(k)
+
+            assert len(text) == 2
+            # print("text: ", text)
+
+            if text:
+                text = ' '.join(
+                    [
+                        re.sub(u'[ \n\r\t\u3000]+', ' ', re.sub(u'<.*?>|\xa0', ' ', unescape(t))).strip() for t in text
+                    ]
+                )    # 对爬取的结果做一些简单的处理
+                print(text)
+
+                title = re.findall(u'<title>(.*?)_百度百科</title>', web)[0]
+                items.update({'url': url}, {'$set': {'url': url, 'title': title, 'text': text}}, upsert=True)
+                count += 1
+                print('%s, 爬取《%s》，URL: %s, 已经爬取%s' % (datetime.datetime.now(), title, url, count))
 
 
 pool = Pool(16, main)  # 多线程爬取，4是线程数
@@ -100,3 +121,6 @@ while tasks.count() > 0:
 pool.terminate()
 
 # main()
+
+
+# TODO: 区分到底是词条具体信息页面，还是一词多义页面
