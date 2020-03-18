@@ -86,7 +86,7 @@ class PaddingInputExample(object):
   """
 
 
-class DataProcessor(object):
+class DataProcessor():
   """Base class for data converters for sequence classification data sets."""
 
   def __int__(self, args):
@@ -298,6 +298,9 @@ class TnewsProcessor(DataProcessor):
 
 class iFLYTEKDataProcessor(DataProcessor):
   """Processor for the iFLYTEKData data set (GLUE version)."""
+
+  def __init__(self, args):
+    self.args = args
 
   def get_train_examples(self, data_dir):
     """See base class."""
