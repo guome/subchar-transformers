@@ -48,7 +48,7 @@ python3 albert_model/run_classifier_clue_char.py \
   --do_predict \
   --do_lower_case \
   --max_sent_length=128 \
-  --max_seq_length=196 \
+  --max_seq_length=128 \
   --optimizer=adamw \
   --train_batch_size=32 \
   --learning_rate=2e-5 \
