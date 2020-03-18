@@ -8,10 +8,10 @@ CURRENT_TIME=$(date "+%Y%m%d-%H%M%S")
 
 export STORAGE_BUCKET=gs://sbt0
 # export TPU_NAME=subchar-trans-run-iflytek
-export TPU_NAME=subchar-trans-10000-128
+export TPU_NAME=subchar-trans-128
 
 TASK_NAME="iflytek"
-MODEL_NAME="subchar_trans_albert_base_vocab_10000_len_128_196_steps_125k"
+MODEL_NAME="subchar_trans_albert_base_vocab_10000_len_128_196"
 
 # CURRENT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
