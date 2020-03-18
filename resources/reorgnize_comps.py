@@ -18,6 +18,7 @@
 
 '''
 import copy
+import json
 import re
 
 from tqdm import tqdm
@@ -265,8 +266,6 @@ print("there are %d comps: ", len(comps_set_ids))
 print("there are %d comps: ", comps_set_ids)
 
 
+with open("resources/char2comp_ids.json" , "w", encoding="utf-8") as f:
+    json.dump(dict_char2comp_ids, f, ensure_ascii=False)
 
-
-# #
-# #
-# # print("there are %d chars have comps: ", len(dict_char2comp_ids))
