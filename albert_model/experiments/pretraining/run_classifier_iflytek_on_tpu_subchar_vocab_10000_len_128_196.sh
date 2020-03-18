@@ -38,7 +38,7 @@ python3 albert_model/run_classifier_clue_subchar.py \
   --task_name=$TASK_NAME \
   --data_dir=$GLUE_DATA_DIR/$TASK_NAME \
   --output_dir=$OUTPUT_DIR \
-  --init_checkpoint=ALBERT_PRETRAINED_MODELS_DIR_LEN_256/model.ckpt-125000 \
+  --init_checkpoint=$ALBERT_PRETRAINED_MODELS_DIR_LEN_256/model.ckpt-125000 \
   --albert_config_file=$ALBERT_CONFIG_DIR \
   --vocab_file=./resources/tokenizer/subchar-10000-clean.vocab \
   --spm_model_file=./resources/tokenizer/subchar-10000-clean.model \
