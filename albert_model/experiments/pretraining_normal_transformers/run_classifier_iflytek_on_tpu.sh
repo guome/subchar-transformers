@@ -47,13 +47,14 @@ python3 albert_model/run_classifier_clue_char.py \
   --do_eval=true \
   --do_predict \
   --do_lower_case \
-  --max_seq_length=128 \
+  --max_sent_length=128 \
+  --max_seq_length=196 \
   --optimizer=adamw \
-  --train_batch_size=$BATCH_SIZE \
+  --train_batch_size=32 \
   --learning_rate=2e-5 \
-  --warmup_step=800 \
-  --save_checkpoints_steps=600 \
-  --train_step=10000 \
+  --warmup_step=400 \
+  --save_checkpoints_steps=750 \
+  --train_step=6000 \
   --use_tpu=True \
   --tpu_name=${TPU_NAME} \
   --num_tpu_cores=1
