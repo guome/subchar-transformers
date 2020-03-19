@@ -67,11 +67,7 @@ def char2char_single_sent(sent, dict_char2comp):
     for char_ in sent:
 
         if re.search("[\u4e00-\u9fa5]", char_):
-            tmp_ = char2comp_single_char(char_, dict_char2comp)
-            if tmp_:
-                sent_new_ += " " + tmp_ + " "
-            else:
-                sent_new_ += " " + char_ + " "
+            sent_new_ += " " + char_ + " "
         else:
             sent_new_ += char_
 
@@ -94,6 +90,7 @@ def char2comp_file(txt_file, to_file, do_lower_case=1):
 
                 sents_ = split_sent(line, spliter="。？?")
                 for sent in sents_:
+                    sent = char2char_single_sent(sent)
                     if do_lower_case:
                         sent_new_ = sent.lower()
                     else:
