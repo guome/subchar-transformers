@@ -44,15 +44,31 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
     - vocab size for subchar-transformers: 5000;
     - pretrained model: albert-base
     - comparison: for strict and fair comparison, we also train a normal model based on chinese chars, whose vocab size is 15000.
-
+    
+    - sent_length: all the models are trained with length 512;
+    
 ## downstream tasks
 
   - on Iflytek:
   
 | model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
 | :----:| :----: | :----: | :----: |:----: |:----: | :----: | :----: | 
-| char-albert-base	| 15000 | 128| 2e-5 | 16 | 800 | 55.50 |  54.15  |
-| subchar-albert-base | 5000 | 128| 2e-5 | 16 | 800 | 56.13 |  55.19  |
+| Picto-Albert-Base	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+|  - w/o tokenization | 5000 | 128| 2e-5 | 32 | 400 | - |  -  |
+|  - w/o subchar | 5000 | 128| 2e-5 | 32 | 400 | - |  -   |
+|  - w/o both | 5000 | 128| 2e-5 | 32 | 400 | - |  -   |
+
+
+## effects of vocab size
+| model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
+| :----:| :----: | :----: | :----: |:----: |:----: | :----: | :----: | 
+| Picto-Albert-Base	| 2500 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-Base	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-Base	| 10000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-Base	| 15000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-Base	| 20000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-Base	| 30000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+
 
 
 ## contributors
