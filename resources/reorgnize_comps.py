@@ -27,21 +27,21 @@ from tqdm import tqdm
 # comp_set from gb13000.1
 ###################
 
-# comp_set_gb13000 = set()
-# with open("resources/comps_gb13000.1.txt", "r", encoding="utf-8") as f:
-#     for line in f:
-#         line = line.strip()
-#         if len(line) < 2:
-#             continue
-#
-#         comps_ = list(line)
-#         comps_ = [w.strip() for w in line if len(w.strip()) > 0]
-#
-#         for comp in comps_:
-#             comp_set_gb13000.add(comp)
-#
-# print("there are %d comps from GB13000.1: ", len(comp_set_gb13000))
-# print(comp_set_gb13000)
+comp_set_gb13000 = set()
+with open("resources/comps_gb13000.1.txt", "r", encoding="utf-8") as f:
+    for line in f:
+        line = line.strip()
+        if len(line) < 2:
+            continue
+
+        comps_ = list(line)
+        comps_ = [w.strip() for w in line if len(w.strip()) > 0]
+
+        for comp in comps_:
+            comp_set_gb13000.add(comp)
+
+print("there are %d comps from GB13000.1: ", len(comp_set_gb13000))
+print(comp_set_gb13000)
 
 
 ###################
@@ -65,6 +65,9 @@ print("there are %d comps from guoxuedashi: ", len(comp_set_guoxue))
 # print("there are %d comps overlapping with  comp_set_gb13000: ", len(comp_set_guoxue.intersection(comp_set_gb13000)))
 
 print(comp_set_guoxue)
+
+with open("resources/comps_guoxuedashi.json", "w", encoding="utf-8") as f:
+    json.dump(list(comp_set_guoxue), f, ensure_ascii=False)
 
 
 comp_set_httpcn = set()
@@ -202,14 +205,22 @@ with open("resources/IDS_dictionary.txt", "r", encoding="utf-8") as f:
         # print(char, comps)
 
         if char in dict_char2comp_httpcn:
+            # comps = dict_char2comp_httpcn[char]
+
             count_1 += 1
             if set(dict_char2comp_httpcn[char]) != set(comps) and len(dict_char2comp_httpcn[char]) == len(comps):
                 count_0 += 1
                 # print(count_0, char, comps, "***", dict_char2comp_httpcn[char])
+
+
 #
         comps_join = "".join(comps)
         if re.search("[a-zA-Z]", comps_join):
-            continue
+
+            if char in dict_char2comp_httpcn:
+                comps = dict_char2comp_httpcn[char]
+            else:
+                continue
 
         if any(w in comps_join for w in unknow_tokens):
             continue
@@ -228,22 +239,38 @@ with open("resources/IDS_dictionary.txt", "r", encoding="utf-8") as f:
 #
 #
 print("there are %d chars : ", len(chars_ids))
-print("there are %d chars have comps: ", len(dict_char2comp_ids))
+print("there are %d chars have comps (IDS): ", len(dict_char2comp_ids))
 print("there are %d chars in httpcn: ", count_1)
-print("there are %d comps: ", len(comp_set_ids))
+print("there are %d comps (IDS): ", len(comp_set_ids))
 print(sorted(list(ids_comp2freq.items()), key=lambda x: x[1], reverse=True))
 
 print("there are %d comps overlapping with  comp_set_guoxue: ", len(comp_set_ids.intersection(comp_set_guoxue)))
 #
-#
+
+comps_not_in_common = comp_set_guoxue.difference(comp_set_ids)
+with open("resources/comps_not_in_common.json", "w", encoding="utf-8") as f:
+    json.dump(list(comps_not_in_common), f, ensure_ascii=False)
+
 # for comp in comp_set_ids:
 #     print(comp)
 
 for comp in comp_set_ids:
-    if comp in dict_char2comp_ids:
-        print(comp, dict_char2comp_ids[comp])
+    dict_char2comp_ids[comp] = [comp]
+
+    # if comp in dict_char2comp_ids:
+    #     print(comp, dict_char2comp_ids[comp])
     if comp in chars_ids:
         dict_char2comp_ids[comp] = comp
+
+for comp in comps_not_in_common:
+    if comp not in chars_ids:
+        print("very rare: ", comp)
+
+for comp in comp_set_gb13000:
+    if comp not in chars_ids:
+        print("very rare: ", comp)
+
+
 
 # 进一步精细化 comps
 dict_char2comp_ids_copy = copy.deepcopy(dict_char2comp_ids)

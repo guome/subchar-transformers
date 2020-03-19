@@ -54,7 +54,7 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
 | model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
 | :----:| :----: | :----: | :----: |:----: |:----: | :----: | :----: | 
 | Picto-Albert-Base	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
-|  - w/o tokenization | 5000 | 128| 2e-5 | 32 | 400 | - |  -  |
+|  - w/o word tokenization | 5000 | 128| 2e-5 | 32 | 400 | - |  -  |
 |  - w/o subchar | 5000 | 128| 2e-5 | 32 | 400 | - |  -   |
 |  - w/o both | 5000 | 128| 2e-5 | 32 | 400 | - |  -   |
 
