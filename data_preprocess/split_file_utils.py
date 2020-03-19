@@ -27,7 +27,8 @@ def text_file2files(from_file, to_file_regex, num_docs_per_file=1e+3):
         for line in tqdm.tqdm(in_f):
 
             # line = line.strip()
-            if line == "</doc>\n":
+            # if line == "</doc>\n":
+            if line == "\n":
                 count_docs += 1
                 list_docs.append("\n")
             else:
