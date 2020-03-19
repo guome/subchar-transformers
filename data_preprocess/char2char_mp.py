@@ -59,6 +59,28 @@ def split_sent(text_, spliter="。？?"):
     return list_sents
 
 
+def char2char_single_sent(sent, dict_char2comp):
+    sent_new_ = ""
+
+    sent = list(jieba.cut(sent))
+    sent = " ".join(sent)
+    for char_ in sent:
+
+        if re.search("[\u4e00-\u9fa5]", char_):
+            tmp_ = char2comp_single_char(char_, dict_char2comp)
+            if tmp_:
+                sent_new_ += " " + tmp_ + " "
+            else:
+                sent_new_ += " " + char_ + " "
+        else:
+            sent_new_ += char_
+
+    # drop redundent blank
+    sent_new_ = drop_extra_blank(sent_new_)
+
+    return sent_new_
+
+
 def char2comp_file(txt_file, to_file, do_lower_case=1):
     # with open(to_file, "w", encoding="utf-8") as out_f:
     with tf.gfile.GFile(to_file, "w") as out_f:
