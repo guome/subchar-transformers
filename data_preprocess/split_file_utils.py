@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     from_file = os.path.join(
         STORAGE_BUCKET,
-        "data/corpus/zhwiki-latest-pages-articles.txt"
+        "data/corpus/char_lower/zhwiki-latest-pages-articles.txt"
     )
     tf.gfile.Copy(from_file, "./zhwiki-latest-pages-articles.txt")
 
