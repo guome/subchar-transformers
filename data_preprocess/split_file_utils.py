@@ -20,7 +20,7 @@ sys.path.append("./")
 
 def text_file2files(from_file, to_file_regex, num_docs_per_file=1e+3):
     # with open(from_file, 'r', encoding='utf-8') as in_f:
-    with open(from_file, 'r') as in_f:
+    with tf.gfile.GFile(from_file, 'r') as in_f:
         list_docs = []
         count_docs = 0
         file_idx = 0
@@ -60,7 +60,10 @@ def text_file2files(from_file, to_file_regex, num_docs_per_file=1e+3):
 if __name__ == "__main__":
     STORAGE_BUCKET = "gs://sbt0"
 
-    from_file = "corpus/zhwiki-latest-pages-articles.txt"
+    from_file = os.path.join(
+        STORAGE_BUCKET,
+        "corpus/zhwiki-latest-pages-articles.txt"
+    )
     to_file_regex = os.path.join(
         STORAGE_BUCKET,
         "data/corpus/splited/zhwiki-latest-pages-articles_%s.txt"
