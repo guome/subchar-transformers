@@ -59,7 +59,7 @@ def split_sent(text_, spliter="。？?"):
     return list_sents
 
 
-def char2char_single_sent(sent, dict_char2comp):
+def char2char_single_sent(sent):
     sent_new_ = ""
 
     sent = list(jieba.cut(sent))
