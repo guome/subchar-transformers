@@ -40,30 +40,31 @@ with open("resources/IDS_dictionary.txt", "r", encoding="utf-8") as f:
 
         ids_dict_char2comps[char] = comps_clean
 
-# 调整下 ids_dict_char2comps，使得每个comp不会再拆开
-ids_dict_char2comps_copy = copy.deepcopy(ids_dict_char2comps)
-for char, comps in ids_dict_char2comps_copy.items():
-    comps_adjust = []
-    for c in comps:
-        if c in ids_dict_char2comps:
-            comps_adjust += ids_dict_char2comps[c]
-        else:
-            comps_adjust += [c]
-
-    ids_dict_char2comps[char] = comps_adjust
-
-ids_dict_char2comps_copy = copy.deepcopy(ids_dict_char2comps)
-for char, comps in ids_dict_char2comps_copy.items():
-    comps_adjust = []
-    for c in comps:
-        if c in ids_dict_char2comps:
-            comps_adjust += ids_dict_char2comps[c]
-        else:
-            comps_adjust += [c]
-
-    ids_dict_char2comps[char] = comps_adjust
+# # 调整下 ids_dict_char2comps，使得每个comp不会再拆开
+# ids_dict_char2comps_copy = copy.deepcopy(ids_dict_char2comps)
+# for char, comps in ids_dict_char2comps_copy.items():
+#     comps_adjust = []
+#     for c in comps:
+#         if c in ids_dict_char2comps:
+#             comps_adjust += ids_dict_char2comps[c]
+#         else:
+#             comps_adjust += [c]
+#
+#     ids_dict_char2comps[char] = comps_adjust
+#
+# ids_dict_char2comps_copy = copy.deepcopy(ids_dict_char2comps)
+# for char, comps in ids_dict_char2comps_copy.items():
+#     comps_adjust = []
+#     for c in comps:
+#         if c in ids_dict_char2comps:
+#             comps_adjust += ids_dict_char2comps[c]
+#         else:
+#             comps_adjust += [c]
+#
+#     ids_dict_char2comps[char] = comps_adjust
 
 # 计数一下comp的频率
+ids_dict_char2comps_copy = copy.deepcopy(ids_dict_char2comps)
 dict_comp2freq = {}
 for char, comps in ids_dict_char2comps_copy.items():
     for c in comps:
