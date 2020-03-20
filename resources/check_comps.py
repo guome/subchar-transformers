@@ -111,8 +111,6 @@ with open("resources/ids_dict_char2comps_joined.json", "w", encoding="utf-8") as
 ############
 
 # 1) 每个comp不能再分
-
-
 char2comps_ids = json.load(
     open("resources/ids_dict_char2comps.json", "r", encoding="utf-8")
 )
@@ -133,6 +131,25 @@ for char, comps in char2comps_ids.items():
 
         # else:
         #     print(comp)
+
+# 2) 每个字的拆分不重复
+ids_char2comps_joined = json.load(
+    open("resources/ids_dict_char2comps_joined.json", "r", encoding="utf-8")
+)
+
+char_in_comps_set = set()
+for char, comps in ids_char2comps_joined.items():
+    if comps in char_in_comps_set:
+        print("*" * 50)
+        print(char, comps)
+        print("*" * 50)
+
+        for char_, comps_ in copy.deepcopy(ids_char2comps_joined).items():
+            if comps_ == comps and char_ != char:
+                print(char_, comps_)
+
+    # assert comps not in char_in_comps_set
+    char_in_comps_set.add(comps)
 
 
 # ####################
