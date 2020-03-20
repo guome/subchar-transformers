@@ -20,14 +20,15 @@ sys.path.append("./")
 
 def text_file2files(from_file, to_file_regex, num_docs_per_file=1e+3):
     # with open(from_file, 'r', encoding='utf-8') as in_f:
-    with open(from_file, 'r') as in_f:
+    with tf.gfile.GFile(from_file, 'r') as in_f:
         list_docs = []
         count_docs = 0
         file_idx = 0
         for line in tqdm.tqdm(in_f):
 
             # line = line.strip()
-            if line == "</doc>\n":
+            # if line == "</doc>\n":
+            if line == "\n":
                 count_docs += 1
                 list_docs.append("\n")
             else:
@@ -60,7 +61,14 @@ def text_file2files(from_file, to_file_regex, num_docs_per_file=1e+3):
 if __name__ == "__main__":
     STORAGE_BUCKET = "gs://sbt0"
 
-    from_file = "corpus/zhwiki-latest-pages-articles.txt"
+    from_file = os.path.join(
+        STORAGE_BUCKET,
+        "data/corpus/char_lower/zhwiki-latest-pages-articles_char_lower.txt"
+    )
+    # tf.gfile.Copy(from_file, "./zhwiki-latest-pages-articles.txt")
+    #
+    # from_file = "./zhwiki-latest-pages-articles.txt"
+
     to_file_regex = os.path.join(
         STORAGE_BUCKET,
         "data/corpus/splited/zhwiki-latest-pages-articles_%s.txt"
@@ -68,7 +76,7 @@ if __name__ == "__main__":
     text_file2files(
         from_file,
         to_file_regex,
-        num_docs_per_file=1e+4
+        num_docs_per_file=5e+3
     )
 
 
