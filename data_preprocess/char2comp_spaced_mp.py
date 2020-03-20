@@ -108,7 +108,7 @@ def char2comp_file(txt_file, to_file, dict_char2comp=None, do_lower_case=1):
 
                     if i < 10:
                         print(sent_new_)
-                        
+
                     out_f.write(sent_new_ + "\n")
 
 
