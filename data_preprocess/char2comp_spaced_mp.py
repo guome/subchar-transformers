@@ -106,7 +106,7 @@ def char2comp_file(txt_file, to_file, dict_char2comp=None, do_lower_case=1):
                     if do_lower_case:
                         sent_new_ = sent_new_.lower()
 
-                    print(sent_new_)
+                    # print(sent_new_)
                     out_f.write(sent_new_ + "\n")
 
 
