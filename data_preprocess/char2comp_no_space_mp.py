@@ -70,8 +70,6 @@ def split_sent(text_, spliter="。？?"):
 def char2comp_single_sent(sent, dict_char2comp, sep_token=""):
     sent_new_ = ""
 
-    sent = list(jieba.cut(sent))
-    sent = " ".join(sent)
     for i, char_ in enumerate(sent):
 
         if re.search("[\u4e00-\u9fa5]", char_):
