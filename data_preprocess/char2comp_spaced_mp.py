@@ -106,6 +106,7 @@ def char2comp_file(txt_file, to_file, dict_char2comp=None, do_lower_case=1):
                     if do_lower_case:
                         sent_new_ = sent_new_.lower()
 
+                    print(sent_new_)
                     out_f.write(sent_new_ + "\n")
 
 
@@ -126,4 +127,11 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+
+    dict_char2comps_dir = "resources/ids_dict_char2comps_joined.json"
+    dict_char2comps = json.load(
+        # open(dict_char2comp_dir, "r", encoding="utf-8")
+        open(dict_char2comps_dir, "r")
+    )
+    char2comp_single_sent("武汉加油！", dict_char2comps)
