@@ -79,7 +79,7 @@ def char2comp_single_sent(sent, dict_char2comp, sep_token=""):
             if tmp_:
                 sent_new_ += tmp_ + sep_token
             else:
-                sent_new_ += char_
+                sent_new_ += char_ + sep_token
         else:
             sent_new_ += char_
 
