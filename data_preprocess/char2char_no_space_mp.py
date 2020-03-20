@@ -90,7 +90,7 @@ def char2comp_file(txt_file, to_file, do_lower_case=1):
 
                 sents_ = split_sent(line, spliter="。？?")
                 for sent in sents_:
-                    sent = char2char_single_sent(sent)
+                    # sent = char2char_single_sent(sent)
                     if do_lower_case:
                         sent_new_ = sent.lower()
                     else:
