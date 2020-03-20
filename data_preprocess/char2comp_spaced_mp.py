@@ -127,11 +127,11 @@ def main():
 
 
 if __name__ == '__main__':
-    # main()
+    main()
 
-    dict_char2comps_dir = "resources/ids_dict_char2comps_joined.json"
-    dict_char2comps = json.load(
-        # open(dict_char2comp_dir, "r", encoding="utf-8")
-        open(dict_char2comps_dir, "r")
-    )
-    char2comp_single_sent("武汉加油！", dict_char2comps)
+    # dict_char2comps_dir = "resources/ids_dict_char2comps_joined.json"
+    # dict_char2comps = json.load(
+    #     # open(dict_char2comp_dir, "r", encoding="utf-8")
+    #     open(dict_char2comps_dir, "r")
+    # )
+    # char2comp_single_sent("武汉加油！", dict_char2comps)
