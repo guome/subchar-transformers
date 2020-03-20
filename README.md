@@ -62,21 +62,21 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
 ## effects of vocab size
 | model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
 | :----:| :----: | :----: | :----: |:----: |:----: | :----: | :----: | 
-| Picto-Albert-Base	| 2500 | 128| 2e-5 | 32 | 400 |  - |  -  |
-| Picto-Albert-Base	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
-| Picto-Albert-Base	| 10000 | 128| 2e-5 | 32 | 400 |  - |  -  |
-| Picto-Albert-Base	| 15000 | 128| 2e-5 | 32 | 400 |  - |  -  |
-| Picto-Albert-Base	| 20000 | 128| 2e-5 | 32 | 400 |  - |  -  |
-| Picto-Albert-Base	| 30000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-mini	| 2500 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-mini	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-mini	| 10000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-mini	| 15000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-mini	| 20000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-mini	| 30000 | 128| 2e-5 | 32 | 400 |  - |  -  |
 
 
 ## effects of model size
 | model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
 | :----:| :----: | :----: | :----: |:----: |:----: | :----: | :----: | 
-| Picto-Albert-tiny	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
-| Picto-Albert-mini	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
-| Picto-Albert-Base	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
-| Picto-Albert-Large	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-tiny (3-layer)	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-mini (6-layer)	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-Base (12-layer)	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
+| Picto-Albert-Large (24-layer)	| 5000 | 128| 2e-5 | 32 | 400 |  - |  -  |
 
 
 ## contributors
