@@ -55,7 +55,7 @@ if __name__ == "__main__":
                 print(e)
                 try:
                     spm.SentencePieceTrainer.train(
-                        '--input=zhwiki-latest-pages-articles_%s.txt --model_prefix=./resources/tokenizer/%s-%d-clean --vocab_size=%d --pad_id=0 --unk_id=1 --eos_id=-1 --bos_id=-1 --control_symbols=[CLS],[SEP],[MASK] --user_defined_symbols=(,),”,-,.,–,£,€ --shuffle_input_sentence=true --input_sentence_size=12000000 --model_type=bpe --character_coverage=0.98' % (
+                        '--input=zhwiki-latest-pages-articles_%s.txt --model_prefix=./resources/tokenizer/%s-%d-clean --vocab_size=%d --pad_id=0 --unk_id=1 --eos_id=-1 --bos_id=-1 --control_symbols=[CLS],[SEP],[MASK] --user_defined_symbols=(,),”,-,.,–,£,€ --shuffle_input_sentence=true --input_sentence_size=12000000 --model_type=bpe --character_coverage=0.98 --num_threads=32' % (
                             prefix, prefix, vocab_size, vocab_size)
                     )
 
