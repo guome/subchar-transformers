@@ -2,7 +2,7 @@
 import os
 
 import sentencepiece as spm
-# import tensorflow.compat.v1 as tf
+import tensorflow.compat.v1 as tf
 
 import sys
 sys.path.append("./")
@@ -22,8 +22,8 @@ if __name__ == "__main__":
     #
     #     spm.SentencePieceTrainer.train('--input=zhwiki-latest-pages-articles_char_lower.txt --model_prefix=./resources/tokenizer/char-%d-clean --vocab_size=%d --pad_id=0 --unk_id=1 --eos_id=-1 --bos_id=-1 --control_symbols=[CLS],[SEP],[MASK] --user_defined_symbols=(,),”,-,.,–,£,€ --shuffle_input_sentence=true --input_sentence_size=30000000 --character_coverage=0.99995 --model_type=bpe --num_threads=32' % (vocab_size, vocab_size))
 
-    # vocab_sizes = [5000, 10000, 15000, 20000, 25000, 30000]
-    vocab_sizes = [5000, 10000]
+    vocab_sizes = [5000, 10000, 15000, 20000, 25000, 30000]
+    # vocab_sizes = [2500, 5000, 10000]
     prefixes = [
         "char_spaced_lower",
         "char_no_space_lower",
@@ -44,23 +44,23 @@ if __name__ == "__main__":
 
     for vocab_size in vocab_sizes:
         for prefix in prefixes:
+            # print("spm_train --input=zhwiki-latest-pages-articles_%s_small.txt --model_prefix=./resources/tokenizer/%s-%d-clean --vocab_size=%d --pad_id=0 --unk_id=1 --eos_id=-1 --bos_id=-1 --control_symbols=[CLS],[SEP],[MASK] --user_defined_symbols='(,),”,-,.,–,£,€' --shuffle_input_sentence=true --input_sentence_size=3000000 --model_type=bpe --num_threads=32" % (prefix, prefix, vocab_size, vocab_size)
+            # )
 
-            print("spm_train --input=zhwiki-latest-pages-articles_%s.txt --model_prefix=./resources/tokenizer/%s-%d-clean --vocab_size=%d --pad_id=0 --unk_id=1 --eos_id=-1 --bos_id=-1 --control_symbols=[CLS],[SEP],[MASK] --user_defined_symbols='(,),”,-,.,–,£,€' --shuffle_input_sentence=true --input_sentence_size=12000000 --model_type=bpe --num_threads=32" % (prefix, prefix, vocab_size, vocab_size))
+            try:
+                spm.SentencePieceTrainer.train(
+                    '--input=zhwiki-latest-pages-articles_%s_small.txt --model_prefix=./resources/tokenizer/%s-%d-clean --vocab_size=%d --pad_id=0 --unk_id=1 --eos_id=-1 --bos_id=-1 --control_symbols=[CLS],[SEP],[MASK] --user_defined_symbols=(,),”,-,.,–,£,€ --shuffle_input_sentence=true --input_sentence_size=3000000 --model_type=bpe --num_threads=32' % (
+                    prefix, prefix, vocab_size, vocab_size)
+                )
 
-            # try:
-            #     spm.SentencePieceTrainer.train(
-            #         '--input=zhwiki-latest-pages-articles_%s.txt --model_prefix=./resources/tokenizer/%s-%d-clean --vocab_size=%d --pad_id=0 --unk_id=1 --eos_id=-1 --bos_id=-1 --control_symbols=[CLS],[SEP],[MASK] --user_defined_symbols=(,),”,-,.,–,£,€ --shuffle_input_sentence=true --input_sentence_size=12000000 --model_type=bpe --num_threads=32' % (
-            #         prefix, prefix, vocab_size, vocab_size)
-            #     )
-            #
-            # except Exception as e:
-            #     print(e)
-            #     try:
-            #         spm.SentencePieceTrainer.train(
-            #             '--input=zhwiki-latest-pages-articles_%s.txt --model_prefix=./resources/tokenizer/%s-%d-clean --vocab_size=%d --pad_id=0 --unk_id=1 --eos_id=-1 --bos_id=-1 --control_symbols=[CLS],[SEP],[MASK] --user_defined_symbols=(,),”,-,.,–,£,€ --shuffle_input_sentence=true --input_sentence_size=12000000 --model_type=bpe --character_coverage=0.98 --num_threads=32' % (
-            #                 prefix, prefix, vocab_size, vocab_size)
-            #         )
-            #
-            #     except Exception as e:
-            #         print(e)
+            except Exception as e:
+                print(e)
+                try:
+                    spm.SentencePieceTrainer.train(
+                        '--input=zhwiki-latest-pages-articles_%s_small.txt --model_prefix=./resources/tokenizer/%s-%d-clean --vocab_size=%d --pad_id=0 --unk_id=1 --eos_id=-1 --bos_id=-1 --control_symbols=[CLS],[SEP],[MASK] --user_defined_symbols=(,),”,-,.,–,£,€ --shuffle_input_sentence=true --input_sentence_size=3000000 --model_type=bpe --character_coverage=0.98 --num_threads=32' % (
+                            prefix, prefix, vocab_size, vocab_size)
+                    )
+
+                except Exception as e:
+                    print(e)
 
