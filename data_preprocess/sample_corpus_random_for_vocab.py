@@ -6,6 +6,9 @@ import sentencepiece as spm
 import tensorflow.compat.v1 as tf
 
 import sys
+
+import tqdm
+
 sys.path.append("./")
 
 indices = list(range(int(1e+7)))
@@ -18,7 +21,7 @@ def sample_corpus(corpus_orig_dir, to_dir):
 
     with open(corpus_orig_dir, "r", encoding="utf-8") as f_in:
         with open(to_dir, "w", encoding="utf-8") as f_out:
-            for i, line in enumerate(f_in):
+            for i, line in tqdm.tqdm(enumerate(f_in)):
                 if i not in indices:
                     continue
 
