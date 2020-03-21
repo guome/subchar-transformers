@@ -9,7 +9,7 @@ import sys
 sys.path.append("./")
 
 indices = list(range(int(1e+7)))
-indices = random.shuffle(indices)
+random.shuffle(indices)
 indices = indices[: 2e+6]
 indices = {w: 1 for w in indices}
 
