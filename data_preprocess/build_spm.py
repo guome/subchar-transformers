@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
     for vocab_size in vocab_sizes:
         for prefix in prefixes:
-            # print("spm_train --input=zhwiki-latest-pages-articles_%s.txt --model_prefix=./resources/tokenizer/%s-%d-clean --vocab_size=%d --pad_id=0 --unk_id=1 --eos_id=-1 --bos_id=-1 --control_symbols=[CLS],[SEP],[MASK] --user_defined_symbols='(,),”,-,.,–,£,€' --shuffle_input_sentence=true --input_sentence_size=3000000 --model_type=bpe --num_threads=32" % (prefix, prefix, vocab_size, vocab_size)
+            # print("spm_train --input=zhwiki-latest-pages-articles_%s_small.txt --model_prefix=./resources/tokenizer/%s-%d-clean --vocab_size=%d --pad_id=0 --unk_id=1 --eos_id=-1 --bos_id=-1 --control_symbols=[CLS],[SEP],[MASK] --user_defined_symbols='(,),”,-,.,–,£,€' --shuffle_input_sentence=true --input_sentence_size=3000000 --model_type=bpe --num_threads=32" % (prefix, prefix, vocab_size, vocab_size)
             # )
 
             try:
