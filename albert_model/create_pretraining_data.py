@@ -427,7 +427,7 @@ def _is_start_piece_sp(piece):
   # For foreign characters, we always treat them as a whole piece.
   english_chars = set(list("abcdefghijklmnopqrstuvwxyz"))
 
-  if not isinstance(piece, int):
+  if isinstance(piece, int):
     print(piece)
 
   if (six.ensure_str(piece).startswith("▁") or
