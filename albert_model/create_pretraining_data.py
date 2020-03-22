@@ -435,6 +435,9 @@ def _is_start_piece_sp(piece):
 
     try:
       piece = piece.decode("utf-8")
+      print("*" * 50)
+      print(piece)
+      print("*" * 50)
     except Exception as e:
       print(e)
       return False
