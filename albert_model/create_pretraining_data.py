@@ -238,6 +238,8 @@ def create_training_instances(input_files, output_file,
     with tf.gfile.GFile(input_file, FLAGS.input_file_mode) as reader:
       while True:
         line = reader.readline()
+        print(line)
+
         if not FLAGS.spm_model_file:
           line = tokenization.convert_to_unicode(line)
         if not line:
