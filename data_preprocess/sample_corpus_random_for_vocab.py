@@ -30,9 +30,9 @@ def sample_corpus(corpus_orig_dir, to_dir):
 
 if __name__ == "__main__":
     prefixes = [
-        "char_spaced_lower",
-        "char_no_space_lower",
-        "subchar_spaced_lower",
+        # "char_spaced_lower",
+        # "char_no_space_lower",
+        # "subchar_spaced_lower",
         "subchar_no_space_lower",
     ]
 
