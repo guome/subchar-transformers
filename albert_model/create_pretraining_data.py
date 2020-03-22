@@ -428,7 +428,9 @@ def _is_start_piece_sp(piece):
   english_chars = set(list("abcdefghijklmnopqrstuvwxyz"))
 
   if isinstance(piece, int):
+    print("*" * 50)
     print(piece)
+    print("*" * 50)
 
   if (six.ensure_str(piece).startswith("▁") or
       six.ensure_str(piece).startswith("<") or piece in special_pieces or
