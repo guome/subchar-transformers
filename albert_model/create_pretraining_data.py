@@ -257,7 +257,7 @@ def create_training_instances(input_files, output_file,
         if not line:
           all_documents.append([])
         tokens = tokenizer.tokenize(line)
-        print(tokens)
+        # print(tokens)
         if tokens:
           all_documents[-1].append(tokens)
 
@@ -426,6 +426,8 @@ def _is_start_piece_sp(piece):
   # Note(mingdachen):
   # For foreign characters, we always treat them as a whole piece.
   english_chars = set(list("abcdefghijklmnopqrstuvwxyz"))
+  print(piece)
+
   if (six.ensure_str(piece).startswith("▁") or
       six.ensure_str(piece).startswith("<") or piece in special_pieces or
       not all([i.lower() in english_chars.union(special_pieces)
