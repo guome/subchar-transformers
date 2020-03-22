@@ -238,7 +238,7 @@ def create_training_instances(input_files, output_file,
     with tf.gfile.GFile(input_file, FLAGS.input_file_mode) as reader:
       while True:
         line = reader.readline()
-        print(line)
+        # print(line)
 
         if not FLAGS.spm_model_file:
           line = tokenization.convert_to_unicode(line)
@@ -257,6 +257,7 @@ def create_training_instances(input_files, output_file,
         if not line:
           all_documents.append([])
         tokens = tokenizer.tokenize(line)
+        print(tokens)
         if tokens:
           all_documents[-1].append(tokens)
 
