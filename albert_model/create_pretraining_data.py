@@ -427,6 +427,7 @@ def _is_start_piece_sp(piece):
   # For foreign characters, we always treat them as a whole piece.
   english_chars = set(list("abcdefghijklmnopqrstuvwxyz"))
 
+  print(piece)
   if isinstance(piece, int):
     print("*" * 50)
     print(piece)
