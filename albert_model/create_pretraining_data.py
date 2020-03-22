@@ -428,11 +428,11 @@ def _is_start_piece_sp(piece):
   english_chars = set(list("abcdefghijklmnopqrstuvwxyz"))
 
   # print(piece)
-  if not isinstance(piece, str):
-    print("*" * 50)
-    print(piece)
-    print("*" * 50)
-      return False
+  # if not isinstance(piece, str):
+  #   print("*" * 50)
+  #   print(piece)
+  #   print("*" * 50)
+  #   return False
 
   if (six.ensure_str(piece).startswith("▁") or
       six.ensure_str(piece).startswith("<") or piece in special_pieces or
