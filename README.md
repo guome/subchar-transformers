@@ -1,5 +1,31 @@
 # subchar-transformers
-This repository holds the source codes for training and fine-tuning a Chinese pre-trained transformers with sub-character features.
+This repository holds the source codes for training and fine-tuning a Chinese pre-trained transformers with redesigned vocabulary.
+
+# Intro
+Right now, from our observation, the main problem of applying BERT style transformer models is its model size, which is significantly affected by the vocab size. Even with distillation, one still face a model with 6m or more params, a half of which is the embedding. Thus, we wonder whether we can further reduce the vocab size of transformers, so that we can have a small model with 10-20 thousand params?
+
+Now, if we deal with a word-to-sent Chinese trans model, we have the folowing ways to build the vocab: 
+
+1) directly learn a BPE tokenizer on Chinese sents, and let the BPE to capture some common chinese words, like "拥有" (possess)
+
+2) seperate each Chinese characters, which is what the original Bert does, then learn a BPE model to deal with other language inputs;
+
+3) tokenize the chinese sents with a Chinese segmentation tool, like jieba, and then learn a BPE tokenizer;
+
+One can introduce the subchar components of Chinese, which partially reflect the meaning of some chinese characters: 
+  
+4) on the raw sents, map each chinese char into its components, e.g. "糖" (sweet) becomes "⿰米⿸广⿱肀口", where symbols "⿰", "⿸", "⿱" indicates how the components are placed in a grid for Chinese characters, and "米", "广", "肀", "口" are components, and "" is the seperater (which should not appear in the corpus you use). A chinese sent "新型冠状病毒(2019-nCoV)" becomes "⿰⿱立朩斤⿱⿰⿱一廾刂土⿱冖⿺⿱一兀寸⿰丬犬⿸疒⿱一内⿱龶母(2019-nCoV)". Then learn BPE;
+
+5) seperate each Chinese characters， and then map each chinese char into its components, then learn BPE;
+
+6) tokenize the chinese sents with jieba, and then map each chinese char into its components, then learn BPE;
+
+
+If we think about some of the work done with character embedding in English, one can think of a hierachical transformer architecture, where we first encode the components of Chinese into a component level transformer, get the CLS hidden state, which is hidden state for the character / word, which then will be feed into a higher-level transformer net. 
+
+Note this idea also works for English language. This idea can significantly reduce transformer vocab to hundreds.  
+
+
 
 # Acknowledgement
 Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFRC](https://www.tensorflow.org/tfrc))
