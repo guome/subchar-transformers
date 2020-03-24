@@ -2,7 +2,7 @@
 This repository holds the source codes for training and fine-tuning a Chinese pre-trained transformers with redesigned vocabulary.
 
 # Intro
-Right now, from our observation, the main problem of applying BERT style transformer models is its model size, which is significantly affected by the vocab size. Even with distillation, one still face a model with 6m or more params, a half of which is the embedding. Thus, we wonder whether we can further reduce the vocab size of transformers, so that we can have a small model with 10-20 thousand params?
+Right now, from our observation, the main problem of applying BERT style transformer models is its model size, which is significantly affected by the vocab size. Even with distillation, one still face a model with 6m or more params, a half of which is the embedding. Thus, we wonder whether we can further reduce the vocab size of transformers, so that we can have a small model with 100-200 thousand params?
 
 Now, if we deal with a word-to-sent Chinese trans model, we have the folowing ways to build the vocab: 
 
@@ -23,7 +23,7 @@ One can introduce the subchar components of Chinese, which partially reflect the
 
 If we think about some of the work done with character embedding in English, one can think of a hierachical transformer architecture, where we first encode the components of Chinese into a component level transformer, get the CLS hidden state, which is hidden state for the character / word, which then will be feed into a higher-level transformer net. 
 
-Note this idea also works for English language. This idea can significantly reduce transformer vocab to hundreds.  
+Note this idea also works for English language. This idea can significantly reduce transformer vocab to hundreds, which makes a 100-200 thousand parameter model possible. 
 
 
 
