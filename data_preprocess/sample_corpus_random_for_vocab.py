@@ -13,7 +13,7 @@ sys.path.append("./")
 
 indices = list(range(int(1e+7)))
 random.shuffle(indices)
-indices = indices[: int(4e+6)]
+indices = indices[: int(2e+6)]
 indices = {w: 1 for w in indices}
 
 
