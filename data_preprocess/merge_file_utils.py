@@ -37,13 +37,13 @@ if __name__ == "__main__":
     for i in range(num_files):
         file_ = os.path.join(
             STORAGE_BUCKET,
-            "data/corpus/subchar_no_space_lower/zhwiki-latest-pages-articles_%d_subchar_no_space_lower.txt" % (i + 1)
+            "data/corpus/char_segmented_lower/zhwiki-latest-pages-articles_%d_char_segmented_lower.txt" % (i + 1)
         )
         list_files_.append(file_)
 
     to_dir_ = os.path.join(
         STORAGE_BUCKET,
-        "data/corpus/subchar_no_space_lower/zhwiki-latest-pages-articles_subchar_no_space_lower.txt")
+        "data/corpus/char_segmented_lower/zhwiki-latest-pages-articles_char_segmented_lower.txt")
     txt_files2file(list_files_, to_dir_)
 
     # list_files_ = []
