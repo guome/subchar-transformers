@@ -23,8 +23,6 @@ export ALBERT_PRETRAINED_MODELS_DIR_LEN_256=${STORAGE_BUCKET}/data/picto_trans/p
 
 export GLUE_DATA_DIR=./datasets/CLUE/
 
-BATCH_SIZE=32
-
 
 pip3 install tensorflow_hub
 pip3 install sentencepiece
@@ -53,7 +51,7 @@ for run_idx in `seq 1 $((RUN_TIMES))`; do
       --max_sent_length=128 \
       --max_seq_length=256 \
       --optimizer=adamw \
-      --train_batch_size=${BATCH_SIZE} \
+      --train_batch_size=32 \
       --learning_rate=2e-5 \
       --warmup_step=400 \
       --save_checkpoints_steps=400 \
