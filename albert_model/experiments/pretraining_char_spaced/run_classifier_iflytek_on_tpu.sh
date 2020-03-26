@@ -39,7 +39,7 @@ echo "Start running..."
 RUN_TIMES=5
 for run_idx in `seq 1 $((RUN_TIMES))`; do
 
-    OUTPUT_DIR = ${STORAGE_BUCKET}/data/picto_trans/finetune/${TASK_NAME}/${PREFIX}_${MODEL_NAME}_${run_idx}/
+    OUTPUT_DIR=${STORAGE_BUCKET}/data/picto_trans/finetune/${TASK_NAME}/${PREFIX}_${MODEL_NAME}_${run_idx}/
     python3 albert_model/run_classifier_clue_char_spaced.py \
       --task_name=$TASK_NAME \
       --data_dir=$GLUE_DATA_DIR/$TASK_NAME \
