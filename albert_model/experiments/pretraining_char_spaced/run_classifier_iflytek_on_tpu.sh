@@ -19,7 +19,7 @@ MODEL_NAME="${PREFIX}_albert_tiny"
 
 export ALBERT_CONFIG_DIR=./albert_model/experiments/albert_tiny_v2_config_vocab_5000.json
 
-export ALBERT_PRETRAINED_MODELS_DIR_LEN_256=${STORAGE_BUCKET}/data/picto_trans/pretraining/${PREFIX}_vocab_5000_length_256_steps_125k_time_0326/
+export ALBERT_PRETRAINED_MODELS_DIR_LEN_256=${STORAGE_BUCKET}/data/picto_trans/pretraining/${PREFIX}_vocab_5000_length_256_steps_125k_time_0326
 
 export GLUE_DATA_DIR=./datasets/CLUE/
 
