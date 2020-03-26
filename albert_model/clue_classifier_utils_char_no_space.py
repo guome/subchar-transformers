@@ -204,7 +204,16 @@ class TnewsProcessor(DataProcessor):
     examples = []
     for (i, line) in enumerate(lines):
       guid = "%s-%s" % (set_type, i)
-      text_a = convert_to_unicode(line['sentence'])
+
+      text_a = line['sentence'].strip()
+
+      if hasattr(self.args, "max_sent_length"):
+        text_a = text_a[: self.args.max_sent_length]
+
+      if self.args.do_lower_case:
+        text_a = text_a.lower()
+
+      text_a = convert_to_unicode(text_a)
       text_b = None
       label = convert_to_unicode(line['label']) if set_type != 'test' else "100"
       examples.append(
