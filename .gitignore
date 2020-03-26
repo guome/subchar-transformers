@@ -9,6 +9,7 @@ __pycache__/
 .idea/*
 *.txt
 *.tfrecord
+*.out
 
 # Distribution / packaging
 .Python
