@@ -3,7 +3,7 @@
 ### run pretrain
 
 export STORAGE_BUCKET=gs://sbt0
-export TPU_NAME=picto-trans-3
+export TPU_NAME=grpc://10.135.101.2:8470
 
 PREFIX=char_no_space_lower
 
