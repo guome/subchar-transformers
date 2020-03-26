@@ -58,6 +58,6 @@ for run_idx in `seq 1 $((RUN_TIMES))`; do
       --train_step=10000 \
       --use_tpu=True \
       --tpu_name=${TPU_NAME} \
-      --num_tpu_cores=1
+      --num_tpu_cores=1 \
 
 done
