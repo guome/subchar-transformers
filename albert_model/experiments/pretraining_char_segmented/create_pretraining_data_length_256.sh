@@ -6,7 +6,7 @@ export STORAGE_BUCKET=gs://sbt0
 
 PREFIX=char_segmented_lower
 
-NUM_PROC=218
+NUM_PROC=100
 # NUM_PROC=100
 
 for i in `seq 1 $((NUM_PROC))`; do
