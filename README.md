@@ -75,16 +75,16 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
     
 ## downstream tasks
 
-  - on Iflytek:
+  - on Iflytek (albert-tiny):
   
 | model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
 | :----:| :----: | :----: | :----: |:----: |:----: | :----: | :----: | 
 | char_no_space_lower	| 5000 | 128| 2e-5 | 32 | 400 |  0.439015, 0.43362832, 0.4432474, 0.4474798, 0.4328588 |  -  |
 |  char_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.4263178, 0.42285493, 0.44093883, 0.43516737, 0.43401307  |  -  |
-|  char_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 | , , , ,   |  -  |
+|  char_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  , , , ,   |  -  |
 |  subchar_no_space_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.36898807, 0.37860715, 0.3678338, 0.37629858 |  -   |
 |  subchar_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.35244325, 0.35244325, 0.37437475, 0.3759138, 0.3643709 |  -   |
-|  subchar_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  , , , , |  -   |
+|  subchar_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  , , , , |   -   |
 
 
 ## effects of vocab size

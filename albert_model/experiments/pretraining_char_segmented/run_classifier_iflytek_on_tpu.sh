@@ -11,7 +11,7 @@ export STORAGE_BUCKET=gs://sbt0
 export TPU_NAME=subchar-trans-128
 
 TASK_NAME="iflytek"
-MODEL_NAME="char_trans_albert_base"
+MODEL_NAME="subchar_trans_albert_base"
 
 # CURRENT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
