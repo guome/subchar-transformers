@@ -274,7 +274,7 @@ class iFLYTEKDataProcessor(DataProcessor):
       if i < 5:
         print(text_a)
         print(text_b)
-      
+
     return examples
 
 
