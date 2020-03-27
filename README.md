@@ -86,6 +86,17 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
 |  subchar_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.35244325, 0.35244325, 0.37437475, 0.3759138, 0.3643709 |  -   |
 |  subchar_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  , , , , |   -   |
 
+- on ChnSentiCorp (albert-tiny):
+  
+| model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
+| :----:| :----: | :----: | :----: |:----: |:----: | :----: | :----: | 
+| char_no_space_lower	| 5000 | 128| 2e-5 | 32 | 400 |  ,,,,, |  -  |
+|  char_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | ,,,,,  |  -  |
+|  char_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  , , , ,   |  -  |
+|  subchar_no_space_lower | 5000 | 128| 2e-5 | 32 | 400 | ,,, |  -   |
+|  subchar_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | ,,,,, |  -   |
+|  subchar_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  , , , , |   -   |
+
 
 ## effects of vocab size
 | model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
