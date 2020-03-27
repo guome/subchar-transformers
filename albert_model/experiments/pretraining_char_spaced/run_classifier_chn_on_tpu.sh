@@ -8,6 +8,7 @@ CURRENT_TIME=$(date "+%Y%m%d-%H%M%S")
 
 export STORAGE_BUCKET=gs://sbt0
 
+# picto-trans-1
 export TPU_NAME=grpc://10.86.36.74:8470
 
 TASK_NAME="chn"
