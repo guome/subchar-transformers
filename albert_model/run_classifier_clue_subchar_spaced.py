@@ -218,7 +218,8 @@ def main(_):
   else:
       processor = processors[task_name](
           use_spm=True if FLAGS.spm_model_file else False,
-          do_lower_case=FLAGS.do_lower_case)
+          do_lower_case=FLAGS.do_lower_case
+      )
 
   label_list = processor.get_labels()
 
