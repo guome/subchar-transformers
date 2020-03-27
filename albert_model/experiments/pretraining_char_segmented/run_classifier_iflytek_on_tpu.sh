@@ -31,7 +31,7 @@ pip3 install jieba
 # run task
 
 echo "Start running..."
-RUN_TIMES=1
+RUN_TIMES=5
 for run_idx in `seq 1 $((RUN_TIMES))`; do
 
     OUTPUT_DIR=${STORAGE_BUCKET}/data/picto_trans/finetune/${TASK_NAME}/${PREFIX}_${MODEL_NAME}_${run_idx}/
@@ -55,7 +55,7 @@ for run_idx in `seq 1 $((RUN_TIMES))`; do
       --learning_rate=2e-5 \
       --warmup_step=400 \
       --save_checkpoints_steps=400 \
-      --train_step=800 \
+      --train_step=10000 \
       --use_tpu=True \
       --tpu_name=${TPU_NAME} \
       --num_tpu_cores=1 \
