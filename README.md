@@ -90,11 +90,12 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
   
 | model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
 | :----:| :----: | :----: | :----: |:----: |:----: | :----: | :----: | 
-| char_no_space_lower	| 5000 | 128| 2e-5 | 32 | 400 |  ,,,,, |  -  |
+| char_no_space_lower	| 5000 | 128| 2e-5 | 32 | 400 |  0.8975, 0.8833333, 0.8825, 0.895, 0.88 |  0.89, 0.86916,0.87916,0.875, 0.8733  |
 |  char_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | ,,,,,  |  -  |
 |  char_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  , , , ,   |  -  |
-|  subchar_no_space_lower | 5000 | 128| 2e-5 | 32 | 400 | ,,, |  -   |
-|  subchar_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | ,,,,, |  -   |
+
+|  subchar_no_space_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.8641667, 0.86583334, 0.85333335, 0.87083334, 0.87 |  0.87416, 0.83833, 0.8475, 0.865, 0.855   |
+|  subchar_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.8725, 0.8675, 0.8691667, 0.8616667, 0.86583334 |  0.84166, 0.8525, 0.85, 0.84666, 0.83166   |
 |  subchar_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  , , , , |   -   |
 
 
