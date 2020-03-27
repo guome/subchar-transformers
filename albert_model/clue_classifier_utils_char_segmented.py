@@ -354,7 +354,6 @@ class ChnSentiCorpDataProcessor(DataProcessor):
     return examples
 
 
-
 class AFQMCProcessor(DataProcessor):
   """Processor for the internal data set. sentence pair classification"""
 
