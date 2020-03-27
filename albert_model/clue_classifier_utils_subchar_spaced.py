@@ -292,6 +292,69 @@ class iFLYTEKDataProcessor(DataProcessor):
     return examples
 
 
+class ChnSentiCorpDataProcessor(DataProcessor):
+  """Processor for the iFLYTEKData data set (GLUE version)."""
+
+  def __init__(self, args):
+    super(ChnSentiCorpDataProcessor, self).__init__(args)
+    self.args = args
+
+  def get_train_examples(self, data_dir):
+    """See base class."""
+    return self._create_examples(
+        self._read_json(os.path.join(data_dir, "train.json")), "train")
+
+  def get_dev_examples(self, data_dir):
+    """See base class."""
+    return self._create_examples(
+        self._read_json(os.path.join(data_dir, "dev.json")), "dev")
+
+  def get_test_examples(self, data_dir):
+    """See base class."""
+    return self._create_examples(
+        self._read_json(os.path.join(data_dir, "test.json")), "test")
+
+  def get_labels(self):
+    """See base class."""
+    labels = []
+    for i in range(2):
+      labels.append(str(i))
+    return labels
+
+  def _create_examples(self, lines, set_type):
+    """Creates examples for the training and dev sets."""
+
+    dict_char2comp = json.load(open("./resources/ids_dict_char2comps_joined.json", "r"))
+
+    examples = []
+    for (i, line) in enumerate(lines):
+      guid = "%s-%s" % (set_type, i)
+
+      text_a = line['sentence'].strip()
+
+      if hasattr(self.args, "max_sent_length"):
+        text_a = text_a[: self.args.max_sent_length]
+
+      # 将汉字用空格拆开
+      text_a = char2comp_single_sent(text_a, dict_char2comp)
+
+      if self.args.do_lower_case:
+        text_a = text_a.lower()
+
+      text_a = convert_to_unicode(text_a)
+      text_b = None
+      label = convert_to_unicode(line['label']) if set_type != 'test' else "0"
+      examples.append(
+          InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+
+      if i < 5:
+        print(text_a)
+        print(text_b)
+
+    return examples
+
+
+
 class AFQMCProcessor(DataProcessor):
   """Processor for the internal data set. sentence pair classification"""
 

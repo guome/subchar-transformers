@@ -32,7 +32,8 @@ import six
 
 import tensorflow as tf
 
-from data_preprocess.char2comp_no_space_mp import char2comp_single_sent
+from data_preprocess.char2char_segmented_mp import char2char_single_sent
+from data_preprocess.char2comp import char2comp_single_sent
 
 
 def convert_to_unicode(text):
@@ -203,9 +204,6 @@ class TnewsProcessor(DataProcessor):
 
   def _create_examples(self, lines, set_type):
     """Creates examples for the training and dev sets."""
-
-    dict_char2comp = json.load(open("./resources/ids_dict_char2comps_joined.json", "r"))
-
     examples = []
     for (i, line) in enumerate(lines):
       guid = "%s-%s" % (set_type, i)
@@ -216,12 +214,13 @@ class TnewsProcessor(DataProcessor):
         text_a = text_a[: self.args.max_sent_length]
 
       # 将汉字用空格拆开
-      text_a = char2comp_single_sent(text_a, dict_char2comp, sep_token="")
+      text_a = char2char_single_sent(text_a)
 
       if self.args.do_lower_case:
         text_a = text_a.lower()
 
       text_a = convert_to_unicode(text_a)
+
       text_b = None
       label = convert_to_unicode(line['label']) if set_type != 'test' else "100"
       examples.append(
@@ -261,7 +260,7 @@ class iFLYTEKDataProcessor(DataProcessor):
   def _create_examples(self, lines, set_type):
     """Creates examples for the training and dev sets."""
 
-    dict_char2comp = json.load(open("./resources/ids_dict_char2comps_joined.json", "r"))
+    # dict_char2comp = json.load(open("./resources/char2comp.json", "r"))
 
     examples = []
     for (i, line) in enumerate(lines):
@@ -273,10 +272,11 @@ class iFLYTEKDataProcessor(DataProcessor):
         text_a = text_a[: self.args.max_sent_length]
 
       # 将汉字用空格拆开
-      text_a = char2comp_single_sent(text_a, dict_char2comp, sep_token="")
+      text_a = char2char_single_sent(text_a)
 
       if self.args.do_lower_case:
         text_a = text_a.lower()
+      # print(text_a)
 
       text_a = convert_to_unicode(text_a)
       text_b = None
@@ -323,7 +323,7 @@ class ChnSentiCorpDataProcessor(DataProcessor):
   def _create_examples(self, lines, set_type):
     """Creates examples for the training and dev sets."""
 
-    dict_char2comp = json.load(open("./resources/ids_dict_char2comps_joined.json", "r"))
+    # dict_char2comp = json.load(open("./resources/char2comp.json", "r"))
 
     examples = []
     for (i, line) in enumerate(lines):
@@ -335,10 +335,11 @@ class ChnSentiCorpDataProcessor(DataProcessor):
         text_a = text_a[: self.args.max_sent_length]
 
       # 将汉字用空格拆开
-      text_a = char2comp_single_sent(text_a, dict_char2comp, sep_token="")
+      text_a = char2char_single_sent(text_a)
 
       if self.args.do_lower_case:
         text_a = text_a.lower()
+      # print(text_a)
 
       text_a = convert_to_unicode(text_a)
       text_b = None
@@ -351,7 +352,6 @@ class ChnSentiCorpDataProcessor(DataProcessor):
         print(text_b)
 
     return examples
-
 
 
 

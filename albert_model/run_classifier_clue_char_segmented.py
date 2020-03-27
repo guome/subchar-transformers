@@ -29,7 +29,7 @@ import sys
 sys.path.append("./")
 
 from albert_model import classifier_utils
-from albert_model import clue_classifier_utils_subchar_no_space
+from albert_model import clue_classifier_utils_char_segmented
 from albert_model import fine_tuning_utils
 from albert_model import modeling
 from albert_model import tokenization
@@ -170,15 +170,15 @@ def main(_):
       "qnli": classifier_utils.QnliProcessor,
       "wnli": classifier_utils.WnliProcessor,
 
-      "xnli": clue_classifier_utils_subchar_no_space.XnliProcessor,
-      "tnews": clue_classifier_utils_subchar_no_space.TnewsProcessor,
-      "afqmc": clue_classifier_utils_subchar_no_space.AFQMCProcessor,
-      "iflytek": clue_classifier_utils_subchar_no_space.iFLYTEKDataProcessor,
-      "copa": clue_classifier_utils_subchar_no_space.COPAProcessor,
-      "cmnli": clue_classifier_utils_subchar_no_space.CMNLIProcessor,
-      "wsc": clue_classifier_utils_subchar_no_space.WSCProcessor,
-      "csl": clue_classifier_utils_subchar_no_space.CslProcessor,
-      "chn": clue_classifier_utils_subchar_no_space.ChnSentiCorpDataProcessor
+      "xnli": clue_classifier_utils_char_segmented.XnliProcessor,
+      "tnews": clue_classifier_utils_char_segmented.TnewsProcessor,
+      "afqmc": clue_classifier_utils_char_segmented.AFQMCProcessor,
+      "iflytek": clue_classifier_utils_char_segmented.iFLYTEKDataProcessor,
+      "copa": clue_classifier_utils_char_segmented.COPAProcessor,
+      "cmnli": clue_classifier_utils_char_segmented.CMNLIProcessor,
+      "wsc": clue_classifier_utils_char_segmented.WSCProcessor,
+      "csl": clue_classifier_utils_char_segmented.CslProcessor,
+      "chn": clue_classifier_utils_char_segmented.ChnSentiCorpDataProcessor
 
   }
 

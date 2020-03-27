@@ -178,6 +178,7 @@ def main(_):
       "cmnli": clue_classifier_utils_char_no_space.CMNLIProcessor,
       "wsc": clue_classifier_utils_char_no_space.WSCProcessor,
       "csl": clue_classifier_utils_char_no_space.CslProcessor,
+      "chn": clue_classifier_utils_char_no_space.ChnSentiCorpDataProcessor,
 
   }
 
