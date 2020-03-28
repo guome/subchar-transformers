@@ -30,7 +30,7 @@ pip3 install jieba
 # run task
 
 echo "Start running..."
-RUN_TIMES=5
+RUN_TIMES=10
 for run_idx in `seq 1 $((RUN_TIMES))`; do
 
     OUTPUT_DIR=${STORAGE_BUCKET}/data/picto_trans/finetune/${TASK_NAME}/${PREFIX}_${MODEL_NAME}_${run_idx}/
