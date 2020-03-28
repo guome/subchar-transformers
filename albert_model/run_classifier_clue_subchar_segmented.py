@@ -441,7 +441,8 @@ def main(_):
                 global_step, best_perf_global_step, best_perf))
     writer.close()
 
-    output_eval_file_local = "_".join(output_eval_file.split("/")[4: ])
+    output_eval_file_local = os.path.join("./tmp/", "_".join(output_eval_file.split("/")[4: ]))
+    tf.gfile.Copy(output_eval_file, output_eval_file_local, overwrite=True)
 
     for ext in ["meta", "data-00000-of-00001", "index"]:
       src_ckpt = "model.ckpt-{}.{}".format(best_perf_global_step, ext)
@@ -514,6 +515,12 @@ def main(_):
         sub_writer.write(example.guid + "\t" + actual_label + "\n")
         num_written_lines += 1
     assert num_written_lines == num_actual_predict_examples
+
+    output_predict_file_local = os.path.join("./tmp/", "_".join(output_predict_file.split("/")[4:]))
+    tf.gfile.Copy(output_predict_file, output_predict_file_local, overwrite=True)
+
+    output_submit_file_local = os.path.join("./tmp/", "_".join(output_submit_file.split("/")[4:]))
+    tf.gfile.Copy(output_submit_file, output_submit_file_local, overwrite=True)
 
 
 if __name__ == "__main__":
