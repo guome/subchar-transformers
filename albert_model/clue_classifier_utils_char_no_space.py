@@ -369,14 +369,14 @@ class LCQMCProcessor(DataProcessor):
     for (i, line) in enumerate(lines):
       guid = "%s-%s" % (set_type, i)
 
-      text_a = line['sentence'].strip()
+      text_a = line['sentence1'].strip()
       if hasattr(self.args, "max_sent_length"):
         text_a = text_a[: self.args.max_sent_length]
       if self.args.do_lower_case:
         text_a = text_a.lower()
       text_a = convert_to_unicode(text_a)
 
-      text_b = line['sentence'].strip()
+      text_b = line['sentence2'].strip()
       if hasattr(self.args, "max_sent_length"):
         text_b = text_b[: self.args.max_sent_length]
       if self.args.do_lower_case:
