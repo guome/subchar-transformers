@@ -10,7 +10,7 @@ export STORAGE_BUCKET=gs://sbt0
 # export TPU_NAME=subchar-trans-run-iflytek
 export TPU_NAME=picto-trans-2
 
-TASK_NAME="iflytek"
+TASK_NAME="chn"
 PREFIX=subchar_segmented_lower
 
 MODEL_NAME="${PREFIX}_albert_tiny"
