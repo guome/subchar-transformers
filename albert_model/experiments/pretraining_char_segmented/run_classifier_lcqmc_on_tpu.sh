@@ -53,8 +53,8 @@ for run_idx in `seq 1 $((RUN_TIMES))`; do
       --max_seq_length=256 \
       --optimizer=adamw \
       --train_batch_size=128 \
-      --learning_rate=5e-5 \
-      --warmup_step=1700 \
+      --learning_rate=8e-5 \
+      --warmup_step=1500 \
       --save_checkpoints_steps=1000 \
       --train_step=50000 \
       --use_tpu=True \
