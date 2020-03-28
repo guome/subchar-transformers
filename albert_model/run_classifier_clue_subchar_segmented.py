@@ -178,7 +178,8 @@ def main(_):
       "cmnli": clue_classifier_utils_subchar_segmented.CMNLIProcessor,
       "wsc": clue_classifier_utils_subchar_segmented.WSCProcessor,
       "csl": clue_classifier_utils_subchar_segmented.CslProcessor,
-      "chn": clue_classifier_utils_subchar_segmented.ChnSentiCorpDataProcessor
+      "chn": clue_classifier_utils_subchar_segmented.ChnSentiCorpDataProcessor,
+      "lcqmc": clue_classifier_utils_subchar_segmented.LCQMCProcessor
 
   }
 
@@ -213,7 +214,8 @@ def main(_):
 
   if task_name in ["xnli", "tnews", "afqmc",
                    "iflytek", "copa", "cmnli",
-                   "wsc", "csl", "chn"]:
+                   "wsc", "csl", "chn",
+                   "lcqmc"]:
       processor = processors[task_name](FLAGS)
   else:
       processor = processors[task_name](
