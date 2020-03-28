@@ -8,7 +8,7 @@ CURRENT_TIME=$(date "+%Y%m%d-%H%M%S")
 
 export STORAGE_BUCKET=gs://sbt0
 # export TPU_NAME=subchar-trans-run-iflytek
-export TPU_NAME=picto-trans-1
+export TPU_NAME=grpc://10.162.95.66:8470
 
 TASK_NAME="lcqmc"
 PREFIX=char_no_space_lower
@@ -31,7 +31,7 @@ pip3 install jieba
 # run task
 
 echo "Start running..."
-RUN_TIMES=5
+RUN_TIMES=10
 for run_idx in `seq 1 $((RUN_TIMES))`; do
 
     OUTPUT_DIR=${STORAGE_BUCKET}/data/picto_trans/finetune/${TASK_NAME}/${PREFIX}_${MODEL_NAME}_${run_idx}/

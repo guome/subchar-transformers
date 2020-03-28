@@ -7,7 +7,7 @@
 CURRENT_TIME=$(date "+%Y%m%d-%H%M%S")
 
 export STORAGE_BUCKET=gs://sbt0
-export TPU_NAME=grpc://10.190.213.66:8470
+export TPU_NAME=grpc://10.154.114.146:8470
 
 TASK_NAME="lcqmc"
 PREFIX=subchar_segmented_lower
