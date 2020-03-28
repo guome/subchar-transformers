@@ -441,6 +441,8 @@ def main(_):
                 global_step, best_perf_global_step, best_perf))
     writer.close()
 
+    output_eval_file_local = "_".join(output_eval_file.split("/")[4: ])
+
     for ext in ["meta", "data-00000-of-00001", "index"]:
       src_ckpt = "model.ckpt-{}.{}".format(best_perf_global_step, ext)
       tgt_ckpt = "model.ckpt-best.{}".format(ext)
