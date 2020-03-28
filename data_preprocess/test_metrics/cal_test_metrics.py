@@ -55,9 +55,11 @@ def cal_metrics(pred_tsv_dir, truth_json_dir):
 
 
 if __name__ == "__main__":
-    pred_tsv_dir = "data_preprocess/test_metrics/chn/data_picto_trans_finetune_chn_subchar_spaced_lower_subchar_spaced_lower_albert_tiny_5_submit_results.tsv"
+    pred_tsv_dir = "data_preprocess/tmp/chn/data_picto_trans_finetune_chn_char_spaced_lower_char_spaced_lower_albert_tiny_5_submit_results.tsv"
     truth_json_dir = "datasets/CLUE/chn/test.json"
     accuracy, results = cal_metrics(pred_tsv_dir, truth_json_dir)
     print(accuracy)
+
+    # 0.875,0.879166, 0.85833, 0.845, 0.85166
 
 

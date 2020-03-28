@@ -10,6 +10,8 @@ __pycache__/
 *.txt
 *.tfrecord
 *.out
+*.tsv
+*.json
 
 # Distribution / packaging
 .Python
