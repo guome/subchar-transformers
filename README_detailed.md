@@ -16,7 +16,7 @@ One can introduce the subchar components of Chinese, which partially reflect the
   
 4) on the raw sents, map each chinese char into its components, e.g. "糖" (sweet) becomes "⿰米⿸广⿱肀口", where symbols "⿰", "⿸", "⿱" indicates how the components are placed in a grid for Chinese characters, and "米", "广", "肀", "口" are components, and "" is the seperater (which should not appear in the corpus you use). A chinese sent "新型冠状病毒(2019-nCoV)" becomes "⿰⿱立朩斤⿱⿰⿱一廾刂土⿱冖⿺⿱一兀寸⿰丬犬⿸疒⿱一内⿱龶母(2019-nCoV)". Then learn BPE;
 
-5) seperate each Chinese characters, and then map each chinese char into its components, then learn BPE;
+5) seperate each Chinese characters， and then map each chinese char into its components, then learn BPE;
 
 6) tokenize the chinese sents with jieba, and then map each chinese char into its components, then learn BPE;
 
@@ -40,9 +40,9 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
     - split chinese characters into their components (将汉字拆为偏旁部首) 
         - e.g., "糖" 会变为 "米广肀口";
         - python data_preprocess/char2comp.py
-    - now every chinese characters are similar to a word in English, and are seperated by blank spaces (现在每个汉字相当于英文中的一个词,其左右也用空格隔开)
+    - now every chinese characters are similar to a word in English, and are seperated by blank spaces (现在每个汉字相当于英文中的一个词，其左右也用空格隔开)
        - e.g., "新型冠状病毒(2019-nCoV)" are splitted into " 立木斤  开刂土  冖二儿寸  丬犬  疒丙  母 (2019-nCoV)"
-    - non-chinese parts are tokenized by, for example, jieba, etc; (将non-chinese部分,用tokenizer拆分处理(e.g., jieba, blingfire), 且去除多余空格)
+    - non-chinese parts are tokenized by, for example, jieba, etc; (将non-chinese部分，用tokenizer拆分处理(e.g., jieba, blingfire), 且去除多余空格)
        - e.g. "立木斤 开刂土 冖二儿寸 丬犬 疒丙 母 ( 2019 - nCoV )"
 
     - train a bpe tokenizer, which will be the tokenizer for pretrained models(训练byte-level BPE tokenizer, 作为预训练模型的tokenizer)
@@ -57,7 +57,7 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
     
     - 对每个拆分的文件同时进行拆字预处理
         - data_preprocess/char2comp_mp.sh
-        - 设置脚本中的进程数,文件路径等
+        - 设置脚本中的进程数，文件路径等
         - e.g., 处理完后的文件路径格式为 ./datasets/examples/corpus_zh_example_0_${i}_subchar.txt
     
     - 将预处理完的文件合并(optional)
@@ -75,29 +75,41 @@ Research supported with Cloud TPUs from Google's TensorFlow Research Cloud ([TFR
     
 ## downstream tasks
 
+  - on Iflytek (albert-tiny):
+  
+| model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
+| :----:| :----: | :----: | :----: |:----: |:----: | :----: | :----: | 
+| char_no_space_lower	| 5000 | 128| 2e-5 | 32 | 400 |  0.439015, 0.43362832, 0.4432474, 0.4474798, 0.4328588 |  -  |
+|  char_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.4263178, 0.42285493, 0.44093883, 0.43516737, 0.43401307  |  -  |
+|  char_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  0.44170836, 0.44594073, 0.4267026, 0.45440555, 0.44247788  |  -  |
+|  subchar_no_space_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.36898807, 0.37860715, 0.3678338, 0.37629858 |  -   |
+|  subchar_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.35244325, 0.35244325, 0.37437475, 0.3759138, 0.3643709 |  -   |
+|  subchar_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  0.38514, 0.3759, 0.37052, , |   -   |
 
 - on ChnSentiCorp (albert-tiny):
   
-| model | vocab size |  max_sent_length | lr | batch_size | warmup-steps | dev | test |
+| model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
 | :----:| :----: | :----: | :----: |:----: |:----: | :----: | :----: | 
-| char_no_space_lower	| 5000 | 128| 2e-5 | 32 | 400 |  88.766666 (0.7137) |  87.73240000000001, 0.7103  |
-|  char_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | 86.0833346, 0.739  |  86.18311999999999, 1.3212975 |
-|  char_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  88.8666652, 0.3822  |  88.59971999999999, 0.49840689 |
-|  subchar_no_space_lower | 5000 | 128| 2e-5 | 32 | 400 | 86.48333459999999, 0.626719 |   85.59979999999999, 1.26195442  |
-|  subchar_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | 86.73333480000001, 0.359010 |   84.4496, 0.737355  |
-|  subchar_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  85.86865714285715, 0.60070731  |  84.66628571428572, 0.7933103    |
+| char_no_space_lower	| 5000 | 128| 2e-5 | 32 | 400 |  0.8975, 0.8833333, 0.8825, 0.895, 0.88 |  0.89, 0.86916,0.87916,0.875, 0.8733  |
+|  char_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.8641667, 0.87333333, 0.8591667,0.8525, 0.855  |  0.875,0.879166, 0.85833, 0.845, 0.85166  |
+|  char_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  0.89166665, 0.8825, 0.88666666, 0.8933333, 0.88916665  |  0.8875,0.894166, 0.88, 0.88166, 0.88666  |
+
+|  subchar_no_space_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.8641667, 0.86583334, 0.85333335, 0.87083334, 0.87 |  0.87416, 0.83833, 0.8475, 0.865, 0.855   |
+|  subchar_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.8725, 0.8675, 0.8691667, 0.8616667, 0.86583334 |  0.84166, 0.8525, 0.85, 0.84666, 0.83166   |
+|  subchar_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |  0.85666, 0.86833, 0.85166, 0.861666,0.86333, 0.85000, 0.85916  |   0.83166, 0.83916, 0.84833,0.85083, 0.855, 0.84666, 0.855   |
 
 
 - on LCQMC (albert-tiny):
   
-| model | vocab size |  max_sent_length | lr | batch_size | warmup-steps | dev | test |
+| model | vocab size |  max_seq_length | lr | batch_size | warmup-steps | dev | test |
 | :----:| :----: | :----: | :----: |:----: |:----: | :----: | :----: | 
-| char_no_space_lower	| 5000 | 64 + 64 | 2e-5 | 128 | 1700 | -  |  -  |
-|  char_spaced_lower | 5000 | 64 + 64 | 2e-5 | 128 | 1700 | 74.23677777777777, 0.432981 |  77.1304, 0.6568487  |
-|  char_segmented_lower | 5000 | 64 + 64 | 2e-5 | 128 | 1700 |  76.3548888888889, 0.64862241   |   79.09244444444444, 0.61523  |
-|  subchar_no_space_lower | 5000 | 64 + 64 | 2e-5 | 128 | 1700 | 72.99213000000002, 1.540 |  76.30319999999999, 1.4434  |
-|  subchar_spaced_lower | 5000 | 64 + 64 | 2e-5 | 128 | 1700 |  72.40952, 0.652531  | 75.7856, 1.01924395   |
-|  subchar_segmented_lower | 5000 | 64 + 64 | 2e-5 | 128 | 1700 |  72.35718999999999, 0.80029  | 76.0192, 0.8723170065979453  |
+| char_no_space_lower	| 5000 | 128| 2e-5 | 32 | 400 | 0.653147, 0.589979, 0.64803,   |  0.7056, 0.668, 0.70216  |
+|  char_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.73483, 0.748579, 0.742558, 0.738468, 0.74562, 0.744035, 0.74199, 0.74733, 0.7379 |  0.77376, 0.78408, 0.7708, 0.77688, 0.7684, 0.76744, 0.77584, 0.76784, 0.75816, 0.76984  |
+|  char_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 |    0.77164， 0.76528， 0.769825， 0.75426， 0.76516， 0.752215， 0.75903， 0.76891， 0.76562 |  0.79664，0.80088，0.79104，0.78776， 0.7824， 0.79232，0.7804，0.79408，0.7928   |
+
+|  subchar_no_space_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.71483, 0.71586, 0.72767, 0.736423, 0.73790, 0.74233, 0.74721, 0.75130, 0.72597, 0.69972  |  0.74912, 0.75024, 0.7676, 0.7744, 0.77, 0.768, 0.77704, 0.78264, 0.75824, 0.73304  |
+|  subchar_spaced_lower | 5000 | 128| 2e-5 | 32 | 400 |  0.73119, 0.725289, 0.713928, 0.71563, 0.718473, 0.733356, 0.722676, 0.73290, 0.72472, 0.72279  |  0.76016, 0.76936, 0.74976, 0.74376, 0.74888, 0.77296, 0.7432, 0.7632, 0.76064, 0.76664  |
+|  subchar_segmented_lower | 5000 | 128| 2e-5 | 32 | 400 | 0.72108, 0.72176, 0.737332, 0.71415, 0.727789, 0.727789, 0.72029, 0.72972, 0.707793, 0.728016   |  0.76632,0.7628,0.75928,0.73912,0.76448,0.75992,0.76512,0.76784,0.74944,0.7676  |
 
 
 ## effects of vocab size

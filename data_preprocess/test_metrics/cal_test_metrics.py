@@ -55,11 +55,18 @@ def cal_metrics(pred_tsv_dir, truth_json_dir):
 
 
 if __name__ == "__main__":
-    pred_tsv_dir = "data_preprocess/tmp/chn/data_picto_trans_finetune_chn_char_spaced_lower_char_spaced_lower_albert_tiny_5_submit_results.tsv"
-    truth_json_dir = "datasets/CLUE/chn/test.json"
+    # for CHN
+    # pred_tsv_dir = "data_preprocess/test_metrics/chn/picto_trans_finetune_chn_subchar_segmented_lower_subchar_segmented_lower_albert_tiny_7_submit_results.tsv"
+    # truth_json_dir = "datasets/CLUE/chn/test.json"
+    # accuracy, results = cal_metrics(pred_tsv_dir, truth_json_dir)
+    # print(accuracy)
+
+    # for LCQMC
+    pred_tsv_dir = "data_preprocess/test_metrics/lcqmc/picto_trans_finetune_lcqmc_subchar_segmented_lower_subchar_segmented_lower_albert_tiny_10_submit_results.tsv"
+    truth_json_dir = "datasets/CLUE/lcqmc/test.json"
     accuracy, results = cal_metrics(pred_tsv_dir, truth_json_dir)
     print(accuracy)
+    # 0.76632,0.7628,0.75928,0.73912,0.76448,0.75992,0.76512,0.76784,0.74944,0.7676
 
-    # 0.875,0.879166, 0.85833, 0.845, 0.85166
 
 
