@@ -354,6 +354,99 @@ class ChnSentiCorpDataProcessor(DataProcessor):
     return examples
 
 
+class LCQMCProcessor(DataProcessor):
+  """Processor for the internal data set. sentence pair classification"""
+
+  def get_train_examples(self, data_dir):
+    """See base class."""
+    return self._create_examples(
+        self._read_json(os.path.join(data_dir, "train.json")), "train")
+
+  def get_dev_examples(self, data_dir):
+    """See base class."""
+    return self._create_examples(
+        self._read_json(os.path.join(data_dir, "dev.json")), "dev")
+
+  def get_test_examples(self, data_dir):
+    """See base class."""
+    return self._create_examples(
+        self._read_json(os.path.join(data_dir, "test.json")), "test")
+
+  def get_labels(self):
+    """See base class."""
+    return ["0", "1"]
+
+  def _create_examples(self, lines, set_type):
+    """Creates examples for the training and dev sets."""
+    examples = []
+    for (i, line) in enumerate(lines):
+      guid = "%s-%s" % (set_type, i)
+
+      text_a = line['sentence1'].strip()
+      if hasattr(self.args, "max_sent_length"):
+        text_a = text_a[: self.args.max_sent_length]
+      # 将汉字用空格拆开
+      text_a = char2char_single_sent(text_a)
+      if self.args.do_lower_case:
+        text_a = text_a.lower()
+      text_a = convert_to_unicode(text_a)
+
+      text_b = line['sentence2'].strip()
+      if hasattr(self.args, "max_sent_length"):
+        text_b = text_b[: self.args.max_sent_length]
+      # 将汉字用空格拆开
+      text_b = char2char_single_sent(text_b)
+      if self.args.do_lower_case:
+        text_b = text_b.lower()
+      text_b = convert_to_unicode(text_b)
+
+      label = convert_to_unicode(line['label']) if set_type != 'test' else '0'
+      examples.append(
+          InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+
+      if i < 5:
+        print(text_a)
+        print(text_b)
+
+    return examples
+
+
+
+class AFQMCProcessor(DataProcessor):
+  """Processor for the internal data set. sentence pair classification"""
+
+  def get_train_examples(self, data_dir):
+    """See base class."""
+    return self._create_examples(
+        self._read_json(os.path.join(data_dir, "train.json")), "train")
+
+  def get_dev_examples(self, data_dir):
+    """See base class."""
+    return self._create_examples(
+        self._read_json(os.path.join(data_dir, "dev.json")), "dev")
+
+  def get_test_examples(self, data_dir):
+    """See base class."""
+    return self._create_examples(
+        self._read_json(os.path.join(data_dir, "test.json")), "test")
+
+  def get_labels(self):
+    """See base class."""
+    return ["0", "1"]
+
+  def _create_examples(self, lines, set_type):
+    """Creates examples for the training and dev sets."""
+    examples = []
+    for (i, line) in enumerate(lines):
+      guid = "%s-%s" % (set_type, i)
+      text_a = convert_to_unicode(line['sentence1'])
+      text_b = convert_to_unicode(line['sentence2'])
+      label = convert_to_unicode(line['label']) if set_type != 'test' else '0'
+      examples.append(
+          InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+    return examples
+
+
 
 class AFQMCProcessor(DataProcessor):
   """Processor for the internal data set. sentence pair classification"""
