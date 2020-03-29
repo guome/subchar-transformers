@@ -8,7 +8,7 @@ CURRENT_TIME=$(date "+%Y%m%d-%H%M%S")
 
 export STORAGE_BUCKET=gs://sbt0
 # export TPU_NAME=subchar-trans-run-iflytek
-export TPU_NAME=grpc://10.162.95.66:8470
+export TPU_NAME=grpc://10.225.118.202:8470
 
 TASK_NAME="lcqmc"
 PREFIX=char_no_space_lower
@@ -52,10 +52,10 @@ for run_idx in `seq 1 $((RUN_TIMES))`; do
       --max_seq_length=256 \
       --optimizer=adamw \
       --train_batch_size=128 \
-      --learning_rate=5e-5 \
-      --warmup_step=1500 \
+      --learning_rate=2e-5 \
+      --warmup_step=1700 \
       --save_checkpoints_steps=1000 \
-      --train_step=50000 \
+      --train_step=30000 \
       --use_tpu=True \
       --tpu_name=${TPU_NAME} \
       --num_tpu_cores=1 \
