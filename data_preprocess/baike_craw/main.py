@@ -1,4 +1,5 @@
 #! -*- coding:utf-8 -*-
+import copy
 from urllib.parse import unquote, urlparse, urlunparse  # 用来对URL进行解码  # 对长的URL进行拆分
 
 import requests as rq
@@ -51,22 +52,20 @@ def process_para(para):
     text = ""
     # print("para.contents: ", para.contents)
     for content in para.contents:
-        print(content)
-        if content.find("sup"):
-            continue
-        if content.find("div"):
-            continue
-
-        if content.find("img"):
-            continue
-
-        if content.find("a"):
-            continue
+        # print(content)
+        # if content.find("sup"):
+        #     continue
+        # if content.find("div"):
+        #     continue
+        # if content.find("img"):
+        #     continue
+        # if content.find("a"):
+        #     continue
 
         # print(content)
         # print(content.string)
         string = content.string
-        print(string)
+        # print(string)
         if string:
             text += string.strip()
 
@@ -101,7 +100,7 @@ def main():
             u = clean_url(u)
             # print(u)
             if not items.find_one({'url': u}):  # 把还没有队列过的链接加入队列
-                tasks.update({'url': u}, {'$set': {'url': u}}, upsert=True)
+                tasks.update_one({'url': u}, {'$set': {'url': u}}, upsert=True)
 
             # item name
             u_0 = u.replace("https://baike.baidu.com/item/", "")
@@ -130,20 +129,22 @@ def main():
             # print(title)
 
             # summary
-            if soup.find("div", class_="lemmaWgt-lemmaSummary lemmaWgt-lemmaSummary-light"):
-                summary_light = soup.find("div", class_="lemmaWgt-lemmaSummary lemmaWgt-lemmaSummary-light")
-                print(summary_light)
-            else:
-                summary = soup.find("div", class_="lemma-summary")
+            summary_texts = []
+            # if soup.find("div", class_="lemmaWgt-lemmaSummary lemmaWgt-lemmaSummary-light"):
+            #     summary_light = soup.find("div", class_="lemmaWgt-lemmaSummary lemmaWgt-lemmaSummary-light")
+            #     print(summary_light)
+            # else:
+            summary = soup.find("div", class_="lemma-summary")
+            if summary:
                 # print(summary.text)
-                summary_texts = []
+                # summary_texts = []
                 for para in summary.find_all("div", class_="para"):
-                    continue
+                    # continue
                     # # print(para.contents)
                     # # print(type(para.contents[0]))
-                    # para_text = process_para(para)
+                    para_text = process_para(para)
                     # # print(para_text)
-                    # summary_texts.append(para_text)
+                    summary_texts.append(para_text)
 
             # 正文内容
             texts = []
@@ -169,7 +170,7 @@ def main():
                                             continue
                                         # print(con.string)
                                         # texts.append(content_.string)
-                                        title_ = con
+                                        title_ = con.string
 
                                 if title_:
                                     texts.append(title_)
@@ -187,52 +188,50 @@ def main():
                                             continue
                                         # print(con.string)
                                         # texts.append(content_.string)
-                                        title_ = con
+                                        title_ = con.string
 
                                 if title_:
+                                    print("para title_: ", title_)
                                     texts.append(title_)
-                            else:
-                                para = content.find("div", class_="para")
-                                para_text = process_para(para)
+                            elif "para" in class_:
                                 print("content: ", content.contents)
+                                # para = content.find("div", class_="para")
+                                para_text = process_para(content)
                                 print("para_text: ", para_text)
                                 if para_text:
                                     texts.append(para_text)
 
+            texts_copy = texts.copy()
+            texts = []
+            for sent in texts_copy:
+                if sent not in texts:
+                    texts.append(sent)
 
+            if len(texts) > 0:
+                items.update(
+                    {'url': url},
+                    {
+                        '$set': {
+                            'url': url,
+                            'title': title,
+                            'summary_texts': summary_texts,
+                            'text': texts
+                        }
+                    },
+                    upsert=True
+                )
 
-                    # if "para" in content.attrs["class"]:
-                    #     print(content.attrs)
-                    #     print(content.attrs["class"])
-                    #     print(content.contents)
+                count += 1
+                print('%s, 爬取《%s》，URL: %s, 已经爬取%s' % (datetime.datetime.now(), title, url, count))
 
+pool = Pool(4, main)  # 多线程爬取，4是线程数
+time.sleep(60)
+while tasks.count() > 0:
+    time.sleep(60)
 
+pool.terminate()
 
-
-
-
-            # if text:
-            #     text = ' '.join(
-            #         [
-            #             re.sub(u'[ \n\r\t\u3000]+', ' ', re.sub(u'<.*?>|\xa0', ' ', unescape(t))).strip() for t in text[0]
-            #         ]
-            #     )    # 对爬取的结果做一些简单的处理
-            #     # print(text)
-            #
-            #     title = re.findall(u'<title>(.*?)_百度百科</title>', web)[0]
-            #     # items.update({'url': url}, {'$set': {'url': url, 'title': title, 'text': text}}, upsert=True)
-            #     count += 1
-            #     print('%s, 爬取《%s》，URL: %s, 已经爬取%s' % (datetime.datetime.now(), title, url, count))
-
-
-# pool = Pool(1, main)  # 多线程爬取，4是线程数
-# time.sleep(20)
-# while tasks.count() > 0:
-#     time.sleep(60)
-#
-# pool.terminate()
-
-main()
+# main()
 
 
 # TODO: 区分到底是词条具体信息页面，还是一词多义页面
