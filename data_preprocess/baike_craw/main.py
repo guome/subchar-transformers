@@ -9,7 +9,7 @@ from multiprocessing.dummy import Pool
 import pymongo  # 使用数据库负责存取
 from html.parser import HTMLParser
 import html
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString, Tag
 
 unescape = html.unescape  # 用来实现对HTML字符的转移
 
@@ -46,15 +46,44 @@ def clean_url(url):
     return url_split_re.split(urlunparse((url.scheme, url.netloc, url.path, '', '', '')))[0]
 
 
+def process_para(para):
+    # 提取一个 "para" 中的文字
+    text = ""
+    # print("para.contents: ", para.contents)
+    for content in para.contents:
+        print(content)
+        if content.find("sup"):
+            continue
+        if content.find("div"):
+            continue
+
+        if content.find("img"):
+            continue
+
+        if content.find("a"):
+            continue
+
+        # print(content)
+        # print(content.string)
+        string = content.string
+        print(string)
+        if string:
+            text += string.strip()
+
+    text = re.sub("\[[1-9]{1,3}\]", "", text)
+    # print("para text: ", text)
+    return text
+
+
 def main():
     global count
     while tasks.count_documents(filter={}) > 0:
         url = tasks.find_one_and_delete({})['url']  # 取出一个url，并且在队列中删除掉
-        print(url)
+        # print(url)
         sess = rq.get(url, headers=DEFAULT_REQUEST_HEADERS)
         web = sess.content.decode('utf-8', 'ignore')
         # print(web)
-        print("页面不存在: ", "您所访问的页面不存在" in web)
+        # print("页面不存在: ", "您所访问的页面不存在" in web)
 
         if "您所访问的页面不存在" in web:
             continue
@@ -87,40 +116,123 @@ def main():
 
             # 类名为xxx而且文本内容为hahaha的div
             soup = BeautifulSoup(web, "html.parser")
-            text = []
-            for k in soup.find_all("div", class_="main-content"):
-                # print("k: ", k)
-                text.append(k)
 
-            for k in soup.find_all("div", class_="lemma-summary"):
-                # print("k: ", k)
-                text.append(k)
+            # "main-content"
+            content_tree = []
+            main_content = soup.find("div", class_="main-content")
 
-            assert len(text) == 2
-            # print("text: ", text)
+            # title
+            # title = main_content.find("dl", class_="lemmaWgt-lemmaTitle lemmaWgt-lemmaTitle-")
+            # title = title.find("dd", class_="lemmaWgt-lemmaTitle-title")
+            # title = title.find("h1")
+            # print(title)
+            title = re.findall(u'<title>(.*?)_百度百科</title>', web)[0]
+            # print(title)
 
-            if text:
-                text = ' '.join(
-                    [
-                        re.sub(u'[ \n\r\t\u3000]+', ' ', re.sub(u'<.*?>|\xa0', ' ', unescape(t))).strip() for t in text
-                    ]
-                )    # 对爬取的结果做一些简单的处理
-                print(text)
+            # summary
+            if soup.find("div", class_="lemmaWgt-lemmaSummary lemmaWgt-lemmaSummary-light"):
+                summary_light = soup.find("div", class_="lemmaWgt-lemmaSummary lemmaWgt-lemmaSummary-light")
+                print(summary_light)
+            else:
+                summary = soup.find("div", class_="lemma-summary")
+                # print(summary.text)
+                summary_texts = []
+                for para in summary.find_all("div", class_="para"):
+                    continue
+                    # # print(para.contents)
+                    # # print(type(para.contents[0]))
+                    # para_text = process_para(para)
+                    # # print(para_text)
+                    # summary_texts.append(para_text)
 
-                title = re.findall(u'<title>(.*?)_百度百科</title>', web)[0]
-                items.update({'url': url}, {'$set': {'url': url, 'title': title, 'text': text}}, upsert=True)
-                count += 1
-                print('%s, 爬取《%s》，URL: %s, 已经爬取%s' % (datetime.datetime.now(), title, url, count))
+            # 正文内容
+            texts = []
+            for content in main_content.find("div"):
+                # if isinstance(content, NavigableString):
+                if isinstance(content, Tag):
+                    class_ = content.attrs.get("class")
+
+                    if class_:
+                        # print(class_)
+                        if "para" in class_ or "para-title" in class_:
+                            # 1) para-title
+                            if "para-title" in class_ and 'level-2' in class_:
+                                title_ = None
+                                content_ = content.find("h2", class_="title-text")
+                                if not content_:
+                                    content_ = content.find("span")
+                                    # print(content_.string)
+                                    title_ = content_.string
+                                if content_:
+                                    for con in content_.contents:
+                                        if con.find("span"):
+                                            continue
+                                        # print(con.string)
+                                        # texts.append(content_.string)
+                                        title_ = con
+
+                                if title_:
+                                    texts.append(title_)
+
+                            elif "para-title" in class_ and 'level-3' in class_:
+                                title_ = None
+                                content_ = content.find("h3", class_="title-text")
+                                if not content_:
+                                    content_ = content.find("span")
+                                    # print(content_.string)
+                                    title_ = content_.string
+                                if content_:
+                                    for con in content_.contents:
+                                        if con.find("span"):
+                                            continue
+                                        # print(con.string)
+                                        # texts.append(content_.string)
+                                        title_ = con
+
+                                if title_:
+                                    texts.append(title_)
+                            else:
+                                para = content.find("div", class_="para")
+                                para_text = process_para(para)
+                                print("content: ", content.contents)
+                                print("para_text: ", para_text)
+                                if para_text:
+                                    texts.append(para_text)
 
 
-pool = Pool(16, main)  # 多线程爬取，4是线程数
-time.sleep(60)
-while tasks.count() > 0:
-    time.sleep(60)
 
-pool.terminate()
+                    # if "para" in content.attrs["class"]:
+                    #     print(content.attrs)
+                    #     print(content.attrs["class"])
+                    #     print(content.contents)
 
-# main()
+
+
+
+
+
+            # if text:
+            #     text = ' '.join(
+            #         [
+            #             re.sub(u'[ \n\r\t\u3000]+', ' ', re.sub(u'<.*?>|\xa0', ' ', unescape(t))).strip() for t in text[0]
+            #         ]
+            #     )    # 对爬取的结果做一些简单的处理
+            #     # print(text)
+            #
+            #     title = re.findall(u'<title>(.*?)_百度百科</title>', web)[0]
+            #     # items.update({'url': url}, {'$set': {'url': url, 'title': title, 'text': text}}, upsert=True)
+            #     count += 1
+            #     print('%s, 爬取《%s》，URL: %s, 已经爬取%s' % (datetime.datetime.now(), title, url, count))
+
+
+# pool = Pool(1, main)  # 多线程爬取，4是线程数
+# time.sleep(20)
+# while tasks.count() > 0:
+#     time.sleep(60)
+#
+# pool.terminate()
+
+main()
 
 
 # TODO: 区分到底是词条具体信息页面，还是一词多义页面

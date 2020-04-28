@@ -1,5 +1,6 @@
 import json
 
+import numpy as np
 from sklearn.metrics import classification_report
 
 
@@ -54,6 +55,11 @@ def cal_metrics(pred_tsv_dir, truth_json_dir):
     return accuracy, results
 
 
+def return_avg_mean_and_variance(list_metrics):
+    return np.mean(list_metrics) * 100, np.std(list_metrics) * 100
+
+
+
 if __name__ == "__main__":
     # for CHN
     # pred_tsv_dir = "data_preprocess/test_metrics/chn/picto_trans_finetune_chn_subchar_segmented_lower_subchar_segmented_lower_albert_tiny_7_submit_results.tsv"
@@ -62,11 +68,14 @@ if __name__ == "__main__":
     # print(accuracy)
 
     # for LCQMC
-    pred_tsv_dir = "data_preprocess/test_metrics/lcqmc/picto_trans_finetune_lcqmc_subchar_segmented_lower_subchar_segmented_lower_albert_tiny_10_submit_results.tsv"
+    pred_tsv_dir = "data_preprocess/test_metrics/lcqmc/picto_trans_finetune_lcqmc_char_no_space_lower_char_no_space_lower_albert_tiny_10_submit_results.tsv"
     truth_json_dir = "datasets/CLUE/lcqmc/test.json"
     accuracy, results = cal_metrics(pred_tsv_dir, truth_json_dir)
     print(accuracy)
-    # 0.76632,0.7628,0.75928,0.73912,0.76448,0.75992,0.76512,0.76784,0.74944,0.7676
+    #
+
+
+    print(return_avg_mean_and_variance([0.77184,0.76504,0.76256,0.76448,0.7648,0.76784,0.77816,0.77112,0.76448, 0.77624]))
 
 
 
