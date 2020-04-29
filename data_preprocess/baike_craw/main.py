@@ -224,7 +224,7 @@ def main():
                 count += 1
                 print('%s, 爬取《%s》，URL: %s, 已经爬取%s' % (datetime.datetime.now(), title, url, count))
 
-pool = Pool(4, main)  # 多线程爬取，4是线程数
+pool = Pool(16, main)  # 多线程爬取，4是线程数
 time.sleep(60)
 while tasks.count() > 0:
     time.sleep(60)
