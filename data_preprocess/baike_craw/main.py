@@ -19,11 +19,14 @@ print(db)
 
 
 tasks = db["tasks"]  # 将队列存于数据库中
+# tasks_crawled = db["tasks_crawled"]  # 爬取了的url存在这里
 items = db["items"]  # 存放结果
 print(tasks)
+# print(tasks_crawled)
 print(items)
 
 tasks.create_index([('url', 'hashed')])  # 建立索引，保证查询速度
+# tasks_crawled.create_index([('url', 'hashed')])  # 建立索引，保证查询速度
 items.create_index([('url', 'hashed')])
 
 count = items.count_documents(filter={})  # 已爬取页面总数
@@ -78,18 +81,29 @@ def main():
     global count
     while tasks.count_documents(filter={}) > 0:
         url = tasks.find_one_and_delete({})['url']  # 取出一个url，并且在队列中删除掉
+
+        if items.count_documents({'url': url}) != 0:
+            continue
+
         # print(url)
+        t0 = time.time()
         sess = rq.get(url, headers=DEFAULT_REQUEST_HEADERS)
         web = sess.content.decode('utf-8', 'ignore')
+
+        t1 = time.time()
+        print("requesting url cost: ", t1 - t0)
+
         # print(web)
-        # print("页面不存在: ", "您所访问的页面不存在" in web)
+        print("页面不存在: ", "您所访问的页面不存在" in web)
 
         if "您所访问的页面不存在" in web:
             continue
 
+        t0 = time.time()
         urls = re.findall(u'target=.*? href="(/item/.*?)"', web)  # 查找所有站内链接
         # print(urls)
         # print(len(urls))
+        urls_new = []
         for u in urls:
             try:
                 u = unquote(str(u)).decode('utf-8')
@@ -99,8 +113,9 @@ def main():
             u = 'https://baike.baidu.com' + u
             u = clean_url(u)
             # print(u)
-            if not items.find_one({'url': u}):  # 把还没有队列过的链接加入队列
-                tasks.update_one({'url': u}, {'$set': {'url': u}}, upsert=True)
+            # if items.count_documents({'url': u}) == 0:  # 把还没有队列过的链接加入队列
+                # tasks.update_one({'url': u}, {'$set': {'url': u}}, upsert=True)
+            urls_new.append(u)
 
             # item name
             u_0 = u.replace("https://baike.baidu.com/item/", "")
@@ -108,8 +123,20 @@ def main():
                 item_name = u_0.split("/")[0]
                 u1 = 'https://baike.baidu.com/item/%s?force=1' % item_name
                 # print("u1: ", u1)
-                if not items.find_one({'url': u1}):  # 把还没有队列过的链接加入队列
-                    tasks.update({'url': u1}, {'$set': {'url': u1}}, upsert=True)
+                # if not items.count_documents({'url': u1}) == 0:  # 把还没有队列过的链接加入队列
+                    # tasks.update({'url': u1}, {'$set': {'url': u1}}, upsert=True)
+                urls_new.append(u1)
+
+        urls_new = list(set(urls_new))
+        if url in urls_new:
+            urls_new.pop(urls_new.index(url))
+        urls_new = [{"url": url} for url in urls_new]
+        # tasks.update_many({'url': u1}, {'$set': {'url': u1}}, upsert=True)
+        if len(urls_new) > 0:
+            tasks.insert_many(urls_new)
+
+        t1 = time.time()
+        print("updating tasks queue costs: ", t1 - t0)
 
         if not re.search("这是一个.*?多义词.*?，请在下列.*?义项.*?上选择浏览", web):
 
@@ -148,10 +175,13 @@ def main():
 
             # 正文内容
             texts = []
-            for content in main_content.find("div"):
+            for content in main_content.find_all("div"):
                 # if isinstance(content, NavigableString):
+                # print("content type: ", type(content))
+                # print("content: ", content)
                 if isinstance(content, Tag):
                     class_ = content.attrs.get("class")
+                    # print("content class_: ", class_)
 
                     if class_:
                         # print(class_)
@@ -194,10 +224,10 @@ def main():
                                     print("para title_: ", title_)
                                     texts.append(title_)
                             elif "para" in class_:
-                                print("content: ", content.contents)
+                                # print("content: ", content.contents)
                                 # para = content.find("div", class_="para")
                                 para_text = process_para(content)
-                                print("para_text: ", para_text)
+                                # print("para_text: ", para_text)
                                 if para_text:
                                     texts.append(para_text)
 
@@ -224,10 +254,16 @@ def main():
                 count += 1
                 print('%s, 爬取《%s》，URL: %s, 已经爬取%s' % (datetime.datetime.now(), title, url, count))
 
-pool = Pool(16, main)  # 多线程爬取，4是线程数
-time.sleep(60)
+            else:
+                print("blank page: ", url)
+
+        else:
+            print("多义词url: ", url)
+
+pool = Pool(8, main)  # 多线程爬取，4是线程数
+time.sleep(0.5)
 while tasks.count() > 0:
-    time.sleep(60)
+    time.sleep(0.5)
 
 pool.terminate()
 
