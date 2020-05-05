@@ -11,6 +11,7 @@ __pycache__/
 *.tfrecord
 *.out
 *.tsv
+*.jsonl
 
 # Distribution / packaging
 .Python

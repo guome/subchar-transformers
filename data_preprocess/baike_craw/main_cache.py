@@ -9,6 +9,7 @@ import re
 import time
 import datetime
 from multiprocessing.dummy import Pool
+# from multiprocessing import Pool
 import pymongo  # 使用数据库负责存取
 from html.parser import HTMLParser
 import html
@@ -41,9 +42,6 @@ print(tasks.count_documents(filter={}))
 
 DEFAULT_REQUEST_HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
 				   'Accept': 'text / html, application / xhtml + xml, application / xml;q = 0.9,image/webp, * / *;q = 0.8'}
-
-
-
 
 
 url_split_re = re.compile('&|\+')
@@ -81,19 +79,45 @@ def process_para(para):
     return text
 
 
+tmp_items_global = {}
+for item in items.find({}):
+    tmp_items_global[item["url"]] = 1
+print("tmp_items_global: ", len(tmp_items_global))
+
+
 def main():
     global count
-    # time.sleep(0.5)
+    global tmp_items_global
+    # time.sleep(0.3)
 
     time_string = str(time.time())
-    jsonl_dir = "data_preprocess/baike_craw/data/%s.jsonl" % time_string
+    jsonl_dir = "data_preprocess/baike_craw/data/%s.jsonl" % (time_string)
+
+    tasks_tmp = []
+    if tasks.count_documents(filter={}) > 0:
+        url = tasks.find_one_and_delete({})['url']
+        tasks_tmp.append(url)
+    print(tasks_tmp)
+
+    items_tmp = {}
 
     with open(jsonl_dir, "w", encoding="utf-8") as f:
-        while tasks.count_documents(filter={}) > 0:
-            url = tasks.find_one_and_delete({})['url']  # 取出一个url，并且在队列中删除掉
+        while len(tasks_tmp) > 0:
+
+            print("task_tmp: ", len(tasks_tmp))
+            print("items_tmp: ", len(items_tmp))
+
+            url = tasks_tmp.pop()  # 取出一个url，并且在队列中删除掉
+            print(url)
 
             t0 = time.time()
-            if items.find_one({'url': url}):
+            # if items.find_one({'url': url}):
+            #     continue
+
+            print(url)
+            if url in items_tmp:
+                continue
+            if url in tmp_items_global:
                 continue
 
             t1 = time.time()
@@ -144,10 +168,11 @@ def main():
             urls_new = list(set(urls_new))
             if url in urls_new:
                 urls_new.pop(urls_new.index(url))
-            urls_new = [{"url": url} for url in urls_new]
+            # urls_new = [{"url": url} for url in urls_new]
             # tasks.update_many({'url': u1}, {'$set': {'url': u1}}, upsert=True)
             if len(urls_new) > 0:
-                tasks.insert_many(urls_new)
+                # tasks.insert_many(urls_new)
+                tasks_tmp.extend(urls_new)
 
             t1 = time.time()
             print("updating tasks queue costs: ", t1 - t0)
@@ -235,7 +260,7 @@ def main():
                                             title_ = con.string
 
                                     if title_:
-                                        print("para title_: ", title_)
+                                        # print("para title_: ", title_)
                                         texts.append(title_)
                                 elif "para" in class_:
                                     # print("content: ", content.contents)
@@ -247,19 +272,28 @@ def main():
 
                 texts_copy = texts.copy()
                 texts = []
+                for sent in summary_texts:
+                    if sent not in texts:
+                        texts.append(sent)
                 for sent in texts_copy:
                     if sent not in texts:
                         texts.append(sent)
 
                 if len(texts) > 0:
-                    items.update(
-                        {'url': url},
-                        {
-                            '$set': {
-                                'url': url
-                            }
-                        },
-                        upsert=True
+                    # items.update(
+                    #     {'url': url},
+                    #     {
+                    #         '$set': {
+                    #             'url': url
+                    #         }
+                    #     },
+                    #     upsert=True
+                    # )
+                    items_tmp.update(
+                        {url: 1}
+                    )
+                    tmp_items_global.update(
+                        {url: 1}
                     )
 
                     samp = {
@@ -279,10 +313,28 @@ def main():
             else:
                 print("多义词url: ", url)
 
-pool = Pool(4, main)  # 多线程爬取，4是线程数
-time.sleep(0.1)
-while tasks.count() > 0:
-    time.sleep(0.1)
+            if len(items_tmp) > 50:
+                items_tmp_samples = [{"url": url} for url in items_tmp.keys()]
+                items.insert_many(items_tmp_samples)
+                items_tmp = {}
+
+                print("tmp_items_global: ", len(tmp_items_global))
+
+                if len(tasks_tmp) > 20:
+
+                    tasks_tmp_samples = [{"url": url} for url in tasks_tmp[: -20]]
+                    tasks.insert_many(tasks_tmp_samples)
+                    tasks_tmp = tasks_tmp[-20: ]
+
+
+pool = Pool(32, main)  # 多线程爬取，4是线程数
+time.sleep(0.25)
+# while tasks.find_one():
+while True:
+    time.sleep(0.25)
+# pool.apply(main, args=())
+# for i in range(4):
+#     pool.apply_async(main, (i,))
 
 pool.terminate()
 
