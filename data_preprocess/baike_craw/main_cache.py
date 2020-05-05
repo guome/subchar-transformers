@@ -97,7 +97,7 @@ def main():
     if tasks.count_documents(filter={}) > 0:
         url = tasks.find_one_and_delete({})['url']
         tasks_tmp.append(url)
-    print(tasks_tmp)
+    # print(tasks_tmp)
 
     items_tmp = {}
 
@@ -114,7 +114,7 @@ def main():
             # if items.find_one({'url': url}):
             #     continue
 
-            print(url)
+            # print(url)
             if url in items_tmp:
                 continue
             if url in tmp_items_global:
@@ -320,14 +320,17 @@ def main():
 
                 print("tmp_items_global: ", len(tmp_items_global))
 
-                if len(tasks_tmp) > 20:
+                if len(tasks_tmp) > 0:
 
-                    tasks_tmp_samples = [{"url": url} for url in tasks_tmp[: -20]]
+                    tasks_tmp_samples = [{"url": url} for url in tasks_tmp]
                     tasks.insert_many(tasks_tmp_samples)
-                    tasks_tmp = tasks_tmp[-20: ]
+
+                    # if tasks.count_documents(filter={}) > 0:
+                    url = tasks.find_one_and_delete({})['url']
+                    tasks_tmp.append(url)
 
 
-pool = Pool(32, main)  # 多线程爬取，4是线程数
+pool = Pool(8, main)  # 多线程爬取，4是线程数
 time.sleep(0.25)
 # while tasks.find_one():
 while True:
