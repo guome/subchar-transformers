@@ -279,6 +279,7 @@ def main():
             else:
                 print("多义词url: ", url)
 
+
 pool = Pool(4, main)  # 多线程爬取，4是线程数
 time.sleep(0.1)
 while tasks.count() > 0:

@@ -85,6 +85,19 @@ for item in items.find({}):
 print("tmp_items_global: ", len(tmp_items_global))
 
 
+tmp_tasks_global = {}
+for task in tasks.find({}):
+    tmp_tasks_global[task["url"]] = 1
+print("tmp_tasks_global: ", len(tmp_tasks_global))
+
+# tasks_global = []
+# for key in tmp_tasks_global.keys():
+#     task_ = {"url": key}
+#     tasks_global.append(task_)
+# tasks.delete_many({})
+# tasks.insert_many(tasks_global)
+
+
 def main():
     global count
     global tmp_items_global
@@ -327,6 +340,7 @@ def main():
                     tasks.insert_many(tasks_tmp_samples)
 
                     # if tasks.count_documents(filter={}) > 0:
+                    tasks_tmp = []
                     url = tasks.find_one_and_delete({})['url']
                     tasks_tmp.append(url)
 
