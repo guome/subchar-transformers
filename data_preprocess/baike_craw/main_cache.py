@@ -108,7 +108,7 @@ def main():
             print("items_tmp: ", len(items_tmp))
 
             url = tasks_tmp.pop()  # 取出一个url，并且在队列中删除掉
-            print(url)
+            # print(url)
 
             t0 = time.time()
             # if items.find_one({'url': url}):
@@ -118,7 +118,8 @@ def main():
             if url in items_tmp:
                 continue
             if url in tmp_items_global:
-                continue
+                url = tasks.find_one_and_delete({})['url']
+                tasks_tmp.append(url)
 
             t1 = time.time()
             print("verifying url cost: ", t1 - t0)
