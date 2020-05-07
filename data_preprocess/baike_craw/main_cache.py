@@ -86,21 +86,23 @@ print("tmp_items_global: ", len(tmp_items_global))
 
 
 tmp_tasks_global = {}
-for task in tasks.find({}):
-    tmp_tasks_global[task["url"]] = 1
-print("tmp_tasks_global: ", len(tmp_tasks_global))
-
+# for task in tasks.find({}):
+#     tmp_tasks_global[task["url"]] = 1
+# print("tmp_tasks_global: ", len(tmp_tasks_global))
+#
 # tasks_global = []
 # for key in tmp_tasks_global.keys():
 #     task_ = {"url": key}
 #     tasks_global.append(task_)
-# tasks.delete_many({})
-# tasks.insert_many(tasks_global)
+tasks.delete_many({})
+tasks_global = [{"url": "https://baike.baidu.com/item/%E6%AD%99%E5%8E%BF/645326"}]
+tasks.insert_many(tasks_global)
 
 
 def main():
     global count
     global tmp_items_global
+    global tmp_tasks_global
     # time.sleep(0.3)
 
     time_string = str(time.time())
@@ -167,6 +169,10 @@ def main():
                 # print(u)
                 # if items.count_documents({'url': u}) == 0:  # 把还没有队列过的链接加入队列
                     # tasks.update_one({'url': u}, {'$set': {'url': u}}, upsert=True)
+
+                if u in tmp_tasks_global:
+                    continue
+
                 urls_new.append(u)
 
                 # item name
@@ -177,6 +183,9 @@ def main():
                     # print("u1: ", u1)
                     # if not items.count_documents({'url': u1}) == 0:  # 把还没有队列过的链接加入队列
                         # tasks.update({'url': u1}, {'$set': {'url': u1}}, upsert=True)
+
+                    if u1 in tmp_tasks_global:
+                        continue
                     urls_new.append(u1)
 
             urls_new = list(set(urls_new))
@@ -345,18 +354,18 @@ def main():
                     tasks_tmp.append(url)
 
 
-pool = Pool(8, main)  # 多线程爬取，4是线程数
-time.sleep(0.25)
-# while tasks.find_one():
-while True:
-    time.sleep(0.25)
-# pool.apply(main, args=())
-# for i in range(4):
-#     pool.apply_async(main, (i,))
+# pool = Pool(8, main)  # 多线程爬取，4是线程数
+# time.sleep(0.25)
+# # while tasks.find_one():
+# while True:
+#     time.sleep(0.25)
+# # pool.apply(main, args=())
+# # for i in range(4):
+# #     pool.apply_async(main, (i,))
+#
+# pool.terminate()
 
-pool.terminate()
-
-# main()
+main()
 
 
 # TODO: 区分到底是词条具体信息页面，还是一词多义页面
