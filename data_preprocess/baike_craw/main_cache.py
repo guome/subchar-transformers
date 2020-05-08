@@ -73,7 +73,7 @@ tmp_tasks_global_list = []
 for task_ in tasks.find({}):
     # tmp_tasks_global[task_["url"]] = 1
     tmp_tasks_global[task_["url"]] = task_["processor_id"]
-    tmp_tasks_global_list.append(task_)
+    # tmp_tasks_global_list.append(task_)
 print("tmp_tasks_global: ", len(tmp_tasks_global))
 
 # tasks_global = []
@@ -87,7 +87,7 @@ print("tmp_tasks_global: ", len(tmp_tasks_global))
 def main(proc_idx):
     global count
     global tmp_tasks_global
-    global tmp_tasks_global_list
+    # global tmp_tasks_global_list
 
 
     time.sleep(0.2)
@@ -180,7 +180,7 @@ def main(proc_idx):
                         u_task
                     )
                     tmp_tasks_global[u] = processor_asigned
-                    tmp_tasks_global_list.append(u_task)
+                    # tmp_tasks_global_list.append(u_task)
 
                     tasks.update(
                         {'url': u},
