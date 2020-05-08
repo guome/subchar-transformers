@@ -39,7 +39,7 @@ items.create_index([('url', 'hashed')])
 count = items.count_documents(filter={})  # 已爬取页面总数
 print(count)
 if tasks.count_documents(filter={}) == 0:  # 如果队列为空，就把该页面作为初始页面，这个页面要尽可能多超链接
-    tasks.insert_one({'url': 'https://baike.baidu.com/item/%E7%A7%91%E5%AD%A6?force=1'})
+    tasks.insert_one({'url': 'https://baike.baidu.com/item/%E7%A7%91%E5%AD%A6?force=1', "processor_id": 0})
 print(tasks.count_documents(filter={}))
 
 DEFAULT_REQUEST_HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
@@ -327,9 +327,8 @@ def main(proc_idx):
                 tasks.delete_many({"url": url})
 
 
-
 if __name__ == "__main__":
-    num_processes = 8
+    num_processes = 4
     jobs = []
     for i in range(num_processes):
         # job = multiprocessing.Process(target=main, args=())
