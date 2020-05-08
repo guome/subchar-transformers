@@ -3,6 +3,7 @@ import copy
 import json
 import multiprocessing
 import os
+import random
 from urllib.parse import unquote, urlparse, urlunparse  # 用来对URL进行解码  # 对长的URL进行拆分
 
 import requests as rq
@@ -56,22 +57,9 @@ def clean_url(url):
 def process_para(para):
     # 提取一个 "para" 中的文字
     text = ""
-    # print("para.contents: ", para.contents)
     for content in para.contents:
-        # print(content)
-        # if content.find("sup"):
-        #     continue
-        # if content.find("div"):
-        #     continue
-        # if content.find("img"):
-        #     continue
-        # if content.find("a"):
-        #     continue
 
-        # print(content)
-        # print(content.string)
         string = content.string
-        # print(string)
         if string:
             text += string.strip()
 
@@ -80,52 +68,51 @@ def process_para(para):
     return text
 
 
+tmp_tasks_global = {}
+tmp_tasks_global_list = []
+for task_ in tasks.find({}):
+    # tmp_tasks_global[task_["url"]] = 1
+    tmp_tasks_global[task_["url"]] = task_["processor_id"]
+    tmp_tasks_global_list.append(task_)
+print("tmp_tasks_global: ", len(tmp_tasks_global))
+
+# tasks_global = []
+# for i, key in enumerate(tmp_tasks_global.keys()):
+#     task_ = {"url": key, "processor_id": i % 8}
+#     tasks_global.append(task_)
+# tasks.delete_many({})
+# tasks.insert_many(tasks_global)
 
 
-
-def main():
+def main(proc_idx):
     global count
-    global tmp_items_global
     global tmp_tasks_global
     global tmp_tasks_global_list
 
-    tmp_items_global = {}
-    for item in items.find({}):
-        tmp_items_global[item["url"]] = 1
-    print("tmp_items_global: ", len(tmp_items_global))
 
-
-    tmp_tasks_global = {}
-    for task in tasks.find({}):
-        tmp_tasks_global[task["url"]] = 1
-    print("tmp_tasks_global: ", len(tmp_tasks_global))
-    tmp_tasks_global_list = list(tmp_tasks_global.keys())
-    # time.sleep(0.3)
+    time.sleep(0.2)
 
     time_string = str(time.time())
     jsonl_dir = "data_preprocess/baike_craw/data/%s.jsonl" % (time_string)
 
-
-
-    items_tmp = {}
-
     with open(jsonl_dir, "w", encoding="utf-8") as f:
-        while len(tmp_tasks_global_list) > 0:
+        while True:
 
-            print("tmp_tasks_global_list: ", len(tmp_tasks_global_list))
-            print("items_tmp: ", len(items_tmp))
+            url_task = None
+            try:
+                url_task = tasks.find_one_and_delete({})
+            except Exception as e:
+                print("exception: ", e)
 
-            url = tmp_tasks_global_list.pop(0)  # 取出一个url，并且在队列中删除掉
-            # print(url)
+            if not url_task:
+                break
+
+            url = url_task["url"]
 
             t0 = time.time()
-            # if items.find_one({'url': url}):
-            #     continue
 
-            # print(url)
-            if url in items_tmp:
-                continue
-            if url in tmp_items_global:
+            if items.find_one({'url': url}):
+                tasks.delete_many({"url": url})
                 continue
 
             t1 = time.time()
@@ -158,37 +145,52 @@ def main():
 
                 u = 'https://baike.baidu.com' + u
                 u = clean_url(u)
-                # print(u)
-                # if items.count_documents({'url': u}) == 0:  # 把还没有队列过的链接加入队列
-                    # tasks.update_one({'url': u}, {'$set': {'url': u}}, upsert=True)
 
-                if u not in tmp_tasks_global:
-                    urls_new.append(u)
-                    tmp_tasks_global[u] = 1
-                    tmp_tasks_global_list.append(u)
+                urls_new.append(u)
 
                 # item name
                 u_0 = u.replace("https://baike.baidu.com/item/", "")
                 if "/" in u_0:
                     item_name = u_0.split("/")[0]
                     u1 = 'https://baike.baidu.com/item/%s?force=1' % item_name
-                    # print("u1: ", u1)
-                    # if not items.count_documents({'url': u1}) == 0:  # 把还没有队列过的链接加入队列
-                        # tasks.update({'url': u1}, {'$set': {'url': u1}}, upsert=True)
 
-                    if u1 not in tmp_tasks_global:
-                        urls_new.append(u1)
-                        tmp_tasks_global[u1] = 1
-                        tmp_tasks_global_list.append(u1)
+                    urls_new.append(u1)
 
             urls_new = list(set(urls_new))
             if url in urls_new:
                 urls_new.pop(urls_new.index(url))
             # urls_new = [{"url": url} for url in urls_new]
             # tasks.update_many({'url': u1}, {'$set': {'url': u1}}, upsert=True)
+            print("new urls: ", len(urls_new))
+
             if len(urls_new) > 0:
-                urls_new = [{"url": url} for url in urls_new]
-                tasks.insert_many(urls_new)
+                # print("new urls: ", len(urls_new))
+                url_tasks = []
+                for u in urls_new:
+
+                    if u in tmp_tasks_global:
+                        continue
+
+                    processor_asigned = random.choice(list(range(8)))
+                    u_task = {
+                        "url": u,
+                        "processor_id": processor_asigned,
+                    }
+                    url_tasks.append(
+                        u_task
+                    )
+                    tmp_tasks_global[u] = processor_asigned
+                    tmp_tasks_global_list.append(u_task)
+
+                    tasks.update(
+                        {'url': u},
+                        {
+                            '$set': u_task
+                        },
+                        upsert=True
+                    )
+
+                # tasks.insert_many(url_tasks)
 
             t1 = time.time()
             print("updating tasks queue costs: ", t1 - t0)
@@ -296,20 +298,14 @@ def main():
                         texts.append(sent)
 
                 if len(texts) > 0:
-                    # items.update(
-                    #     {'url': url},
-                    #     {
-                    #         '$set': {
-                    #             'url': url
-                    #         }
-                    #     },
-                    #     upsert=True
-                    # )
-                    items_tmp.update(
-                        {url: 1}
-                    )
-                    tmp_items_global.update(
-                        {url: 1}
+                    items.update(
+                        {'url': url},
+                        {
+                            '$set': {
+                                'url': url
+                            }
+                        },
+                        upsert=True
                     )
 
                     samp = {
@@ -328,40 +324,20 @@ def main():
 
             else:
                 print("多义词url: ", url)
-
-            if len(items_tmp) > 45:
-                items_tmp_samples = [{"url": url} for url in items_tmp.keys()]
-                items.insert_many(items_tmp_samples)
-                items_tmp = {}
-
-                print("tmp_items_global: ", len(tmp_items_global))
+                tasks.delete_many({"url": url})
 
 
 
 if __name__ == "__main__":
-    # items_global = []
-    # for key in tmp_items_global.keys():
-    #     task_ = {"url": key}
-    #     items_global.append(task_)
-    # items.delete_many({})
-    # items.insert_many(items_global)
-
-    # tasks_tmp = []
-    # if tasks.count_documents(filter={}) > 0:
-    #     for i in range(10):
-    #         url = tasks.find_one_and_delete({})['url']
-    #         tasks_tmp.append(url)
-    # # print(tasks_tmp)
-
     num_processes = 8
     jobs = []
     for i in range(num_processes):
         # job = multiprocessing.Process(target=main, args=())
-        job = multiprocessing.Process(target=main, args=())
+        job = multiprocessing.Process(target=main, args=(i, ))
         jobs.append(job)
         job.start()
-    for job in jobs:
-        job.join()
+    # for job in jobs:
+    #     job.join()
 
     # main()
 
