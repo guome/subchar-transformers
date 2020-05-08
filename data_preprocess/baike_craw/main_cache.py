@@ -1,6 +1,7 @@
 #! -*- coding:utf-8 -*-
 import copy
 import json
+import multiprocessing
 import os
 from urllib.parse import unquote, urlparse, urlunparse  # 用来对URL进行解码  # 对长的URL进行拆分
 
@@ -79,50 +80,42 @@ def process_para(para):
     return text
 
 
-tmp_items_global = {}
-for item in items.find({}):
-    tmp_items_global[item["url"]] = 1
-print("tmp_items_global: ", len(tmp_items_global))
 
-
-tmp_tasks_global = {}
-# for task in tasks.find({}):
-#     tmp_tasks_global[task["url"]] = 1
-# print("tmp_tasks_global: ", len(tmp_tasks_global))
-#
-# tasks_global = []
-# for key in tmp_tasks_global.keys():
-#     task_ = {"url": key}
-#     tasks_global.append(task_)
-tasks.delete_many({})
-tasks_global = [{"url": "https://baike.baidu.com/item/%E6%AD%99%E5%8E%BF/645326"}]
-tasks.insert_many(tasks_global)
 
 
 def main():
     global count
     global tmp_items_global
     global tmp_tasks_global
+    global tmp_tasks_global_list
+
+    tmp_items_global = {}
+    for item in items.find({}):
+        tmp_items_global[item["url"]] = 1
+    print("tmp_items_global: ", len(tmp_items_global))
+
+
+    tmp_tasks_global = {}
+    for task in tasks.find({}):
+        tmp_tasks_global[task["url"]] = 1
+    print("tmp_tasks_global: ", len(tmp_tasks_global))
+    tmp_tasks_global_list = list(tmp_tasks_global.keys())
     # time.sleep(0.3)
 
     time_string = str(time.time())
     jsonl_dir = "data_preprocess/baike_craw/data/%s.jsonl" % (time_string)
 
-    tasks_tmp = []
-    if tasks.count_documents(filter={}) > 0:
-        url = tasks.find_one_and_delete({})['url']
-        tasks_tmp.append(url)
-    # print(tasks_tmp)
+
 
     items_tmp = {}
 
     with open(jsonl_dir, "w", encoding="utf-8") as f:
-        while len(tasks_tmp) > 0:
+        while len(tmp_tasks_global_list) > 0:
 
-            print("task_tmp: ", len(tasks_tmp))
+            print("tmp_tasks_global_list: ", len(tmp_tasks_global_list))
             print("items_tmp: ", len(items_tmp))
 
-            url = tasks_tmp.pop()  # 取出一个url，并且在队列中删除掉
+            url = tmp_tasks_global_list.pop(0)  # 取出一个url，并且在队列中删除掉
             # print(url)
 
             t0 = time.time()
@@ -133,8 +126,7 @@ def main():
             if url in items_tmp:
                 continue
             if url in tmp_items_global:
-                url = tasks.find_one_and_delete({})['url']
-                tasks_tmp.append(url)
+                continue
 
             t1 = time.time()
             print("verifying url cost: ", t1 - t0)
@@ -170,10 +162,10 @@ def main():
                 # if items.count_documents({'url': u}) == 0:  # 把还没有队列过的链接加入队列
                     # tasks.update_one({'url': u}, {'$set': {'url': u}}, upsert=True)
 
-                if u in tmp_tasks_global:
-                    continue
-
-                urls_new.append(u)
+                if u not in tmp_tasks_global:
+                    urls_new.append(u)
+                    tmp_tasks_global[u] = 1
+                    tmp_tasks_global_list.append(u)
 
                 # item name
                 u_0 = u.replace("https://baike.baidu.com/item/", "")
@@ -184,9 +176,10 @@ def main():
                     # if not items.count_documents({'url': u1}) == 0:  # 把还没有队列过的链接加入队列
                         # tasks.update({'url': u1}, {'$set': {'url': u1}}, upsert=True)
 
-                    if u1 in tmp_tasks_global:
-                        continue
-                    urls_new.append(u1)
+                    if u1 not in tmp_tasks_global:
+                        urls_new.append(u1)
+                        tmp_tasks_global[u1] = 1
+                        tmp_tasks_global_list.append(u1)
 
             urls_new = list(set(urls_new))
             if url in urls_new:
@@ -194,8 +187,8 @@ def main():
             # urls_new = [{"url": url} for url in urls_new]
             # tasks.update_many({'url': u1}, {'$set': {'url': u1}}, upsert=True)
             if len(urls_new) > 0:
-                # tasks.insert_many(urls_new)
-                tasks_tmp.extend(urls_new)
+                urls_new = [{"url": url} for url in urls_new]
+                tasks.insert_many(urls_new)
 
             t1 = time.time()
             print("updating tasks queue costs: ", t1 - t0)
@@ -336,36 +329,41 @@ def main():
             else:
                 print("多义词url: ", url)
 
-            if len(items_tmp) > 50:
+            if len(items_tmp) > 45:
                 items_tmp_samples = [{"url": url} for url in items_tmp.keys()]
                 items.insert_many(items_tmp_samples)
                 items_tmp = {}
 
                 print("tmp_items_global: ", len(tmp_items_global))
 
-                if len(tasks_tmp) > 0:
-
-                    tasks_tmp_samples = [{"url": url} for url in tasks_tmp]
-                    tasks.insert_many(tasks_tmp_samples)
-
-                    # if tasks.count_documents(filter={}) > 0:
-                    tasks_tmp = []
-                    url = tasks.find_one_and_delete({})['url']
-                    tasks_tmp.append(url)
 
 
-# pool = Pool(8, main)  # 多线程爬取，4是线程数
-# time.sleep(0.25)
-# # while tasks.find_one():
-# while True:
-#     time.sleep(0.25)
-# # pool.apply(main, args=())
-# # for i in range(4):
-# #     pool.apply_async(main, (i,))
-#
-# pool.terminate()
+if __name__ == "__main__":
+    # items_global = []
+    # for key in tmp_items_global.keys():
+    #     task_ = {"url": key}
+    #     items_global.append(task_)
+    # items.delete_many({})
+    # items.insert_many(items_global)
 
-main()
+    # tasks_tmp = []
+    # if tasks.count_documents(filter={}) > 0:
+    #     for i in range(10):
+    #         url = tasks.find_one_and_delete({})['url']
+    #         tasks_tmp.append(url)
+    # # print(tasks_tmp)
+
+    num_processes = 8
+    jobs = []
+    for i in range(num_processes):
+        # job = multiprocessing.Process(target=main, args=())
+        job = multiprocessing.Process(target=main, args=())
+        jobs.append(job)
+        job.start()
+    for job in jobs:
+        job.join()
+
+    # main()
 
 
-# TODO: 区分到底是词条具体信息页面，还是一词多义页面
+    # TODO: 区分到底是词条具体信息页面，还是一词多义页面
