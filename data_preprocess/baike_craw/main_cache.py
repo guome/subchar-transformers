@@ -328,7 +328,9 @@ def main(proc_idx):
 
 
 if __name__ == "__main__":
-    num_processes = 4
+    # main(0)
+
+    num_processes = 6
     jobs = []
     for i in range(num_processes):
         # job = multiprocessing.Process(target=main, args=())
@@ -337,8 +339,3 @@ if __name__ == "__main__":
         job.start()
     # for job in jobs:
     #     job.join()
-
-    # main()
-
-
-    # TODO: 区分到底是词条具体信息页面，还是一词多义页面
