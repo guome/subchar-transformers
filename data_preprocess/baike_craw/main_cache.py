@@ -328,9 +328,7 @@ def main(proc_idx):
 
 
 if __name__ == "__main__":
-    # main(0)
-
-    num_processes = 4
+    num_processes = 16
     jobs = []
     for i in range(num_processes):
         # job = multiprocessing.Process(target=main, args=())
