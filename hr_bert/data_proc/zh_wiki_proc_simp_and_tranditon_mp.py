@@ -65,9 +65,20 @@ def proc_file(txt_file, to_file, do_lower_case=1):
     with tf.gfile.GFile(to_file, "w") as out_f:
         # with open(txt_file, "r", encoding="utf-8") as in_f:
         with tf.gfile.GFile(txt_file, "r") as in_f:
+
+            passage = []
+
             for i, line in tqdm.tqdm(enumerate(in_f)):
                 line = line.strip()
-                if len(line) == 0:
+                if len(line) > 0:
+                    
+
+
+
+
+
+
+
                     out_f.write("\n")
                     continue
 
@@ -85,7 +96,7 @@ def proc_file(txt_file, to_file, do_lower_case=1):
                     # sent_new_t = simplified2traditional(sent_new_)
                     # if sent_new_t != sent_new_:
                     #     out_f.write(sent_new_t + "\n")
-                        
+
 
 
 
