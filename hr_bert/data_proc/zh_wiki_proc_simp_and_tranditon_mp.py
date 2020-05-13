@@ -66,7 +66,7 @@ def proc_file(txt_file, to_file, do_lower_case=1):
         # with open(txt_file, "r", encoding="utf-8") as in_f:
         with tf.gfile.GFile(txt_file, "r") as in_f:
             passage = []
-            
+
             for i, line in tqdm.tqdm(enumerate(in_f)):
                 line = line.strip()
                 if len(line) > 0:
