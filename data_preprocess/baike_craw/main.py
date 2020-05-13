@@ -101,7 +101,7 @@ def main():
 
             # print(url)
             t0 = time.time()
-            sess = rq.get(url, headers=DEFAULT_REQUEST_HEADERS)
+            sess = rq.get(url, headers=DEFAULT_REQUEST_HEADERS, allow_redirects=False)
             web = sess.content.decode('utf-8', 'ignore')
 
             t1 = time.time()
