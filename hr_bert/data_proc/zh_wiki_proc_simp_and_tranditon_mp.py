@@ -65,40 +65,45 @@ def proc_file(txt_file, to_file, do_lower_case=1):
     with tf.gfile.GFile(to_file, "w") as out_f:
         # with open(txt_file, "r", encoding="utf-8") as in_f:
         with tf.gfile.GFile(txt_file, "r") as in_f:
-
             passage = []
-
+            
             for i, line in tqdm.tqdm(enumerate(in_f)):
                 line = line.strip()
                 if len(line) > 0:
-                    
+                    passage.append(line)
 
+                else:
+                    if len(passage) > 0:
+                        passage_new_0 = []
+                        for sent in passage:
+                            if do_lower_case:
+                                sent_new_ = sent.lower()
+                            else:
+                                sent_new_ = sent
 
+                            # 繁体转简体
+                            sent_new_ = traditional2simplified(sent_new_)
+                            passage_new_0.append(sent_new_)
 
+                        passage_new_1 = []
+                        for sent in passage:
+                            if do_lower_case:
+                                sent_new_ = sent.lower()
+                            else:
+                                sent_new_ = sent
 
+                            # 繁体转简体
+                            sent_new_ = simplified2traditional(sent_new_)
+                            passage_new_1.append(sent_new_)
 
+                        for sent in passage_new_0:
+                            out_f.write(sent + "\n")
+                        out_f.write("\n")
 
-
-                    out_f.write("\n")
-                    continue
-
-                sents_ = split_sent(line, spliter="。？?")
-                for sent in sents_:
-                    if do_lower_case:
-                        sent_new_ = sent.lower()
-                    else:
-                        sent_new_ = sent
-
-                    # 繁体转简体
-                    sent_new_ = traditional2simplified(sent_new_)
-                    out_f.write(sent_new_ + "\n")
-
-                    # sent_new_t = simplified2traditional(sent_new_)
-                    # if sent_new_t != sent_new_:
-                    #     out_f.write(sent_new_t + "\n")
-
-
-
+                        if passage_new_1 != passage_new_0:
+                            for sent in passage_new_1:
+                                out_f.write(sent + "\n")
+                            out_f.write("\n")
 
 
 def main():

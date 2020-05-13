@@ -120,7 +120,7 @@ def main(proc_idx):
 
             # print(url)
             t0 = time.time()
-            sess = rq.get(url, headers=DEFAULT_REQUEST_HEADERS, allow_redirects=False)
+            sess = rq.get(url, headers=DEFAULT_REQUEST_HEADERS)
             web = sess.content.decode('utf-8', 'ignore')
 
             t1 = time.time()
@@ -328,7 +328,7 @@ def main(proc_idx):
 
 
 if __name__ == "__main__":
-    num_processes = 16
+    num_processes = 8
     jobs = []
     for i in range(num_processes):
         # job = multiprocessing.Process(target=main, args=())

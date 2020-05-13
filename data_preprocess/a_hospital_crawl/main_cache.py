@@ -20,7 +20,7 @@ from pyquery import PyQuery as pq
 
 unescape = html.unescape  # 用来实现对HTML字符的转移
 
-db = pymongo.MongoClient("mongodb://127.0.0.1:27017/")["wiki8"]
+db = pymongo.MongoClient("mongodb://127.0.0.1:27017/")["a_hospital"]
 print(db)
 
 
@@ -42,13 +42,38 @@ print(count)
 if tasks.count_documents(filter={}) == 0:  # 如果队列为空，就把该页面作为初始页面，这个页面要尽可能多超链接
     tasks.insert_many(
         [
-            {'url': 'https://www.wiki8.com/xizangchangyongzhongcaoyao_153044/', "processor_id": 0},
+            {'url': 'http://www.a-hospital.com/w/%E6%B2%BB%E7%96%97%E8%85%B9%E7%97%9B%E5%92%8C%E8%85%B9%E6%B3%BB%E7%9A%84%E8%8D%AF%E5%93%81%E5%88%97%E8%A1%A8', "processor_id": 0},
         ]
     )
 print(tasks.count_documents(filter={}))
 
 DEFAULT_REQUEST_HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
 				   'Accept': 'text / html, application / xhtml + xml, application / xml;q = 0.9,image/webp, * / *;q = 0.8'}
+
+USER_AGENTS = [
+
+    "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET CLR 2.0.50727; Media Center PC 6.0)",
+
+    "Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET CLR 1.0.3705; .NET CLR 1.1.4322)",
+
+    "Mozilla/4.0 (compatible; MSIE 7.0b; Windows NT 5.2; .NET CLR 1.1.4322; .NET CLR 2.0.50727; InfoPath.2; .NET CLR 3.0.04506.30)",
+
+    "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN) AppleWebKit/523.15 (KHTML, like Gecko, Safari/419.3) Arora/0.3 (Change: 287 c9dfb30)",
+
+    "Mozilla/5.0 (X11; U; Linux; en-US) AppleWebKit/527+ (KHTML, like Gecko, Safari/419.3) Arora/0.6",
+
+    "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2pre) Gecko/20070215 K-Ninja/2.1.1",
+
+    "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9) Gecko/20080705 Firefox/3.0 Kapiko/3.0",
+
+    "Mozilla/5.0 (X11; Linux i686; U;) Gecko/20070322 Kazehakase/0.4.5"
+
+]
+
+IPS = [
+    "218.241.219.84:3128",
+]
+
 
 
 url_split_re = re.compile('&|\+')
@@ -86,10 +111,12 @@ def main(proc_idx):
     global count
     global tmp_tasks_global
 
-    time.sleep(0.2)
+    sleep_time = random.uniform(1, 5)
+
+    time.sleep(sleep_time)
 
     time_string = str(time.time())
-    jsonl_dir = "data_preprocess/wiki8_crawl/data/%s.jsonl" % (time_string)
+    jsonl_dir = "data_preprocess/a_hospital_crawl/data/%s.jsonl" % (time_string)
 
     with open(jsonl_dir, "w", encoding="utf-8") as f:
         while True:
@@ -117,26 +144,49 @@ def main(proc_idx):
 
             # print(url)
             t0 = time.time()
-            sess = rq.get(url, headers=DEFAULT_REQUEST_HEADERS)
-            web = sess.content.decode('utf-8', 'ignore')
+
+            web = None
+
+            ip = random.choice(IPS)
+            proxies = {
+                "http": "http://%s" % ip,
+            }
+
+            try:
+                user_agent = random.choice(USER_AGENTS)
+                sess = rq.get(
+                    url,
+                    headers={'User-Agent':user_agent},
+                    proxies=proxies,
+                    timeout=5,
+                )
+
+                web = sess.content.decode('utf-8', 'ignore')
+            except Exception as e:
+                print(e)
+
+            if not web:
+                continue
 
             t1 = time.time()
             print("requesting url cost: ", t1 - t0)
 
-            if "您所访问的页面不存在" in web:
+            if "页面不存在" in web:
                 continue
 
             t0 = time.time()
-            urls = re.findall(u'title=".*?" href="(/.*?/)" rel="summary"', web)  # 查找所有站内链接
+            # href="/w/%E8%83%86%E7%BB%8F"
+            urls = re.findall(u'href="(/w/.*?)" title=".*?"', web)  # 查找所有站内链接
 
             urls_new = []
             for u in urls:
+                # print(u)
                 try:
                     u = unquote(str(u)).decode('utf-8')
                 except:
                     pass
 
-                u = 'https://www.wiki8.com' + u
+                u = 'http://www.a-hospital.com' + u
                 u = clean_url(u)
                 # print(u)
 
@@ -166,7 +216,6 @@ def main(proc_idx):
                         u_task
                     )
                     tmp_tasks_global[u] = processor_asigned
-                    # tmp_tasks_global_list.append(u_task)
 
                     tasks.update(
                         {'url': u},
@@ -176,17 +225,16 @@ def main(proc_idx):
                         upsert=True
                     )
 
-                # tasks.insert_many(url_tasks)
-
             t1 = time.time()
             print("updating tasks queue costs: ", t1 - t0)
 
             if not re.search("这是一个.*?多义词.*?，请在下列.*?义项.*?上选择浏览", web):
 
                 doc = pq(web.replace('xmlns="http://www.w3.org/1999/xhtml"', ''))
-                title = doc("#main h1").text()
-                content = doc("#content").html()
+                title = doc("#content h1").text()
+                content = doc("#bodyContent").html()
                 print("title: ", title)
+                # print("content: ", content)
 
                 if title and content:
                     items.update(
