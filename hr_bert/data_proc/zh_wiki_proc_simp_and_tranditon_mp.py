@@ -71,7 +71,7 @@ def proc_file(txt_file, to_file, do_lower_case=1):
             for i, line in tqdm.tqdm(enumerate(in_f)):
                 line = line.strip()
                 if len(line) > 0:
-                    
+
 
 
 
